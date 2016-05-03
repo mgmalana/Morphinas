@@ -295,7 +295,7 @@ public class MorphLearnerRedup implements Serializable {
         Vector<String> prefixes;
         Vector<String> suffixes;
         Vector<RewriteRule> infixes;
-        String reducedWord;
+        String reducedWord, prefix, suffix;
         MAResult tempResult = null, maxResult = null;
 
         // Laurenz here
@@ -313,9 +313,20 @@ public class MorphLearnerRedup implements Serializable {
     	{
     		reducedWord = infixes.elementAt(l).infixRemove(orig);
     		println("infixes.elementAt("+l+"): " + infixes.elementAt(l));
-    		prefixes	= prefixTrie.getAllPossibleMatch(reducedWord);
+    		
+    		prefixes	= prefixTrie.getAllPossibleMatch(reducedWord);    		
     		suffixes	= suffixTrie.getAllPossibleMatch(reducedWord);
-
+    		
+    		wordInfix 	= new Affix(infixes.elementAt(l).toString(), "infix");
+    		println("wordInfix what : " + wordInfix.getAffix().charAt(0));
+    		wordInfixes.add(wordInfix);
+    		    	
+    		    		
+    		// Initialize tempResult
+    		prefix		= "";
+    		suffix		= "";
+    		tempResult 	= rewriteMultipleNoSemantic(reducedWord, prefix, suffix);
+    		
     		// Start performRewriteActions on prefix then suffix with alternating rules
     		
     		// Start reducing prefixes
@@ -328,7 +339,7 @@ public class MorphLearnerRedup implements Serializable {
     				affixCount++;
     				wordPrefix = addToPrefix(maxResult.prefix);
     				wordPrefixes.add(wordPrefix);
-        			affixes.add(wordPrefix);	
+        			affixes.add(wordPrefix);
     			}    			
     		}
 
@@ -352,8 +363,9 @@ public class MorphLearnerRedup implements Serializable {
     			
     			if( prefixes.elementAt(i) != null ) 
     			{
-    				wordPrefix = addToPrefix(prefixes.elementAt(i));
-        			affixes.add(wordPrefix);	
+       				wordPrefix = addToPrefix(prefixes.elementAt(i));
+    				wordPrefixes.add(wordPrefix);
+    				affixes.add(wordPrefix);
     			}
     			
     			for( j = 0; j < suffixes.size(); j++) 
@@ -364,6 +376,7 @@ public class MorphLearnerRedup implements Serializable {
         				affixCount++;
         				
         				wordSuffix = addToSuffix(suffixes.elementAt(j));
+        				wordSuffixes.add(wordSuffix);
         				affixes.add(wordSuffix);
     				}
     			}
@@ -373,25 +386,49 @@ public class MorphLearnerRedup implements Serializable {
     	}
     	
     	
+    	// Set the number of affixes found
     	tempWord.setAffixCount(infixes.size() + affixCount);
-    	tempWord.setAffixes(affixes);
-    	tempWord.setInfixes(wordInfixes);
+    	// Store collected affixes by pre,inf, and suff
+    	tempWord.setInfixes(removeNullInfixes(wordInfixes));
     	tempWord.setPrefixes(wordPrefixes);
     	tempWord.setSuffixes(wordSuffixes);
+    	// Store MAResult with root information
     	tempWord.setMaresult(maxResult);
     	
-    	if( maxResult == null ) {
-    		tempWord.setRootWord(tempWord.getOriginalWord());
-    	} else {
+    	// There's a problem here around maxResult == null
+    	if( maxResult == null )
+    	{    		
+    		maxResult = tempResult;
+    		tempWord.setMaresult(maxResult);
+    		tempWord.setRootWord(maxResult.result);
+    	} 
+    	else 
+    	{
     		tempWord.setRootWord(maxResult.result);	
     	}
     	
     	// check if tempWord contents are ok!
-    	tempWord.finalContentsReady();
+    	tempWord.finalContentsReady(false);
     	setWordObject(tempWord);
 
     	
     	return maxResult;
+    }
+    
+    public ArrayList<Affix> removeNullInfixes(ArrayList<Affix> wordInfixes)
+    {
+    	int size = wordInfixes.size();
+    	ArrayList<Affix> temp = new ArrayList<Affix>();
+    	
+    	for( int i = 0; i < size; i++ )
+    	{
+    		if( wordInfixes.get(i).getAffix().charAt(0) != '-' ) 
+    		{
+    			temp.add(wordInfixes.get(i));
+    		}
+    	}
+    	
+    	return temp;
     }
 
     /**
@@ -429,6 +466,16 @@ public class MorphLearnerRedup implements Serializable {
     	return maxResult;
     }
 
+    /**
+     * When the found affixes are both suffix and prefix.
+     * Found => when it matches with the stored trie (suffix and prefix)
+     * @param prefixes
+     * @param suffixes
+     * @param reducedWord
+     * @param tempResult
+     * @param maxResult
+     * @return
+     */
     public MAResult rewriteBothAffix(Vector<String> prefixes, Vector<String> suffixes, String reducedWord, MAResult tempResult, MAResult maxResult)
     {
     	int i, j;
@@ -438,7 +485,7 @@ public class MorphLearnerRedup implements Serializable {
     	    String prefix = prefixes.elementAt(i);
     	    for(j=0;j<suffixes.size();j++) 
     	    {
-    	        String suffix = suffixes.elementAt(j);
+    	        String suffix = suffixes.elementAt(j);    	        
     	        tempResult = rewriteMultipleNoSemantic(reducedWord,prefix,suffix);
     	        if (maxResult == null)
     	            maxResult = tempResult;
@@ -452,19 +499,19 @@ public class MorphLearnerRedup implements Serializable {
     
     private Affix addToPrefix(String input)
     {
-    	Affix affix = new Affix(input + "-", "prefix");
+    	Affix affix = new Affix(input, "prefix");
     	return affix;
     }
     
     private Affix addToSuffix(String input)
     {
-    	Affix affix = new Affix("-" + input, "suffix");
+    	Affix affix = new Affix(input, "suffix");
     	return affix;
     }
     
     private Affix addToInfix(String input)
     {
-    	Affix affix = new Affix("-" + input + "-", "infix");
+    	Affix affix = new Affix( input, "infix");
     	return affix;
     }
     

@@ -43,7 +43,8 @@ public class Main
         println("Redup: " + maresult.redup);
         println("\n \n");
         println("word: " + word.getRootWord());
-        word.printWordContent();
+        word.printWordContentDetailed();
+        word.printBracketedResult();
         
 	}
 	

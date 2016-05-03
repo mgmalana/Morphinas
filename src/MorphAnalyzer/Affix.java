@@ -4,9 +4,14 @@ public class Affix {
 
 	private String affix;
 	private String affixType;
+	private String affixDashed;
+	private String affixBrackets;
 	
+	
+
 	/**
-	 * Creates a new Affix object/class which contains (in string) affix (-um, -an) and the affix type (suffix, prefix) 
+	 * Creates a new Affix object/class which contains (in string) affix (-um, -an) and the affix type (suffix, prefix)
+	 * Also updates affixDashed and affixBrackets with associated markings. 
 	 * @param affix
 	 * The affix of the word: -um, -an, etc.
 	 * @param affixType
@@ -16,6 +21,8 @@ public class Affix {
 	{
 		this.affix 		= affix;
 		this.affixType 	= affixType;
+		// Populate the affixDashed and affixBrackets variables
+		this.generateAffixVariations(affix, affixType);
 	}
 	
 	/** 
@@ -39,13 +46,42 @@ public class Affix {
 	}
 	
 	/**
-	 * 
+	 * Sets the affix value for the Word.affix
+	 * Also generates affixDashed ( -an) and affixBrackets( an]) info. for everytime the setAffix is called.
 	 * @param inputAffix
-	 * Sets affix in String
+	 * Sets affix in String for the Word object
 	 */
-	public void setAffix(String inputAffix)
+	public void setAffix(String affix)
 	{
-		this.affix = inputAffix;
+		this.affix = affix;		
+		generateAffixVariations(affix, this.affixType);
+	}
+	
+	/**
+	 * Does not include INFIX
+	 * @param affix
+	 * @param affixType
+	 */
+	public void generateAffixVariations(String affix, String affixType)
+	{
+		switch(affixType)
+		{
+			case "infix": 
+				affixDashed 	= "(" + affix + ")";
+				affixBrackets 	= "(" + affix + ")"; 
+				break;
+			case "prefix":
+				affixDashed 	= affix + "-" ;
+				affixBrackets 	= "[PFX:" + affix;
+				break;
+			case "suffix":
+				affixDashed 	= "-" + affix;
+				affixBrackets 	= affix + "]";
+				break;
+			default: 
+				affixDashed 	= "";
+				affixBrackets 	= "";
+		}
 	}
 	
 	/**
@@ -54,7 +90,24 @@ public class Affix {
 	 */
 	public void setAffixType(String inputAffixType)
 	{
-		this.affixType = affixType;
+		this.affixType = inputAffixType;
 	}
+
+	public String getAffixDashed() {
+		return affixDashed;
+	}
+
+	public void setAffixDashed(String affixDashed) {
+		this.affixDashed = affixDashed;
+	}
+	
+	public String getAffixBrackets() {
+		return affixBrackets;
+	}
+
+	public void setAffixBrackets(String affixBrackets) {
+		this.affixBrackets = affixBrackets;
+	}
+	
 	
 }
