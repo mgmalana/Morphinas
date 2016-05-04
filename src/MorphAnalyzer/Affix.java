@@ -83,6 +83,7 @@ public class Affix {
 				affixBrackets 	= "";
 		}
 	}
+		
 	
 	/**
 	 * Sets affix type in String

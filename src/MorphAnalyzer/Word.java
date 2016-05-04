@@ -195,7 +195,7 @@ public class Word {
 			}
 			
 			println("Printing Infixes:");
-			for(int i = 0; i < this.infixes.size(); i++)
+			for(int i = 1; i < this.infixes.size(); i++)
 			{
 				println( "IFX: " + this.infixes.get(i).getAffix() );				
 			}
@@ -229,7 +229,7 @@ public class Word {
 		
 		this.bracketedResult = result;
 		return result;
-	}
+	}	
 	
 	public String generateBracketedResult()
 	{
@@ -261,9 +261,9 @@ public class Word {
 		}
 		
 		// Creates [infix|infix|..]
-		for( int i = 0; i < this.infixes.size(); i++ )
+		for( int i = 1; i < this.infixes.size(); i++ )
 		{
-			if ( i == 0 )
+			if ( i == 1 )
 			{
 				result = result + "[<INF>";
 			}
@@ -284,6 +284,12 @@ public class Word {
 	{						
 		println("");
 		println( generateBracketedResult() );
+	}
+	
+	public void printLongestOnly()
+	{
+		println("");
+		println( "[" + this.longestCanonicalPrefix().getAffix() + "[" + this.rootWord + "]");
 	}
 	
 	/**
@@ -329,6 +335,31 @@ public class Word {
 		}
 		
 		return resultAffix;
+	}
+	
+	/**
+	 * Finds the longest prefix on the Word's list of prefixes;
+	 * Does not find the most
+	 * @return
+	 * The longest prefix by comparing length
+	 */
+	private Affix longestCanonicalPrefix()
+	{
+		Affix currLong 		= this.prefixes.get(0); // longest found affix			
+		int currLongLength  = currLong.getAffix().length(); 	
+		
+		for( int i = 1; i < prefixes.size(); i++ )
+		{
+			Affix temp = this.prefixes.get(i);
+			int prefixLength	= temp.getAffix().length();
+			
+			if( currLongLength < prefixLength )
+			{
+				currLong = temp;
+			}
+		}
+		
+		return currLong;
 	}
 	
 	public void printFormattedResult()

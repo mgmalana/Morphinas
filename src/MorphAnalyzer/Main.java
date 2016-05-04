@@ -45,13 +45,19 @@ public class Main
         println("word: " + word.getRootWord());
         word.printWordContentDetailed();
         word.printBracketedResult();
+        try {
+			word.printLongestOnly();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			println("whoopsies");
+		}
         
 	}
 	
 	public static void main(String[] args) throws Exception 
 	{	
 		Main m = new Main();
-		m.noGUI("pinagpaliban");
+		m.noGUI("kumain");
 	}
 	
 	public static void println(String in)

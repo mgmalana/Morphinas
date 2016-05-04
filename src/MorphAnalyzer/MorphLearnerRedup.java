@@ -307,46 +307,40 @@ public class MorphLearnerRedup implements Serializable {
         Affix wordInfix, wordSuffix, wordPrefix;
         int affixCount = 0;
         
-    	infixes = reduceInfix(orig);        
-
+    	infixes = reduceInfix(orig);
+    	
     	for( l = 0; l < infixes.size(); l++ )
     	{
     		reducedWord = infixes.elementAt(l).infixRemove(orig);
     		println("infixes.elementAt("+l+"): " + infixes.elementAt(l));
+    		println("infix to be removed: " + infixes.elementAt(l).infixRemove(orig));
+    		
     		
     		prefixes	= prefixTrie.getAllPossibleMatch(reducedWord);    		
     		suffixes	= suffixTrie.getAllPossibleMatch(reducedWord);
     		
-    		wordInfix 	= new Affix(infixes.elementAt(l).toString(), "infix");
-    		println("wordInfix what : " + wordInfix.getAffix().charAt(0));
+    		wordInfix 	= new Affix(infixes.elementAt(l).toString(), "infix");    	
     		wordInfixes.add(wordInfix);
-    		    	
     		    		
     		// Initialize tempResult
     		prefix		= "";
     		suffix		= "";
     		tempResult 	= rewriteMultipleNoSemantic(reducedWord, prefix, suffix);
     		
-    		// Start performRewriteActions on prefix then suffix with alternating rules
-    		
-    		// Start reducing prefixes
-    		for( i = 0; i < prefixes.size(); i++ )
+    		if ( maxResult == null )
     		{
-    			maxResult = rewriteNoAntiAffix(i, prefixes, reducedWord, tempResult, maxResult);
-    			
-    			if( maxResult.prefix != null ) 
-    			{
-    				affixCount++;
-    				wordPrefix = addToPrefix(maxResult.prefix);
-    				wordPrefixes.add(wordPrefix);
-        			affixes.add(wordPrefix);
-    			}    			
+    			maxResult = tempResult;
+    		} else if ( tempResult.confidence >= maxResult.confidence)
+    		{
+    			maxResult = tempResult;
     		}
 
-    		// Start reducing suffixes
+    		// Start performRewriteActions on prefix then suffix with alternating rules
+    		
+			// NO PREFIX
     		for( j = 0; j < suffixes.size(); j++ )
     		{
-    			maxResult = rewriteNoAntiAffix(j, suffixes, reducedWord, tempResult, maxResult);
+    			maxResult = rewriteNoAntiAffix(0,j, suffixes, reducedWord, tempResult, maxResult);
     			if( maxResult.suffix != null)
     			{
     				affixCount++;
@@ -355,6 +349,20 @@ public class MorphLearnerRedup implements Serializable {
         			affixes.add(wordSuffix);
     			}
     		}
+
+    		// NO SUFFIX
+    		for( i = 0; i < prefixes.size(); i++ )
+    		{
+    			maxResult = rewriteNoAntiAffix(1, i, prefixes, reducedWord, tempResult, maxResult);
+    			
+    			if( maxResult.prefix != null ) 
+    			{
+    				affixCount++;
+    				wordPrefix = addToPrefix(maxResult.prefix);
+    				wordPrefixes.add(wordPrefix);
+        			affixes.add(wordPrefix);
+    			}    			
+    		}    		
 
     		// complete prefix and suffix 
     		for( i = 0; i < prefixes.size(); i++ )
@@ -388,8 +396,9 @@ public class MorphLearnerRedup implements Serializable {
     	
     	// Set the number of affixes found
     	tempWord.setAffixCount(infixes.size() + affixCount);
-    	// Store collected affixes by pre,inf, and suff
-    	tempWord.setInfixes(removeNullInfixes(wordInfixes));
+    	// Store collected affixes by pre,inf, and suff    	
+    	ArrayList<Affix> tempInfixes = wordInfixes;    	
+    	tempWord.setInfixes((tempInfixes));
     	tempWord.setPrefixes(wordPrefixes);
     	tempWord.setSuffixes(wordSuffixes);
     	// Store MAResult with root information
@@ -415,25 +424,12 @@ public class MorphLearnerRedup implements Serializable {
     	return maxResult;
     }
     
-    public ArrayList<Affix> removeNullInfixes(ArrayList<Affix> wordInfixes)
-    {
-    	int size = wordInfixes.size();
-    	ArrayList<Affix> temp = new ArrayList<Affix>();
-    	
-    	for( int i = 0; i < size; i++ )
-    	{
-    		if( wordInfixes.get(i).getAffix().charAt(0) != '-' ) 
-    		{
-    			temp.add(wordInfixes.get(i));
-    		}
-    	}
-    	
-    	return temp;
-    }
 
     /**
      * Applied atomicity since ang gulo ng previous code :v
      * Inside the code, if you see AntiAffix = suffix (if your input is prefix) and prefix (if your input is suffix)
+     * order = 0 when traversing suffixes
+     * order = 1 when traversing prefixes
      * @param i
      * @param affixes
      * This is the original vector<string> that is either suffix or prefix
@@ -444,26 +440,37 @@ public class MorphLearnerRedup implements Serializable {
      * A MAResult maxResult that kept on being passed around
      * 
      */
-    public MAResult rewriteNoAntiAffix(int i, Vector<String> affixes, String reducedWord, MAResult tempResult, MAResult maxResult)
+    public MAResult rewriteNoAntiAffix(int order, int i, Vector<String> affixes, String reducedWord, MAResult tempResult, MAResult maxResult)
     {
-    	String affix = affixes.elementAt(i);
-    	println(affixes.elementAt(i));
-    	String anteFix = "";
-    	tempResult = rewriteMultipleNoSemantic(reducedWord, affix,anteFix);
+        String affix, anteFix;
 
-    	// print tempResult.result
-    	println("tempResult = " + tempResult.result);
+        switch( order ) 
+        {
+            case 0: 
+                affix   = "";
+                anteFix = affixes.elementAt(i);
+                tempResult = rewriteMultipleNoSemantic(reducedWord,affix,anteFix);
+                break;
+            case 1: 
+                affix   = affixes.elementAt(i);
+                anteFix = "";
+                tempResult = rewriteMultipleNoSemantic(reducedWord,affix,anteFix);
+                break;
+            default:
+                println("Invalid order number at rewriteNoAntiAffix(). Exiting program because simpleng call na nga lang mali pa :< ");
+                System.exit(1);
+        } 
 
-    	if (maxResult == null) {
-    		maxResult = tempResult;
-    		println("maxResult-prefix1: " + maxResult.prefix);
-    	}    	    
-    	else if(tempResult.confidence >= maxResult.confidence) {
-    		println("tempResult-prefix1: " + tempResult.prefix);
-    		maxResult = tempResult;
-    	}
-    	                     
-    	return maxResult;
+        if ( maxResult == null )
+        {
+            maxResult = tempResult;
+        }           
+        else if ( tempResult.confidence >= maxResult.confidence )
+        {
+            maxResult = tempResult;
+        }
+        
+        return maxResult;
     }
 
     /**
@@ -1094,7 +1101,7 @@ public class MorphLearnerRedup implements Serializable {
        String maxResult = null;       
        
        // Show the values that will be removed
-//       println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
+       println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
        
        result = orig.substring(prefix.length(), orig.length() - suffix.length());
        
@@ -1105,7 +1112,7 @@ public class MorphLearnerRedup implements Serializable {
        
        trimmed = result;
        trimmedCanonicals = result;
-//       println("trimmed: " + trimmed);
+       println("trimmed: " + trimmed);
        
        posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
        popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
