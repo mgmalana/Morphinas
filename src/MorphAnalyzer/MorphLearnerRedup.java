@@ -17,7 +17,11 @@ public class MorphLearnerRedup implements Serializable {
     protected Hashtable vcRulesTable = new Hashtable();    
     protected SemanticTree semanticTree = new SemanticTree();
     private double posConfidence, popConfidence,vowelConfidence;
-    public DBLexicon lex;
+    public DBLexiconSQL lex;
+    // Global Variables
+    private ArrayList<String> globalPrefixList = new ArrayList<String>();
+    private String globalPrefix;
+    private Affix globalAffix;
     
     //Laurenz
     Word word = new Word("");
@@ -25,7 +29,7 @@ public class MorphLearnerRedup implements Serializable {
     public MorphLearnerRedup() throws Exception
     {
 //        System.out.println("Solomon's Infix and Redup Model");
-        lex = new DBLexicon();
+        lex = new DBLexiconSQL();
         Trie popTrie = new Trie(new DefaultTrieImpl()), prefixTrie = new Trie(new DefaultTrieImpl());
         Trie posTrie = new SuffixTrie(new DefaultTrieImpl()), suffixTrie = new SuffixTrie(new DefaultTrieImpl());                
         Trie vowelChangeTrie = new Trie(new DefaultTrieImpl());
@@ -420,6 +424,7 @@ public class MorphLearnerRedup implements Serializable {
     	tempWord.finalContentsReady(false);
     	setWordObject(tempWord);
 
+    	println("All from global : " + this.globalPrefixList.toString());
     	
     	return maxResult;
     }
@@ -596,6 +601,12 @@ public class MorphLearnerRedup implements Serializable {
         }
         return maxResult;
     }    
+    
+    /**
+     * Go AWAY
+     * @param orig
+     * @return
+     */
     public MAResult analyzeMultipleModWithSemantic1(String orig) {
         int i,j,k,l;
         Vector<String> prefixes;
@@ -1078,6 +1089,8 @@ public class MorphLearnerRedup implements Serializable {
     
     /**
      * This one actually removes the suffixes and prefixes in the original word.
+     * @laurenz go here to dive inside the rewriting process
+     * 
      * @param orig
      * Original word
      * @param prefix
@@ -1094,7 +1107,7 @@ public class MorphLearnerRedup implements Serializable {
        String result;
        RewriteRule popRewrite, posRewrite, vowelRewrite;              
        CountingTable tempTable;
-       Hashtable rulesApplicables = new Hashtable();
+       Hashtable rulesApplicables = new Hashtable(); // not used
        double inLexicon = 0.0, finalProb=0.0, maxProb=0.0;
        Hashtable posTable,popTable, vcTable;
        Enumeration posEnum, popEnum, vcEnum;
@@ -1103,7 +1116,9 @@ public class MorphLearnerRedup implements Serializable {
        // Show the values that will be removed
        println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
        
+       
        result = orig.substring(prefix.length(), orig.length() - suffix.length());
+       println("orig.substring(...): " + result);
        
        if (result.trim().equals(""))
        {
@@ -1112,43 +1127,60 @@ public class MorphLearnerRedup implements Serializable {
        
        trimmed = result;
        trimmedCanonicals = result;
-       println("trimmed: " + trimmed);
        
        posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
        popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
        posEnum = posTable.keys();       
-       while(posEnum.hasMoreElements()) {
+       
+       while(posEnum.hasMoreElements()) 
+       {
            posRewrite = (RewriteRule) posEnum.nextElement();
            posConfidence = (Double) posTable.get(posRewrite);           
-           popEnum = popTable.keys();
-           while(popEnum.hasMoreElements()) {
+           popEnum = popTable.keys();                    
+           
+           // hasMoreElements == iterate lang like foreach
+           while( popEnum.hasMoreElements() ) 
+           {
                popRewrite = (RewriteRule) popEnum.nextElement();
                popConfidence = (Double) popTable.get(popRewrite);               
 //               if (popRewrite.getOriginal().equals(""))
 //                System.out.println("Using " + popRewrite);
+                              
+               
                trimmed = posRewrite.suffixRemove(trimmedCanonicals);
                trimmed = popRewrite.prefixRemove(trimmed);
                vcTable = getPossibleVowelRewrite(trimmed);
                vcEnum = vcTable.keys();
-               while(vcEnum.hasMoreElements()) {
+               
+               while(vcEnum.hasMoreElements()) 
+               {
                    vowelRewrite = (RewriteRule) vcEnum.nextElement();
                    vowelConfidence = (Double) vcTable.get(vowelRewrite);
                    result = vowelRewrite.middleRewrite(trimmed, RewriteRule.PRIORITY_RIGHT);
                    result = posRewrite.suffixAdd(result);
-                   result = popRewrite.prefixAdd(result);
-                   try {
+                   result = popRewrite.prefixAdd(result);                                     
+                   
+                   try 
+                   {
                        if (lex.lookup(result))
                            inLexicon = 1.0;
                        else
                            inLexicon = 0.0000001;
-                   }catch(Exception e) {
+                   } 
+                   catch(Exception e) 
+                   {
                        e.printStackTrace();
                    }                  
+                   
                    finalProb = posConfidence * popConfidence * vowelConfidence * inLexicon;
-                   if (maxResult == null) {
+                   
+                   if (maxResult == null) 
+                   {
                        maxProb = finalProb;
                        maxResult = result;
-                   } else if (maxProb < finalProb) {
+                   } 
+                   else if (maxProb < finalProb) 
+                   {
                        maxProb = finalProb;
                        maxResult = result;
                    }
@@ -1156,53 +1188,90 @@ public class MorphLearnerRedup implements Serializable {
            }
        }
 
+       println("prefix: " + prefix);       
        result = orig.substring(prefix.length(), orig.length() - suffix.length());
+       println("\nresult before reduceRedup: " + result);
        result = reduceRedup(result);
+       println("result after reduceRedup: " + result + "\n");
+       
        if (result.trim().equals(""))
-           return new MAResult("",0.0);
+       {
+    	   return new MAResult("",0.0);
+       }
+           
        trimmed = result;
        trimmedCanonicals = result;
+       
+       println("trimmed/Canonicals: " + trimmed);
+       
        posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
        popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
-       posEnum = posTable.keys();       
-       while(posEnum.hasMoreElements()) {
+       posEnum = posTable.keys();                    
+       
+       while(posEnum.hasMoreElements()) 
+       {
            posRewrite = (RewriteRule) posEnum.nextElement();
            posConfidence = (Double) posTable.get(posRewrite);
-           popEnum = popTable.keys();
-           while(popEnum.hasMoreElements()) {
+           popEnum = popTable.keys();                     
+           
+           while(popEnum.hasMoreElements()) 
+           {
                popRewrite = (RewriteRule) popEnum.nextElement();
 //               if (popRewrite.getOriginal().equals(""))
 //                System.out.println("Using " + popRewrite);
                popConfidence = (Double) popTable.get(popRewrite);
+           
                trimmed = posRewrite.suffixRemove(trimmedCanonicals);
                trimmed = popRewrite.prefixRemove(trimmed);
                vcTable = getPossibleVowelRewrite(trimmed);
                vcEnum = vcTable.keys();
-               while(vcEnum.hasMoreElements()) {
+               
+               while(vcEnum.hasMoreElements()) 
+               {
                    vowelRewrite = (RewriteRule) vcEnum.nextElement();
                    vowelConfidence = (Double) vcTable.get(vowelRewrite);
+               
                    result = vowelRewrite.middleRewrite(trimmed, RewriteRule.PRIORITY_RIGHT);
                    result = posRewrite.suffixAdd(result);
                    result = popRewrite.prefixAdd(result);
-                   try {
+                   
+                   try 
+                   {
+                	   // If the word exists in the database of root words.
                        if (lex.lookup(result))
-                           inLexicon = 1.0;
+                       {
+                    	   inLexicon = 1.0;
+                       }                           
+                       // If it is not on the list of root words.
                        else
-                           inLexicon = 0.0000001;
-                   }catch(Exception e) {
+                       {
+                    	   inLexicon = 0.0000001;
+                       }
+                           
+                   }
+                   catch(Exception e) 
+                   {
                        e.printStackTrace();
                    }                  
+                   
                    finalProb = posConfidence * popConfidence * vowelConfidence * inLexicon;
-                   if (maxResult == null) {
+                   
+                   if ( maxResult == null ) 
+                   {
                        maxProb = finalProb;
                        maxResult = result;
-                   } else if (maxProb < finalProb) {
+                   } 
+                   else if ( maxProb < finalProb )
+                   {
                        maxProb = finalProb;
                        maxResult = result;
                    }
                }
            }
        }       
+            
+       println("maxProb: " + (int)maxProb);
+       // maxProb is a double
        return new MAResult(maxResult, maxProb);        
     }    
     protected MAResult rewriteMultiple(String orig, String prefix, String suffix) {
@@ -1624,58 +1693,136 @@ public class MorphLearnerRedup implements Serializable {
 //        }
 //        return v;
     }
-    public String reduceRedup(String word) {
+    
+    /**
+     * This makes 'pinagpaliban' into 'pagpaliban'.
+     * 'in' was deleted here.
+     * It basically hunts for vowels.
+     * 
+     * Makes use of substrings where word.substring(startingChar, endingChar);
+     * @param word
+     * Yung word na mababawasan ng something. 
+     * @return
+     * Examples are 'pi', 'pa'
+     * <br>
+     * Returns 
+     */
+    public String reduceRedup(String word) 
+    {
         String reducedWord = word;
         int prefixLength=1, maxPrefixLength=0, maxCharOffset=0;
         int i,charOffset=0,j;
         int tempI;
         boolean exited = false;
         boolean hasVowel = false;
-        for(prefixLength=1;prefixLength<word.length();prefixLength++) {
+       // Laurenz 
+        Word redupWord;
+        Affix redupAffix;
+        
+        for ( prefixLength = 1; prefixLength < word.length(); prefixLength++ ) 
+        {
 /*            charOffset = 0;
             while (word.charAt(prefixLength+charOffset) == '-' || word.charAt(prefixLength+charOffset) == ' ')
                 charOffset++;*/
-            for(charOffset =0;charOffset<word.length()-prefixLength;charOffset++) {
-                exited = false;
-                hasVowel = false;
-                j=0;
-                for(i=0;i<prefixLength;i++){                        
-                    if (i+prefixLength+charOffset+j >= word.length()) {
-                        exited= true;
+            for( charOffset = 0; charOffset < word.length() - prefixLength; charOffset++ ) 
+            {
+                exited 		= false;
+                hasVowel 	= false;
+                j			= 0;
+                
+                for( i = 0; i < prefixLength; i++ ) 
+                {       
+                	/*
+                	 * During start
+                	 *      left = with the value of 1 as prefixLength is instantiated as 1
+                	 * 		right = starts with the length of the word
+                	 */
+                	int left = i + prefixLength + charOffset + j;
+                	int right = word.length();
+                	
+                	char charAtLeft = word.charAt( left );
+                	char charAtI  	= word.charAt(i);
+                    
+                	println("Ano nga ba charAtLeft: " + charAtLeft);
+                	
+                	if ( left >= right ) 
+                    {
+                        exited = true;
                         break;                
-                    }
-                    if (!(word.charAt(i) == word.charAt(i+prefixLength+charOffset+j)) && isVowel(word.charAt(i)) && isVowel(word.charAt(i+prefixLength+charOffset+j)) && !hasVowel && i != 0) {
-                        hasVowel = true;
-                        tempI = i;
-                        while(isVowel(word.charAt(i))) {
+                    }                                       
+                    
+                    /*
+                     * True when
+                     * 		chart at both i and left are both vowels.
+                     */
+	                if (    charAtI != charAtLeft // if both characters are not the same 
+                		 && isVowel( charAtI ) == true // if charI is a vowel 
+                	   	 && isVowel( charAtLeft ) == true // if charLeft is a vowel 
+	                	 && hasVowel == false // has been set to FALSE at the start 
+	                	 && i != 0 // has to be more than 1 letter 
+	                	 ) 
+                    {
+	                	
+                        hasVowel = true; // because i and left characters are both vowels 
+                        tempI = i; 
+                        
+                        int tempLeft = tempI + prefixLength + charOffset + j;
+                        char tempCharAtLeft = word.charAt(tempLeft);                        
+                        
+                        // while all the letters are vowel 
+                        while( isVowel( word.charAt(i) ) == true ) 
+                        {
                             i++;
                             if (i >= word.length())
                                 break;
                         }
-                        while(isVowel(word.charAt(tempI+prefixLength+charOffset+j))) {
-                            j++;
-                            if (tempI+prefixLength+charOffset+j >= word.length())
+                        
+                        while( isVowel( word.charAt( tempLeft ) ) ) 
+                        {
+                            j++;                            
+                            tempLeft++;
+                            
+                            if( tempLeft >= word.length() )
                                 break;
                         }
+                        
                         i--;
-                        j--;                        
+                        j--;    
+                        
                         continue;
                     }
                     
-                    if (!(word.charAt(i) == word.charAt(i+prefixLength+charOffset+j))) {
+                    if ( !( word.charAt(i) == word.charAt(i + prefixLength + charOffset + j) ) )
+                    {
                         exited= true;
-                        break;                
+                         break;                
                     }
                 }
-                if (!exited) {
+                if (!exited)
+                {
                     maxPrefixLength = prefixLength;
                     maxCharOffset = charOffset;
                     break;
                 }
             }
+           
+        }
+        println("Removed in reduceRedup(): " + word.substring(0, maxPrefixLength));
+        println("ReduceRedup: " + word.substring(maxPrefixLength));
+        String cutWord = word.substring(0, maxPrefixLength);
+        redupAffix = new Affix(cutWord, "prefix");
+        if( !cutWord.equals("")) 
+        {
+        	this.globalPrefix = cutWord;
+        	this.globalPrefixList.add(this.globalPrefix);        	
         }
         return word.substring(maxPrefixLength);
     }
+    
+    
+    
+    
+    
     public void extractRuleSemantic1(WordPair wp) {
         Vector<WordSemantic> v = wp.semanticInformations;
         for(int i=0;i<v.size();i++) {

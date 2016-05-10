@@ -261,9 +261,9 @@ public class Word {
 		}
 		
 		// Creates [infix|infix|..]
-		for( int i = 1; i < this.infixes.size(); i++ )
+		for( int i = 0; i < this.infixes.size(); i++ )
 		{
-			if ( i == 1 )
+			if ( i == 0 )
 			{
 				result = result + "[<INF>";
 			}

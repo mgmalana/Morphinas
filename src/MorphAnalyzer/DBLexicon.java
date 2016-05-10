@@ -38,8 +38,19 @@ public class DBLexicon implements Serializable {
         psFindRoot = null;
         rs = null;
 //        System.out.println("Completed Loading Lexicon");
-    }    
-    public boolean lookup(String word) throws Exception {
+    }
+    
+    /**
+     * Checks if the word exists in the Database
+     * @param word
+     * @return
+     * True if the word is inside the database. False if otherwise. 
+     * If the return is True then the word might really be a root word
+     * @throws Exception
+     */
+    public boolean lookup(String word) throws Exception 
+    {
+    	System.out.println("lookup result " + t.lookup(word));
         return t.lookup(word);
     }
 }

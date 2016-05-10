@@ -11,7 +11,9 @@ package MorphAnalyzer;
  * @author Solomon See
  */
 import java.io.Serializable;
-public class RewriteRule implements Serializable {
+
+public class RewriteRule implements Serializable
+{
     protected String original;
     protected String rewrite;
     protected WordSemantic semantic;
