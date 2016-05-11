@@ -19,7 +19,11 @@ public class Main
 	{
 		
 	}
-    
+
+    /**
+	 * noGUI launches fun stuff without that old-school JFrame
+	 * @param input
+     */
 	public void noGUI(String input)
 	{
 		input = input.toLowerCase();
@@ -57,7 +61,7 @@ public class Main
 	public static void main(String[] args) throws Exception 
 	{	
 		Main m = new Main();
-		m.noGUI("pinagpaliban");
+		m.noGUI("sumaludo");
 	}
 	
 	public static void println(String in)
