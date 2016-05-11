@@ -1587,7 +1587,7 @@ public class MorphLearnerRedup implements Serializable {
                inLexicon = 1.0;
            else
                inLexicon = 0.0001;
-       }catch(Exception e) {
+       } catch(Exception e) {
            e.printStackTrace();
        }
        return new MAResult(result, posConfidence * popConfidence * vowelConfidence * inLexicon);        
@@ -1731,9 +1731,9 @@ public class MorphLearnerRedup implements Serializable {
                 exited 		= false;
                 hasVowel 	= false;
                 j			= 0;
-                
+
                 for( i = 0; i < prefixLength; i++ ) 
-                {       
+                {
                 	/*
                 	 * During start
                 	 *      left = with the value of 1 as prefixLength is instantiated as 1
@@ -1752,7 +1752,8 @@ public class MorphLearnerRedup implements Serializable {
                         exited = true;
                         break;                
                     }                                       
-                    
+
+
                     /*
                      * True when
                      * 		chart at both i and left are both vowels.
@@ -1812,16 +1813,18 @@ public class MorphLearnerRedup implements Serializable {
         println("Removed in reduceRedup(): " + word.substring(0, maxPrefixLength));
         println("ReduceRedup: " + word.substring(maxPrefixLength));
         String cutWord = word.substring(0, maxPrefixLength);
+
         redupAffix = new Affix(cutWord, "prefix");
         if( !cutWord.equals("")) 
         {
         	this.globalPrefix = cutWord;
         	this.globalPrefixList.add(this.globalPrefix);        	
         }
+
         return word.substring(maxPrefixLength);
     }
-    
-    
+
+
     
     
     
@@ -1936,5 +1939,20 @@ public class MorphLearnerRedup implements Serializable {
     {
     	System.out.println("" + word);
     }
-    
+
+    /**
+     * Try lang
+     */
+    class ij
+    {
+        public String x = "hello";
+        public int iji;
+        public int ijj;
+
+        public ij(int i, int j)
+        {
+            iji = i;
+            ijj = j;
+        }
+    }
 }

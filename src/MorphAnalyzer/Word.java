@@ -284,7 +284,7 @@ public class Word {
 	}
 
 
-	public boolean checkIfRootViaDB(String word)
+	public static boolean checkIfRootViaDB(String word)
 	{
 		DBLexiconSQL lex 	= new DBLexiconSQL();
 		boolean isRoot 		= false;
@@ -299,7 +299,6 @@ public class Word {
 			e.printStackTrace();
 		}
 
-		this.isRoot = isRoot;
 		return isRoot;
 	}
 
@@ -392,18 +391,18 @@ public class Word {
 		return isRoot;
 	}
 
-	public void setRoot(boolean root) {
-		isRoot = root;
+	public void setIsRoot(boolean isRoot) {
+		this.isRoot = isRoot;
 	}
 
 
 	
-	private void println(String input)
+	private static void println(String input)
 	{
 		System.out.println("" + input);
 	}
 	
-	private void print(String input)
+	private static void print(String input)
 	{
 		System.out.print("" + input);
 	}

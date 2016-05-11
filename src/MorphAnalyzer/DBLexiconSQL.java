@@ -5,11 +5,11 @@ import java.sql.*;
 import DataStructures.DefaultTrieImpl;
 import DataStructures.Trie;
 
-public class DBLexiconSQL 
-{	
+public class DBLexiconSQL {
+
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://localhost:3306/movedb";
+	static final String DB_URL = "jdbc:mysql://localhost:3306/movedb?autoReconnect=true&useSSL=false";
 	// Database credentials
 	static final String USER = "root";
 	static final String PASS = "DLSU1234";
@@ -25,7 +25,7 @@ public class DBLexiconSQL
 		
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			
 			psFindRoot = conn.prepareStatement("select * from rootWords");
