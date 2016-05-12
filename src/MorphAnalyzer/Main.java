@@ -53,7 +53,7 @@ public class Main
 			word.printLongestOnly();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			println("whoopsies");
+			println("whoopsies. Didn't find the longest ");
 		}
         
 	}
@@ -61,9 +61,37 @@ public class Main
 	public static void main(String[] args) throws Exception 
 	{	
 		Main m = new Main();
-		m.noGUI("sumaludo");
+		String input = "pinagpaliban";
+		input = m.removeNonLetters(input);
+		m.noGUI(input);
 	}
-	
+
+	public String removeNonLetters(String input)
+	{
+		char[] nonLetters 	= { '-', ' ' };
+		String result 		= "";
+		boolean willAdd 	= false;
+		for( int i = 0; i < input.length(); i++ )
+		{
+
+			for( int j = 0; j < nonLetters.length; j++)
+			{
+				if( input.charAt(i) != nonLetters[j]) {
+					willAdd = true;
+				} else {
+					willAdd = false;
+					break;
+				}
+			}
+
+			if( willAdd ) {
+				result = result + input.charAt(i);
+			}
+		}
+
+		return result;
+	}
+
 	public static void println(String in)
 	{
 		System.out.println("" + in);	

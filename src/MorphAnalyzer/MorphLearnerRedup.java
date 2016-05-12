@@ -79,6 +79,7 @@ public class MorphLearnerRedup implements Serializable {
         /*
          * Add NEW prefixTrie.store here 
          */
+        //prefixTrie.store("pi");
         prefixTrie.store("pinag");
         prefixTrie.store("pinagpa"); // W/ this = pinagpaliban -> liban
         //prefixTrie.store("ipinagpa"); // w/ this = ?
@@ -1723,11 +1724,10 @@ public class MorphLearnerRedup implements Serializable {
         
         for ( prefixLength = 1; prefixLength < word.length(); prefixLength++ ) 
         {
-/*            charOffset = 0;
-            while (word.charAt(prefixLength+charOffset) == '-' || word.charAt(prefixLength+charOffset) == ' ')
-                charOffset++;*/
+            println("PrefixLength: " + prefixLength + " < " + word.length());
             for( charOffset = 0; charOffset < word.length() - prefixLength; charOffset++ ) 
             {
+                println("    CharOffset: " + charOffset + " < " + (word.length() - prefixLength) );
                 exited 		= false;
                 hasVowel 	= false;
                 j			= 0;
@@ -1741,74 +1741,66 @@ public class MorphLearnerRedup implements Serializable {
                 	 */
                 	int left = i + prefixLength + charOffset + j;
                 	int right = word.length();
-                	
                 	char charAtLeft = word.charAt( left );
                 	char charAtI  	= word.charAt(i);
-                    
-                	println("Ano nga ba charAtLeft: " + charAtLeft);
-                	
+
+                    println("      " + charAtLeft + " vs " + charAtI);
+
                 	if ( left >= right ) 
                     {
+                        println("      left >= right = true");
                         exited = true;
                         break;                
-                    }                                       
-
-
+                    }
                     /*
                      * True when
                      * 		chart at both i and left are both vowels.
                      */
-	                if (    charAtI != charAtLeft // if both characters are not the same 
-                		 && isVowel( charAtI ) == true // if charI is a vowel 
-                	   	 && isVowel( charAtLeft ) == true // if charLeft is a vowel 
-	                	 && hasVowel == false // has been set to FALSE at the start 
-	                	 && i != 0 // has to be more than 1 letter 
-	                	 ) 
+	                if (    charAtI != charAtLeft // if both characters are not the same
+                		 && isVowel( charAtI ) == true // if charI is a vowel
+                	   	 && isVowel( charAtLeft ) == true // if charLeft is a vowel
+	                	 && hasVowel == false // has been set to FALSE at the start
+	                	 && i != 0 // has to be more than 1 letter
+	                	 )
                     {
-	                	
-                        hasVowel = true; // because i and left characters are both vowels 
-                        tempI = i; 
-                        
+                        hasVowel = true; // because i and left characters are both vowels
+                        tempI = i;
+
                         int tempLeft = tempI + prefixLength + charOffset + j;
-                        char tempCharAtLeft = word.charAt(tempLeft);                        
-                        
-                        // while all the letters are vowel 
-                        while( isVowel( word.charAt(i) ) == true ) 
+                        println("      both vowels true");
+                        // while all the letters are vowel
+                        while( isVowel( word.charAt(i) ) == true )
                         {
                             i++;
                             if (i >= word.length())
                                 break;
                         }
-                        
-                        while( isVowel( word.charAt( tempLeft ) ) ) 
+                        while( isVowel( word.charAt( tempLeft ) ) )
                         {
-                            j++;                            
+                            j++;
                             tempLeft++;
-                            
                             if( tempLeft >= word.length() )
                                 break;
                         }
-                        
                         i--;
-                        j--;    
-                        
+                        j--;
                         continue;
                     }
-                    
                     if ( !( word.charAt(i) == word.charAt(i + prefixLength + charOffset + j) ) )
                     {
+                        println("      charAtI != charAtLeft");
                         exited= true;
-                         break;                
+                         break;
                     }
                 }
-                if (!exited)
+
+                if ( exited == false)
                 {
                     maxPrefixLength = prefixLength;
                     maxCharOffset = charOffset;
                     break;
                 }
             }
-           
         }
         println("Removed in reduceRedup(): " + word.substring(0, maxPrefixLength));
         println("ReduceRedup: " + word.substring(maxPrefixLength));
