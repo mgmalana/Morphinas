@@ -12,7 +12,7 @@ public class DBLexiconSQL {
 	static final String DB_URL = "jdbc:mysql://localhost:3306/movedb?autoReconnect=true&useSSL=false";
 	// Database credentials
 	static final String USER = "root";
-	static final String PASS = "DLSU1234";
+	static final String PASS = "dlsu1234";
 	// SQL Returns
 	ResultSet rs;   
     PreparedStatement psFindRoot = null;

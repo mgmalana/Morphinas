@@ -26,6 +26,7 @@ public class Main
      */
 	public void noGUI(String input)
 	{
+		Formatter fm;
 		input = input.toLowerCase();
 		WordPair wp;
 		println("Finding root of: " + input);	
@@ -47,10 +48,16 @@ public class Main
         println("Redup: " + maresult.redup);
         println("\n \n");
         println("word: " + word.getRootWord());
-        word.printWordContentDetailed();
-        word.printBracketedResult();
-        try {
-			word.printLongestOnly();
+
+		fm = new Formatter(word);
+		// fm.printWordContentDetailed();
+        // fm.printBracketedResult();
+		fm.printFormattedResult();
+		println("");
+		AffixBreakdown ab = new AffixBreakdown();
+
+		try {
+			fm.printLongestOnly();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			println("whoopsies. Didn't find the longest ");
@@ -61,36 +68,12 @@ public class Main
 	public static void main(String[] args) throws Exception 
 	{	
 		Main m = new Main();
-		String input = "pinagpaliban";
-		input = m.removeNonLetters(input);
+		String input = "pinuntahan";
+		input = Formatter.removeNonLetters(input);
 		m.noGUI(input);
 	}
 
-	public String removeNonLetters(String input)
-	{
-		char[] nonLetters 	= { '-', ' ' };
-		String result 		= "";
-		boolean willAdd 	= false;
-		for( int i = 0; i < input.length(); i++ )
-		{
 
-			for( int j = 0; j < nonLetters.length; j++)
-			{
-				if( input.charAt(i) != nonLetters[j]) {
-					willAdd = true;
-				} else {
-					willAdd = false;
-					break;
-				}
-			}
-
-			if( willAdd ) {
-				result = result + input.charAt(i);
-			}
-		}
-
-		return result;
-	}
 
 	public static void println(String in)
 	{

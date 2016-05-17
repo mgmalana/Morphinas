@@ -7,7 +7,7 @@ public class Affix {
 	private String affixDashed;
 	private String affixBrackets;
 	
-	
+	private String affixBreakdown;
 
 	/**
 	 * Creates a new Affix object/class which contains (in string) affix (-um, -an) and the affix type (suffix, prefix)

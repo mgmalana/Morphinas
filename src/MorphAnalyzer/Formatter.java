@@ -26,7 +26,31 @@ public class Formatter
 		this.rootWord 	= word.getRootWord();
 	}
 
+	public static String removeNonLetters(String input)
+	{
+		char[] nonLetters 	= { '-', ' ' };
+		String result 		= "";
+		boolean willAdd 	= false;
+		for( int i = 0; i < input.length(); i++ )
+		{
 
+			for( int j = 0; j < nonLetters.length; j++)
+			{
+				if( input.charAt(i) != nonLetters[j]) {
+					willAdd = true;
+				} else {
+					willAdd = false;
+					break;
+				}
+			}
+
+			if( willAdd ) {
+				result = result + input.charAt(i);
+			}
+		}
+
+		return result;
+	}
 	public String generateDashedResult()
 	{
 		String result = "";
@@ -52,7 +76,7 @@ public class Formatter
 
 	/**
 	 * Required by Gramatika
-	 * ~
+	 * @laurenz
 	 * @return
 	 */
 	public String generateFormattedResult()
@@ -60,12 +84,21 @@ public class Formatter
 		ArrayList<Affix> gPrefix = reverseAffixOrder(this.prefixes);
 		ArrayList<Affix> gInfix  = reverseAffixOrder(this.infixes);
 		ArrayList<Affix> gSuffix = reverseAffixOrder(this.suffixes);
+		AffixBreakdown ab 		 = new AffixBreakdown();
 		String result	 		 = "";
 
-		// cycle through all the prefixes first
-		for( int i = 0; i < this.prefixes.size(); i++)
+		if( longestCanonicalPrefixLength() > 3 )
 		{
-			result = result + "~" + gPrefix.get(i).getAffix();
+			Affix longPrefix = longestCanonicalPrefix();
+
+			result = result + ab.convertPrefix( longPrefix.getAffix().toString() );
+		}
+		else {
+			// cycle through all the prefixes first
+			for( int i = 0; i < this.prefixes.size(); i++)
+			{
+				result = result + "~" + gPrefix.get(i).getAffix();
+			}
 		}
 
 		// insert the rootword
@@ -74,7 +107,7 @@ public class Formatter
 		// cycle through all the suffixes as the last
 		for( int i = 0; i < gSuffix.size(); i++)
 		{
-			result = result + "$" + gSuffix.get(i).getAffix();
+			result = result + "+" + gSuffix.get(i).getAffix();
 		}
 		return result;
 	}
@@ -276,8 +309,17 @@ public class Formatter
 	 */
 	private int longestCanonicalPrefixLength()
 	{
-		Affix currLong = this.longestCanonicalPrefix();
-		int length     = currLong.getAffix().length();
+		Affix currLong; //= this.longestCanonicalPrefix();
+
+		int length;
+
+		if( prefixes.size() < 1 ) {
+			length = 0;
+		} else {
+			currLong = this.longestCanonicalPrefix();
+			length   = currLong.getAffix().length();
+		}
+
 		return length;
 	}
 
