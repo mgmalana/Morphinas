@@ -332,12 +332,13 @@ public class MorphLearnerRedup implements Serializable {
     		// Initialize tempResult
     		prefix		= "";
     		suffix		= "";
-    		tempResult 	= rewriteMultipleNoSemantic(reducedWord, prefix, suffix);
+    		tempResult 	= rewriteMultipleNoSemantic( reducedWord, prefix, suffix );
     		
     		if ( maxResult == null )
     		{
     			maxResult = tempResult;
-    		} else if ( tempResult.confidence >= maxResult.confidence)
+    		}
+			else if ( tempResult.confidence >= maxResult.confidence )
     		{
     			maxResult = tempResult;
     		}
@@ -1103,180 +1104,325 @@ public class MorphLearnerRedup implements Serializable {
      * @return
      * MAResult with sadness in it
      */
-    protected MAResult rewriteMultipleNoSemantic(String orig, String prefix, String suffix) 
-    {
-       String trimmed;
-       String trimmedCanonicals;
-       String result;
-       RewriteRule popRewrite, posRewrite, vowelRewrite;              
-       CountingTable tempTable;
-       Hashtable rulesApplicables = new Hashtable(); // not used
-       double inLexicon = 0.0, finalProb=0.0, maxProb=0.0;
-       Hashtable posTable,popTable, vcTable;
-       Enumeration posEnum, popEnum, vcEnum;
-       String maxResult = null;       
-       
-       // Show the values that will be removed
-       println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
-       
-       
-       result = orig.substring(prefix.length(), orig.length() - suffix.length());
-       println("orig.substring(...): " + result);
-       
-       if (result.trim().equals(""))
-       {
-           return new MAResult("",0.0);
-       }
-       
-       trimmed = result;
-       trimmedCanonicals = result;
-       
-       posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
-       popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
-       posEnum = posTable.keys();       
-       
-       while(posEnum.hasMoreElements()) 
-       {
-           posRewrite = (RewriteRule) posEnum.nextElement();
-           posConfidence = (Double) posTable.get(posRewrite);           
-           popEnum = popTable.keys();                    
-           
-           // hasMoreElements == iterate lang like foreach
-           while( popEnum.hasMoreElements() ) 
-           {
-               popRewrite = (RewriteRule) popEnum.nextElement();
-               popConfidence = (Double) popTable.get(popRewrite);               
-//               if (popRewrite.getOriginal().equals(""))
-//                System.out.println("Using " + popRewrite);
-                              
-               
-               trimmed = posRewrite.suffixRemove(trimmedCanonicals);
-               trimmed = popRewrite.prefixRemove(trimmed);
-               vcTable = getPossibleVowelRewrite(trimmed);
-               vcEnum = vcTable.keys();
-               
-               while(vcEnum.hasMoreElements()) 
-               {
-                   vowelRewrite = (RewriteRule) vcEnum.nextElement();
-                   vowelConfidence = (Double) vcTable.get(vowelRewrite);
-                   result = vowelRewrite.middleRewrite(trimmed, RewriteRule.PRIORITY_RIGHT);
-                   result = posRewrite.suffixAdd(result);
-                   result = popRewrite.prefixAdd(result);                                     
-                   
-                   try 
-                   {
-                       if (lex.lookup(result))
-                           inLexicon = 1.0;
-                       else
-                           inLexicon = 0.0000001;
-                   } 
-                   catch(Exception e) 
-                   {
-                       e.printStackTrace();
-                   }                  
-                   
-                   finalProb = posConfidence * popConfidence * vowelConfidence * inLexicon;
-                   
-                   if (maxResult == null) 
-                   {
-                       maxProb = finalProb;
-                       maxResult = result;
-                   } 
-                   else if (maxProb < finalProb) 
-                   {
-                       maxProb = finalProb;
-                       maxResult = result;
-                   }
-               }
-           }
-       }
+    /*protected MAResult rewriteMultipleNoSemantic(String orig, String prefix, String suffix) {
+		String trimmed;
+		String trimmedCanonicals;
+		String result;
+		RewriteRule popRewrite, posRewrite, vowelRewrite;
+		CountingTable tempTable;
+		Hashtable rulesApplicables = new Hashtable(); // not used
+		double inLexicon = 0.0, finalProb = 0.0, maxProb = 0.0;
+		Hashtable posTable, popTable, vcTable;
+		Enumeration posEnum, popEnum, vcEnum;
+		String maxResult = null;
 
-       println("prefix: " + prefix);       
-       result = orig.substring(prefix.length(), orig.length() - suffix.length());
-       println("\nresult before reduceRedup: " + result);
-       result = reduceRedup(result);
-       println("result after reduceRedup: " + result + "\n");
-       
-       if (result.trim().equals(""))
-       {
-    	   return new MAResult("",0.0);
-       }
-           
-       trimmed = result;
-       trimmedCanonicals = result;
-       
-       println("trimmed/Canonicals: " + trimmed);
-       
-       posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
-       popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
-       posEnum = posTable.keys();                    
-       
-       while(posEnum.hasMoreElements()) 
-       {
-           posRewrite = (RewriteRule) posEnum.nextElement();
-           posConfidence = (Double) posTable.get(posRewrite);
-           popEnum = popTable.keys();                     
-           
-           while(popEnum.hasMoreElements()) 
-           {
-               popRewrite = (RewriteRule) popEnum.nextElement();
+		// Show the values that will be removed
+		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
+
+
+		result = orig.substring(prefix.length(), orig.length() - suffix.length());
+		println("orig.substring(...): " + result);
+
+		if (result.trim().equals("")) {
+			return new MAResult("", 0.0);
+		}
+
+		trimmed = result;
+		trimmedCanonicals = result;
+
+		posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
+		popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
+		posEnum = posTable.keys();
+
+		while (posEnum.hasMoreElements()) {
+			posRewrite = (RewriteRule) posEnum.nextElement();
+			posConfidence = (Double) posTable.get(posRewrite);
+			popEnum = popTable.keys();
+
+			// hasMoreElements == iterate lang like foreach
+			while (popEnum.hasMoreElements())
+			{
+				popRewrite = (RewriteRule) popEnum.nextElement();
+				popConfidence = (Double) popTable.get(popRewrite);
 //               if (popRewrite.getOriginal().equals(""))
 //                System.out.println("Using " + popRewrite);
-               popConfidence = (Double) popTable.get(popRewrite);
-           
-               trimmed = posRewrite.suffixRemove(trimmedCanonicals);
-               trimmed = popRewrite.prefixRemove(trimmed);
-               vcTable = getPossibleVowelRewrite(trimmed);
-               vcEnum = vcTable.keys();
-               
-               while(vcEnum.hasMoreElements()) 
-               {
-                   vowelRewrite = (RewriteRule) vcEnum.nextElement();
-                   vowelConfidence = (Double) vcTable.get(vowelRewrite);
-               
-                   result = vowelRewrite.middleRewrite(trimmed, RewriteRule.PRIORITY_RIGHT);
-                   result = posRewrite.suffixAdd(result);
-                   result = popRewrite.prefixAdd(result);
-                   
-                   try 
-                   {
-                	   // If the word exists in the database of root words.
-                       if (lex.lookup(result))
-                       {
-                    	   inLexicon = 1.0;
-                       }                           
-                       // If it is not on the list of root words.
-                       else
-                       {
-                    	   inLexicon = 0.0000001;
-                       }
-                           
-                   }
-                   catch(Exception e) 
-                   {
-                       e.printStackTrace();
-                   }                  
-                   
-                   finalProb = posConfidence * popConfidence * vowelConfidence * inLexicon;
-                   
-                   if ( maxResult == null ) 
-                   {
-                       maxProb = finalProb;
-                       maxResult = result;
-                   } 
-                   else if ( maxProb < finalProb )
-                   {
-                       maxProb = finalProb;
-                       maxResult = result;
-                   }
-               }
-           }
-       }       
-            
-       println("maxProb: " + (int)maxProb);
-       // maxProb is a double
-       return new MAResult(maxResult, maxProb);        
-    }    
+
+
+				trimmed = posRewrite.suffixRemove(trimmedCanonicals);
+				trimmed = popRewrite.prefixRemove(trimmed);
+				vcTable = getPossibleVowelRewrite(trimmed);
+				vcEnum = vcTable.keys();
+
+				while (vcEnum.hasMoreElements()) {
+					vowelRewrite = (RewriteRule) vcEnum.nextElement();
+					vowelConfidence = (Double) vcTable.get(vowelRewrite);
+					result = vowelRewrite.middleRewrite(trimmed, RewriteRule.PRIORITY_RIGHT);
+					result = posRewrite.suffixAdd(result);
+					result = popRewrite.prefixAdd(result);
+
+					try {
+						if (lex.lookup(result))
+							inLexicon = 1.0;
+						else
+							inLexicon = 0.0000001;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					finalProb = posConfidence * popConfidence * vowelConfidence * inLexicon;
+
+					if (maxResult == null) {
+						maxProb = finalProb;
+						maxResult = result;
+					} else if (maxProb < finalProb) {
+						maxProb = finalProb;
+						maxResult = result;
+					}
+				}
+			}
+		}
+
+		println("prefix: " + prefix);
+		result = orig.substring(prefix.length(), orig.length() - suffix.length());
+		println("\nresult before reduceRedup: " + result);
+		result = reduceRedup(result);
+		println("result after reduceRedup: " + result + "\n");
+
+		if (result.trim().equals("")) {
+			return new MAResult("", 0.0);
+		}
+
+		trimmed = result;
+		trimmedCanonicals = result;
+
+		println("trimmed/Canonicals: " + trimmed);
+
+		posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
+		popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
+		posEnum = posTable.keys();
+
+		while (posEnum.hasMoreElements()) {
+			posRewrite = (RewriteRule) posEnum.nextElement();
+			posConfidence = (Double) posTable.get(posRewrite);
+			popEnum = popTable.keys();
+
+			while (popEnum.hasMoreElements()) {
+				popRewrite = (RewriteRule) popEnum.nextElement();
+//               if (popRewrite.getOriginal().equals(""))
+//                System.out.println("Using " + popRewrite);
+				popConfidence = (Double) popTable.get(popRewrite);
+
+				trimmed = posRewrite.suffixRemove(trimmedCanonicals);
+				trimmed = popRewrite.prefixRemove(trimmed);
+				vcTable = getPossibleVowelRewrite(trimmed);
+				vcEnum = vcTable.keys();
+
+				while (vcEnum.hasMoreElements()) {
+					vowelRewrite = (RewriteRule) vcEnum.nextElement();
+					vowelConfidence = (Double) vcTable.get(vowelRewrite);
+
+					result = vowelRewrite.middleRewrite(trimmed, RewriteRule.PRIORITY_RIGHT);
+					result = posRewrite.suffixAdd(result);
+					result = popRewrite.prefixAdd(result);
+
+					try {
+						// If the word exists in the database of root words.
+						if (lex.lookup(result)) {
+							inLexicon = 1.0;
+						}
+						// If it is not on the list of root words.
+						else {
+							inLexicon = 0.0000001;
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					finalProb = posConfidence * popConfidence * vowelConfidence * inLexicon;
+
+					if (maxResult == null) {
+						maxProb = finalProb;
+						maxResult = result;
+					} else if (maxProb < finalProb) {
+						maxProb = finalProb;
+						maxResult = result;
+					}
+				}
+			}
+		}
+
+		println("maxProb: " + (int) maxProb);
+		// maxProb is a double
+		return new MAResult(maxResult, maxProb);
+	}*/
+
+	/**
+	 * This one actually removes the suffixes and prefixes in the original word.
+	 * @laurenz go here to dive inside the rewriting process
+	 *
+	 * @param orig
+	 * Original word
+	 * @param prefix
+	 * Prefix to be removed
+	 * @param suffix
+	 * Suffix to be removed
+	 * @return
+	 * MAResult with sadness in it
+	 */
+	protected MAResult rewriteMultipleNoSemantic(String orig, String prefix, String suffix)
+	{
+		// Variables that are used in the result
+		MAResult ma;
+		MaxResultObjects mro;
+		String maxResult;
+		double maxProb = 0.0;
+		// Used only in this method
+		String trimmed, trimmedCanonicals, result;
+		RewriteRule popRewrite, posRewrite, vowelRewrite;
+		// for computing something
+		double inLexicon = 0.0;
+		double finalProb = 0.0;
+		// no idea
+		Hashtable posTable, popTable, vcTable;
+		Enumeration posEnum, popEnum, vcEnum;
+		// Print this shit
+		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
+
+		result = orig.substring( prefix.length(), orig.length() - suffix.length() );
+
+		if( result.trim().equals("") )
+		{
+			return new MAResult( "", 0.0 );
+		}
+
+		trimmedCanonicals = result;
+		trimmed 		  = result;
+
+		posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
+		popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
+		posEnum  = posTable.keys();
+
+		// mro = performRuleRewrite( posTable, popTable, posEnum, finalProb, trimmed, trimmedCanonicals, result); // was never used nor had any effect on the final output :(
+
+		result = orig.substring( prefix.length(), orig.length() - suffix.length() );
+		println("First Result: " + result);
+		result = reduceRedup( result );
+		println("Second Result: " + result);
+		posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
+		popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
+		posEnum = posTable.keys();
+
+		mro = performRuleRewrite( posTable, popTable, posEnum, finalProb, trimmed, trimmedCanonicals, result);
+
+		maxResult = mro.maxResult;
+		maxProb   = mro.maxProb;
+
+		ma = new MAResult (maxResult, maxProb);
+
+		if( mro.lookup )
+		{
+			ma.prefix = prefix;
+			ma.suffix = suffix;
+		}
+
+		return ma;
+	}
+
+	protected MaxResultObjects performRuleRewrite(Hashtable posTable, Hashtable popTable, Enumeration poxEnum, double finalProb, String trimmed, String trimmedCanonicals, String result )
+	{
+		MaxResultObjects MRO = new MaxResultObjects();
+		RewriteRule posRewrite, popRewrite, vowelRewrite;
+		Enumeration vcEnum, poyEnum;
+		Hashtable vcTable;
+
+		String maxResult = null;
+		double maxProb = 0.0, inLexicon = 0.0;
+
+		while(poxEnum.hasMoreElements())
+		{
+			posRewrite = (RewriteRule) poxEnum.nextElement();
+			posConfidence = (Double) posTable.get(posRewrite);
+			poyEnum = popTable.keys();
+
+			while(poyEnum.hasMoreElements())
+			{
+				popRewrite = (RewriteRule) poyEnum.nextElement();
+				//               if (popRewrite.getOriginal().equals(""))
+				//                System.out.println("Using " + popRewrite);
+				popConfidence = (Double) popTable.get(popRewrite);
+
+				trimmed = posRewrite.suffixRemove(trimmedCanonicals);
+				trimmed = popRewrite.prefixRemove(trimmed);
+				vcTable = getPossibleVowelRewrite(trimmed);
+				vcEnum = vcTable.keys();
+
+				while(vcEnum.hasMoreElements())
+				{
+					vowelRewrite = (RewriteRule) vcEnum.nextElement();
+					vowelConfidence = (Double) vcTable.get(vowelRewrite);
+
+					result = vowelRewrite.middleRewrite(trimmed, RewriteRule.PRIORITY_RIGHT);
+					result = posRewrite.suffixAdd(result);
+					result = popRewrite.prefixAdd(result);
+
+					try
+					{
+						// If the word exists in the database of root words.
+						if (lex.lookup(result))
+						{
+							inLexicon = 1.0;
+						}
+						// If it is not on the list of root words.
+						else
+						{
+							inLexicon = 0.0000001;
+						}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+
+					finalProb = posConfidence * popConfidence * vowelConfidence * inLexicon;
+
+					if ( maxResult == null )
+					{
+						maxProb = finalProb;
+						maxResult = result;
+						// using a class object
+						if( inLexicon == 1.0 ) {
+							return MRO = new MaxResultObjects(maxProb, maxResult, true);
+						} else {
+							return MRO = new MaxResultObjects(maxProb, maxResult, false);
+						}
+
+					}
+					else if ( maxProb < finalProb )
+					{
+						maxProb = finalProb;
+						maxResult = result;
+						// using a class object
+						if( inLexicon == 1.0 ) {
+							return MRO = new MaxResultObjects(maxProb, maxResult, true);
+						} else {
+							return MRO = new MaxResultObjects(maxProb, maxResult, false);
+						}
+					}
+				}
+			}
+		}
+
+		return MRO;
+	}
+
+
+	/*
+	 *	Please try to rewrite method above
+	 */
+
+
+
     protected MAResult rewriteMultiple(String orig, String prefix, String suffix) {
        String noRedup;
        String trimmed;
@@ -1926,7 +2072,12 @@ public class MorphLearnerRedup implements Serializable {
                 return true;
         return false;
     }       
-    
+
+
+	public void testHere()
+	{
+
+	}
     public static void println(String word)
     {
     	System.out.println("" + word);
@@ -1947,4 +2098,23 @@ public class MorphLearnerRedup implements Serializable {
             ijj = j;
         }
     }
+
+
+	class MaxResultObjects
+	{
+		public boolean lookup;
+		public double maxProb;
+		public String maxResult;
+
+		public MaxResultObjects() {}
+
+		public MaxResultObjects(double maxProb, String maxResult, boolean lookup)
+		{
+			this.lookup  	= lookup;
+			this.maxProb 	= maxProb;
+			this.maxResult  = maxResult;
+		}
+
+
+	}
 }
