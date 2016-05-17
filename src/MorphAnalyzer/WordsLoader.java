@@ -20,13 +20,20 @@ public class WordsLoader {
     ResultSet rs;
     public static final int TRAINING=0;
     public static final int TEST=1;
-    
+
+    // JDBC driver name and database URL
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/movedb?autoReconnect=true&useSSL=false";
+    // Database credentials
+    static final String USER = "root";
+    static final String PASS = "dlsu1234";
+
     /** Creates a new instance of WordsLoader */
     public WordsLoader(int type) throws Exception
     {
         // Loads a class for Access db
-    	Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-        con = DriverManager.getConnection("jdbc:odbc:Words","sa","masterkey");
+    	Class.forName(JDBC_DRIVER);
+        con = DriverManager.getConnection(DB_URL, USER, PASS);
         if (type == TRAINING)
             rs = con.createStatement().executeQuery("select * from trainingData order by words");
         else

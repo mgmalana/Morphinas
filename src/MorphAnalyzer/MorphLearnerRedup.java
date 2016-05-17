@@ -389,7 +389,7 @@ public class MorphLearnerRedup implements Serializable {
     				if( suffixes.elementAt(j) != null )
     				{
         				affixCount++;
-        				
+        				println("a suffix was added :( ");
         				wordSuffix = addToSuffix(suffixes.elementAt(j));
         				wordSuffixes.add(wordSuffix);
         				affixes.add(wordSuffix);
