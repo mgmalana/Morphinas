@@ -36,6 +36,7 @@ public class AffixBreakdown
 	/**
 	 * List down all the affixes with their equivalent breakdown
 	 * @return
+	 * HashMap with prefix and it's equivalent format
 	 */
 	public HashMap initiateEquivalentBreakdown()
 	{
