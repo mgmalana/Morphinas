@@ -50,7 +50,7 @@ public class Main
         println("word: " + word.getRootWord());
 
 		fm = new Formatter(word);
-		// fm.printWordContentDetailed();
+		fm.printWordContentDetailed();
         // fm.printBracketedResult();
 		fm.printFormattedResult();
 		println("");
