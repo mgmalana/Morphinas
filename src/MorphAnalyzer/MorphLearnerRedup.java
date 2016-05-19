@@ -522,7 +522,7 @@ public class MorphLearnerRedup implements Serializable {
     	    }
     	}
 
-    	return maxResult
+    	return maxResult;
     }
     
     private Affix addToPrefix(String input)
