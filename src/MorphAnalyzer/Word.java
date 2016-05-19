@@ -69,23 +69,23 @@ public class Word {
 		else 
 		{
 			if( this.maresult == null ) {
-				println("[WORD] maresult is null");
+//				println("[WORD] maresult is null");
 				decision = false;
 			}
 			if( this.originalWord == null ) {
-				println("[WORD] originalWord is null");
+//				println("[WORD] originalWord is null");
 				decision = false;
 			}
 			if( this.rootWord == null ) {
-				println("[WORD] rootWord is null");
+//				println("[WORD] rootWord is null");
 				decision = false;
 			}
 			if( this.affixCount == 0 ) {
-				println("[WORD] affixCount is null");
+//				println("[WORD] affixCount is null");
 				decision = false;
 			}
 			if( this.prefixes.isEmpty() == true) {
-				println("[WORD] prefixes is null");
+//				println("[WORD] prefixes is null");
 				decision = false;
 			}
 		}
