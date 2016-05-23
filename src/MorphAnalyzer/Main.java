@@ -2,7 +2,9 @@ package MorphAnalyzer;
 
 import DataStructures.*;
 
+import java.text.DecimalFormat;
 import java.text.Format;
+import java.text.NumberFormat;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -54,6 +56,7 @@ public class Main
 		//fm.printWordContentDetailed();
         // fm.printBracketedResult();
 		fm.printFormattedResult();
+		fm.printFeaturesResult();
 		println("");
 //		AffixBreakdown ab = new AffixBreakdown();
 
@@ -68,13 +71,15 @@ public class Main
 
 	public String startIt() throws Exception
 	{
-//		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
-		TestMaker tm = new TestMaker();
+		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
 		String[] wordsList = tm.readFromFile();
-		MAResult maresult;
+		boolean skip = false;
 		String result = "";
+		MAResult maresult;
 		Formatter fm;
 		Word word;
+
+		DBLexiconSQL t = new DBLexiconSQL();
 
 		for( int i = 0; i < wordsList.length; i++ )
 		{
@@ -83,12 +88,30 @@ public class Main
 			single = single.toLowerCase();
 			single = Formatter.removeNonLetters(single);
 
-			mpl.analyzeMultipleMod(single);
-			word = mpl.getWordObject();
-			fm   = new Formatter(word);
+			if( t.lookup(single) )
+			{
+				result 	= result + "#" + single + " ";
+				skip 	= true;
+			} else {
+				skip = false;
 
-			if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
-				result = result + fm.generateFeaturesResult() + "\n";
+				// because all tagalog words are already root when <= 3
+				if( single.length() > 3 && !skip)
+				{
+					mpl.analyzeMultipleMod(single);
+					word = mpl.getWordObject();
+					fm   = new Formatter(word);
+
+					if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+						result = result + fm.generateFeaturesResult() + " ";
+				} else {
+					result = result + "#" + single + " ";
+				}
+			}
+
+
+
+
 		}
 
 		println("");
@@ -98,14 +121,33 @@ public class Main
 
 		return result;
 	}
-	
+
+	public void testSingleWord(String word)
+	{
+		input = Formatter.removeNonLetters(word);
+		noGUI(input);
+	}
+
 	public static void main(String[] args) throws Exception 
-	{	
+	{
+//		Just for counting the running time
+		NumberFormat formatter = new DecimalFormat("#0.00000");
+		long startTime, endTime;
+		startTime  = System.currentTimeMillis();
+
 		Main m = new Main();
-		m.startIt();
-//		String input = "gitnang";
-//		input = Formatter.removeNonLetters(input);
-//		m.noGUI(input);
+
+//		startIt reads from a file
+//		m.startIt();
+
+//		The line below can be used for testing a single word only
+		m.testSingleWord("karamihan");
+
+		endTime = System.currentTimeMillis();
+
+
+		println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds");
+
 	}
 
 

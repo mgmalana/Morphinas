@@ -28,7 +28,7 @@ public class AffixBreakdown
 
 		result = this.hm.get(affix).toString();
 
-		System.out.println("convertPrefix: " + result);
+//		System.out.println("convertPrefix: " + result);
 
 		return result;
 	}
@@ -41,7 +41,7 @@ public class AffixBreakdown
 	public HashMap initiateEquivalentBreakdown()
 	{
 		HashMap hm = new HashMap();
-
+		hm.put("pinag", 	 "~pi~nag");
 		hm.put("pinagpa",	 "~pi~nag~pa");
 		hm.put("ipinagpa", 	 "~i~pi~nag~pa");
 		hm.put("nakiki", 	 "~na$ki$ki");
@@ -57,6 +57,7 @@ public class AffixBreakdown
 		hm.put("maka", 	 	 "~ma~ka");
 		hm.put("makaka", 	 "~ma$ka$ka");
 		hm.put("nagka", 	 "~nag~ka");
+		hm.put("nagkaka", 	 "~nag$ka$ka");
 		hm.put("magka", 	 "~mag~ka");
 		hm.put("magkaka", 	 "~mag$ka$ka");
 		hm.put("napaki", 	 "~na~pa~ki");

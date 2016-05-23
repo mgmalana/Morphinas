@@ -58,7 +58,14 @@ public class DBLexiconSQL {
      */
     public boolean lookup(String word) throws Exception 
     {
-    	System.out.println("lookup result " + t.lookup(word));
+//    	System.out.println("lookup result " + t.lookup(word));
         return t.lookup(word);
-    }	
+    }
+
+	public static boolean staticLookup(String word) throws Exception
+	{
+		DBLexiconSQL lex = new DBLexiconSQL();
+		return lex.lookup(word);
+	}
+
 }

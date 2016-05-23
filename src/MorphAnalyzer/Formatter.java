@@ -150,6 +150,8 @@ public class Formatter
 
 	public String generateFeaturesResult()
 	{
+
+		println("prefixes size: " + this.prefixes.size() );
 		this.removeDuplicateAffixes();
 		ArrayList<Affix> gPrefix = reverseAffixOrder(this.prefixes);
 		ArrayList<Affix> gInfix  = reverseAffixOrder(this.infixes);

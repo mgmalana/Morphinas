@@ -21,7 +21,7 @@ public class MorphLearnerRedup implements Serializable {
     // Global Variables
     private ArrayList<String> globalPrefixList = new ArrayList<String>();
     private String globalPrefix;
-	private String globalSuffix = "test";
+	private String globalSuffix = "";
     private Affix globalAffix;
     
     //Laurenz
@@ -336,9 +336,6 @@ public class MorphLearnerRedup implements Serializable {
     		suffix		= "";
     		tempResult 	= rewriteMultipleNoSemantic( reducedWord, prefix, suffix );
 
-
-
-    		
     		if ( maxResult == null )
     		{
     			maxResult = tempResult;
@@ -348,7 +345,9 @@ public class MorphLearnerRedup implements Serializable {
     			maxResult = tempResult;
     		}
 
-    		// Start performRewriteActions on prefix then suffix with alternating rules
+			println("maxResult: " + maxResult.prefix + " and " + maxResult.suffix );
+
+			// Start performRewriteActions on prefix then suffix with alternating rules
     		
 			// NO PREFIX
     		for( j = 0; j < suffixes.size(); j++ )
@@ -1149,7 +1148,45 @@ public class MorphLearnerRedup implements Serializable {
 		// Print this shit
 //		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
 
+		/*
+		 * Error when
+		 * orig: man
+		 * prefix: ma
+		 * suffix: an
+		 * orig.substring( 2, 3 - 2)
+		 * *	where 2 = starting point and 3-2 is ending point
+		 * *	thus -> start at 2 and end at 1  -------> ERROR
+		 */
+		if( orig.length() <= 3 )
+		{
+			return new MAResult( orig, 1.0);
+		}
+
 		result = orig.substring( prefix.length(), orig.length() - suffix.length() );
+
+//		println("=-=-=-=-= result: " + result);
+
+
+//		If simple substring manipulation returns a rootword already
+
+		try {
+			println("checking lookup by substring manip");
+			if( lex.lookup(result) )
+			{
+//				println("\n    well it's: " + result);
+				ma = new MAResult (result, 1.0);
+				ma.prefix = orig.substring( 0, prefix.length() );
+				println(" ma.prefix: " + ma.prefix);
+				ma.suffix = orig.substring( orig.length() - suffix.length(), orig.length());
+				this.globalPrefix = prefix;
+				this.globalSuffix = suffix;
+	//
+				return ma;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 
 		if( result.trim().equals("") )
 		{
@@ -1181,6 +1218,7 @@ public class MorphLearnerRedup implements Serializable {
 				ma.prefix = prefix;
 				ma.suffix = suffix;
 				this.globalSuffix = suffix;
+				println("I have been loaded with the prefix: " + ma.prefix);
 //				println("        Suffix from third: " + this.globalSuffix + "\n");
 				//println("Added P and S are: " + prefix + " | " + suffix);
 			} else {
