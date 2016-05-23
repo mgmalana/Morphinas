@@ -1831,6 +1831,8 @@ public class MorphLearnerRedup implements Serializable {
 //        println("ReduceRedup: " + word.substring(maxPrefixLength));
         String cutWord = word.substring(0, maxPrefixLength);
 
+//		println("=-=-=-=-=-=-=-=-=-=- cutWord: " + cutWord);
+
         redupAffix = new Affix(cutWord, "prefix");
         if( !cutWord.equals("")) 
         {

@@ -82,16 +82,19 @@ public class Main
 			String single = wordsList[i];
 			single = single.toLowerCase();
 			single = Formatter.removeNonLetters(single);
+
 			mpl.analyzeMultipleMod(single);
 			word = mpl.getWordObject();
 			fm   = new Formatter(word);
-//			print("form: ");
-			fm.printFormattedResult();
-			result = result + fm.generateFormattedResult() + " ";
+
+			if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+				result = result + fm.generateFeaturesResult() + "\n";
 		}
 
 		println("");
 		println(result);
+
+
 
 		return result;
 	}

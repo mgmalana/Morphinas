@@ -148,9 +148,56 @@ public class Formatter
 		return result;
 	}
 
+	public String generateFeaturesResult()
+	{
+		this.removeDuplicateAffixes();
+		ArrayList<Affix> gPrefix = reverseAffixOrder(this.prefixes);
+		ArrayList<Affix> gInfix  = reverseAffixOrder(this.infixes);
+		ArrayList<Affix> gSuffix = reverseAffixOrder(this.suffixes);
+		AffixBreakdown ab 		 = new AffixBreakdown();
+		String rootWithInfix;
+		String result	 		 = "";
+
+
+
+		if( gInfix.size() > 0 || gInfix != null)
+		{
+			try {
+				rootWithInfix = this.infixedRootWord(word.getOriginalWord(),word.getRootWord(), gInfix.get(0).getAffix());
+			} catch (Exception e) {
+				rootWithInfix = word.getRootWord();
+			}
+		} else {
+			rootWithInfix = word.getRootWord();
+		}
+
+
+		if( longestCanonicalPrefixLength() > 4 )
+		{
+			Affix longPrefix = longestCanonicalPrefix();
+
+			result = result + ab.convertPrefix( longPrefix.getAffix().toString() );
+		}
+		else {
+			// cycle through all the prefixes first
+			for( int i = 0; i < this.prefixes.size(); i++)
+			{
+				result = result + "~" + gPrefix.get(i).getAffix();
+			}
+		}
+
+		// cycle through all the suffixes as the last
+		for( int i = 0; i < gSuffix.size(); i++)
+		{
+			result = result + "+" + gSuffix.get(i).getAffix();
+		}
+		return result;
+	}
+
 	public String generateBracketedResult()
 	{
 		String result = "";
+
 		// Creates "[prefix"
 		for( int i = 0; i < this.prefixes.size(); i++ )
 		{
@@ -200,6 +247,11 @@ public class Formatter
 	public void printFormattedResult()
 	{
 		println( this.generateFormattedResult() );
+	}
+
+	public void printFeaturesResult()
+	{
+		println( this.generateFeaturesResult() );
 	}
 
 	public void printBracketedResult()

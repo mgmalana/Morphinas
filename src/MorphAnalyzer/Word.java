@@ -15,6 +15,10 @@ public class Word {
 	private ArrayList<Affix> suffixes;
 	private ArrayList<Affix> infixes;
 
+
+
+	private ArrayList<Affix> redups;
+
 	private String bracketedResult = "";
 	private String dashedResult    = "";
 	
@@ -186,7 +190,13 @@ public class Word {
 		this.isRoot = isRoot;
 	}
 
+	public ArrayList<Affix> getRedups() {
+		return redups;
+	}
 
+	public void setRedups(ArrayList<Affix> redups) {
+		this.redups = redups;
+	}
 	
 	private static void println(String input)
 	{
