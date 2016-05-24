@@ -88,7 +88,13 @@ public class Main
 			single = single.toLowerCase();
 			single = Formatter.removeNonLetters(single);
 
-			if( t.lookup(single) )
+			if( single.equalsIgnoreCase(".") )
+			{
+				result = result + "#" + single + "\n";
+				skip   = true;
+			}
+
+			else if( t.lookup(single) && !skip )
 			{
 				result 	= result + "#" + single + " ";
 				skip 	= true;
@@ -98,14 +104,21 @@ public class Main
 				// because all tagalog words are already root when <= 3
 				if( single.length() > 3 && !skip)
 				{
+					mpl.globalPrefix = "";
+					mpl.globalSuffix = "";
 					mpl.analyzeMultipleMod(single);
 					word = mpl.getWordObject();
 					fm   = new Formatter(word);
 
 					if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+					{
 						result = result + fm.generateFeaturesResult() + " ";
+					} else {
+						result = result + "*" + single + " ";
+					}
+
 				} else {
-					result = result + "#" + single + " ";
+					result = result + "*" + single + " ";
 				}
 			}
 
@@ -131,25 +144,31 @@ public class Main
 	public static void main(String[] args) throws Exception 
 	{
 //		Just for counting the running time
-		NumberFormat formatter = new DecimalFormat("#0.00000");
 		long startTime, endTime;
 		startTime  = System.currentTimeMillis();
 
 		Main m = new Main();
 
 //		startIt reads from a file
-//		m.startIt();
+		m.startIt();
 
 //		The line below can be used for testing a single word only
-		m.testSingleWord("karamihan");
+//		m.testSingleWord("inyong");
 
 		endTime = System.currentTimeMillis();
 
+		m.printElapsedTime(startTime, endTime);
 
-		println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds");
 
 	}
 
+
+
+	public void printElapsedTime(long startTime, long endTime)
+	{
+		NumberFormat formatter = new DecimalFormat("#0.00000");
+		println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds");
+	}
 
 
 	public static void println(String in)
