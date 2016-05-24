@@ -3,7 +3,8 @@ import DataStructures.*;
 import java.util.*;
 import java.io.*;
 // Solomon's Model
-public class MorphLearnerRedup implements Serializable {
+public class MorphLearnerRedup implements Serializable
+{
     protected Trie popTrie, posTrie, prefixTrie, vowelChangeTrie;
     protected SuffixTrie suffixTrie;
     protected Vector<RewriteRule> infixList;
@@ -17,11 +18,14 @@ public class MorphLearnerRedup implements Serializable {
     protected Hashtable vcRulesTable = new Hashtable();    
     protected SemanticTree semanticTree = new SemanticTree();
     private double posConfidence, popConfidence,vowelConfidence;
-    public DBLexiconSQL lex;
+
+	//  Local DB
+	public DBLexiconSQL lex;
+
     // Global Variables
     private ArrayList<String> globalPrefixList = new ArrayList<String>();
-    private String globalPrefix;
-	private String globalSuffix = "";
+    public String globalPrefix = "";
+	public String globalSuffix = "";
     private Affix globalAffix;
     
     //Laurenz
@@ -80,6 +84,8 @@ public class MorphLearnerRedup implements Serializable {
         /*
          * Add NEW prefixTrie.store here 
          */
+		prefixTrie.store("ina");
+//		prefixTrie.store("ku");
         //prefixTrie.store("pi");
         prefixTrie.store("pinag");
         prefixTrie.store("pinagpa"); // W/ this = pinagpaliban -> liban
@@ -90,7 +96,7 @@ public class MorphLearnerRedup implements Serializable {
          */
         suffixTrie.store("an"); // has a lot of issues 
         suffixTrie.store("in");
-        suffixTrie.store("nan"); // just added ( w/o -> tawan; w/ -> tawa)
+//        suffixTrie.store("nan"); // just added ( w/o -> tawan; w/ -> tawa)
         suffixTrie.store("han");
         suffixTrie.store("hin");
 		suffixTrie.store("ng");
@@ -315,7 +321,10 @@ public class MorphLearnerRedup implements Serializable {
         ArrayList<Affix> wordInfixes = new ArrayList<Affix>();
         Affix wordInfix, wordSuffix, wordPrefix;
         int affixCount = 0;
-        
+
+		this.globalPrefix = "";
+		this.globalSuffix = "";
+
     	infixes = reduceInfix(orig);
     	
     	for( l = 0; l < infixes.size(); l++ )
@@ -345,7 +354,7 @@ public class MorphLearnerRedup implements Serializable {
     			maxResult = tempResult;
     		}
 
-			println("maxResult: " + maxResult.prefix + " and " + maxResult.suffix );
+//			println("maxResult: " + maxResult.prefix + " and " + maxResult.suffix );
 
 			// Start performRewriteActions on prefix then suffix with alternating rules
     		
@@ -404,7 +413,7 @@ public class MorphLearnerRedup implements Serializable {
 //    				}
 //    			}
     			maxResult = rewriteBothAffix(prefixes, suffixes, reducedWord, tempResult, maxResult);
-
+//				println("maxREsult 2222: " + maxResult.prefix);
     		}
 
 			for(i=0;i<prefixes.size();i++) {
@@ -426,7 +435,14 @@ public class MorphLearnerRedup implements Serializable {
 			wordSuffix = new Affix(this.globalSuffix, "suffix");
 			wordSuffixes.add(wordSuffix);
 		}
-    	
+
+		if( globalPrefix != null)
+		{
+			wordPrefix = new Affix(this.globalPrefix, "prefix");
+			wordPrefixes.add(wordPrefix);
+		}
+
+
     	// Set the number of affixes found
     	tempWord.setAffixCount(infixes.size() + affixCount);
     	// Store collected affixes by pre,inf, and suff    	
@@ -529,12 +545,18 @@ public class MorphLearnerRedup implements Serializable {
     	        String suffix = suffixes.elementAt(j);    	        
     	        tempResult = rewriteMultipleNoSemantic(reducedWord,prefix,suffix);
     	        if (maxResult == null)
-    	            maxResult = tempResult;
+				{
+					maxResult = tempResult;
+//					println("maxREsult 1 : " + maxResult.prefix);
+				}
     	        else if(tempResult.confidence >= maxResult.confidence)
-    	            maxResult = tempResult;                                                    
+				{
+					maxResult = tempResult;
+//					println("maxREsult 2 : " + maxResult.prefix);
+				}
     	    }
     	}
-
+//		println("maxREsult: " + maxResult.prefix);
     	return maxResult;
     }
     
@@ -1170,14 +1192,17 @@ public class MorphLearnerRedup implements Serializable {
 //		If simple substring manipulation returns a rootword already
 
 		try {
-			println("checking lookup by substring manip");
+//			println("checking lookup by substring manip");
 			if( lex.lookup(result) )
 			{
 //				println("\n    well it's: " + result);
+
 				ma = new MAResult (result, 1.0);
 				ma.prefix = orig.substring( 0, prefix.length() );
-				println(" ma.prefix: " + ma.prefix);
+
+//					println(" ma.prefix: " + ma.prefix);
 				ma.suffix = orig.substring( orig.length() - suffix.length(), orig.length());
+
 				this.globalPrefix = prefix;
 				this.globalSuffix = suffix;
 	//
@@ -1218,7 +1243,7 @@ public class MorphLearnerRedup implements Serializable {
 				ma.prefix = prefix;
 				ma.suffix = suffix;
 				this.globalSuffix = suffix;
-				println("I have been loaded with the prefix: " + ma.prefix);
+//				println("I have been loaded with the prefix: " + ma.prefix);
 //				println("        Suffix from third: " + this.globalSuffix + "\n");
 				//println("Added P and S are: " + prefix + " | " + suffix);
 			} else {
@@ -1787,7 +1812,7 @@ public class MorphLearnerRedup implements Serializable {
             //println("PrefixLength: " + prefixLength + " < " + word.length());
             for( charOffset = 0; charOffset < word.length() - prefixLength; charOffset++ ) 
             {
-                //println("    CharOffset: " + charOffset + " < " + (word.length() - prefixLength) );
+//              println("    CharOffset: " + charOffset + " < " + (word.length() - prefixLength) );
                 exited 		= false;
                 hasVowel 	= false;
                 j			= 0;
