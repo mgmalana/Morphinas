@@ -27,6 +27,7 @@ public class MorphLearnerRedup implements Serializable
     public String globalPrefix = "";
 	public String globalSuffix = "";
     private Affix globalAffix;
+	private boolean shouldStop = false;
     
     //Laurenz
     Word word = new Word("");
@@ -344,7 +345,7 @@ public class MorphLearnerRedup implements Serializable
     		prefix		= "";
     		suffix		= "";
     		tempResult 	= rewriteMultipleNoSemantic( reducedWord, prefix, suffix );
-
+			// insert global shouldStop result here @laurenz
     		if ( maxResult == null )
     		{
     			maxResult = tempResult;
@@ -1205,7 +1206,9 @@ public class MorphLearnerRedup implements Serializable
 
 				this.globalPrefix = prefix;
 				this.globalSuffix = suffix;
-	//
+				// to force the system in trying to overstem
+				this.shouldStop   = true;
+
 				return ma;
 			}
 		} catch (Exception e) {
