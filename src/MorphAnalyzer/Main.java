@@ -1,6 +1,7 @@
 package MorphAnalyzer;
 
 import DataStructures.*;
+import Morphinas.MorphPI;
 
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -53,7 +54,7 @@ public class Main
 //      println("word: " + word.getRootWord());
 
 		fm = new Formatter(word);
-		//fm.printWordContentDetailed();
+		fm.printWordContentDetailed();
         // fm.printBracketedResult();
 		fm.printFormattedResult();
 		fm.printFeaturesResult();
@@ -69,71 +70,71 @@ public class Main
         
 	}
 
-	public String startIt() throws Exception
-	{
-		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
-		String[] wordsList = tm.readFromFile();
-		boolean skip = false;
-		String result = "";
-		MAResult maresult;
-		Formatter fm;
-		Word word;
-
-		DBLexiconSQL t = new DBLexiconSQL();
-
-		for( int i = 0; i < wordsList.length; i++ )
-		{
-//			println("wordList"+"[" + i + "]: " + wordsList[i]);
-			String single = wordsList[i];
-			single = single.toLowerCase();
-			single = Formatter.removeNonLetters(single);
-
-			if( single.equalsIgnoreCase(".") )
-			{
-				result = result + "#" + single + "\n";
-				skip   = true;
-			}
-
-			else if( t.lookup(single) && !skip )
-			{
-				result 	= result + "#" + single + " ";
-				skip 	= true;
-			} else {
-				skip = false;
-
-				// because all tagalog words are already root when <= 3
-				if( single.length() > 3 && !skip)
-				{
-					mpl.globalPrefix = "";
-					mpl.globalSuffix = "";
-					mpl.analyzeMultipleMod(single);
-					word = mpl.getWordObject();
-					fm   = new Formatter(word);
-
-					if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
-					{
-						result = result + fm.generateFeaturesResult() + " ";
-					} else {
-						result = result + "*" + single + " ";
-					}
-
-				} else {
-					result = result + "*" + single + " ";
-				}
-			}
-
-
-
-
-		}
-
-		println("");
-		println(result);
-
-
-
-		return result;
-	}
+//	public String startIt() throws Exception
+//	{
+//		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
+//		String[] wordsList = tm.readFromFile();
+//		boolean skip = false;
+//		String result = "";
+//		MAResult maresult;
+//		Formatter fm;
+//		Word word;
+//
+//		DBLexiconSQL t = new DBLexiconSQL();
+//
+//		for( int i = 0; i < wordsList.length; i++ )
+//		{
+////			println("wordList"+"[" + i + "]: " + wordsList[i]);
+//			String single = wordsList[i];
+//			single = single.toLowerCase();
+//			single = Formatter.removeNonLetters(single);
+//
+//			if( single.equalsIgnoreCase(".") )
+//			{
+//				result = result + "#" + single + "\n";
+//				skip   = true;
+//			}
+//
+//			else if( t.lookup(single) && !skip )
+//			{
+//				result 	= result + "#" + single + " ";
+//				skip 	= true;
+//			} else {
+//				skip = false;
+//
+//				// because all tagalog words are already root when <= 3
+//				if( single.length() > 3 && !skip)
+//				{
+//					mpl.globalPrefix = "";
+//					mpl.globalSuffix = "";
+//					mpl.analyzeMultipleMod(single);
+//					word = mpl.getWordObject();
+//					fm   = new Formatter(word);
+//
+//					if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+//					{
+//						result = result + fm.generateFeaturesResult() + " ";
+//					} else {
+//						result = result + "*" + single + " ";
+//					}
+//
+//				} else {
+//					result = result + "*" + single + " ";
+//				}
+//			}
+//
+//
+//
+//
+//		}
+//
+//		println("");
+//		println(result);
+//
+//
+//
+//		return result;
+//	}
 
 	public void testSingleWord(String word)
 	{
@@ -141,28 +142,32 @@ public class Main
 		noGUI(input);
 	}
 
-	public static void main(String[] args) throws Exception 
+//	public static void main(String[] args) throws Exception
+//	{
+////		Just for counting the running time
+//		long startTime, endTime;
+//		startTime  = System.currentTimeMillis();
+//
+//		Main m = new Main();
+//
+////		startIt reads from a file
+////		m.startIt();
+//
+////		The line below can be used for testing a single word only
+//		m.testSingleWord("pinaghati-hatian");
+//
+//		endTime = System.currentTimeMillis();
+//
+//		m.printElapsedTime(startTime, endTime);
+//
+//
+//	}
+
+
+	public static void main(String[] args) throws Exception
 	{
-//		Just for counting the running time
-		long startTime, endTime;
-		startTime  = System.currentTimeMillis();
-
-		Main m = new Main();
-
-//		startIt reads from a file
-		m.startIt();
-
-//		The line below can be used for testing a single word only
-//		m.testSingleWord("inyong");
-
-		endTime = System.currentTimeMillis();
-
-		m.printElapsedTime(startTime, endTime);
-
-
+		MorphPI mpi;
 	}
-
-
 
 	public void printElapsedTime(long startTime, long endTime)
 	{

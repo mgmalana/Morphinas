@@ -26,9 +26,11 @@ public class AffixBreakdown
 
 		String result = "";
 
-		try {
+		try
+		{
 			result = this.hm.get(affix).toString();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			result = "$" + affix;
 		}
@@ -80,6 +82,11 @@ public class AffixBreakdown
 		hm.put("pagkikipag", "~pag$ki$ki~pag");
 
 		return hm;
+	}
+
+	private static void println(String input)
+	{
+		System.out.println("" + input);
 	}
 
 }

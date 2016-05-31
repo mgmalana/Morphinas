@@ -410,7 +410,7 @@ public class Formatter
 
 			if( !resultingAffix.equalsIgnoreCase("") )
 			{
-//				println("---------- resultingAffix: " + resultingAffix);
+				println("---------- resultingAffix: " + resultingAffix);
 				resultAffix = new Affix(resultingAffix, "infix");
 				resultAffixes.add(resultAffix);
 			}

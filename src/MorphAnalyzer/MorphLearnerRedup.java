@@ -26,6 +26,7 @@ public class MorphLearnerRedup implements Serializable
     private ArrayList<String> globalPrefixList = new ArrayList<String>();
     public String globalPrefix = "";
 	public String globalSuffix = "";
+	public String globalRedup  = "";
     private Affix globalAffix;
 	private boolean shouldStop = false;
     
@@ -131,7 +132,8 @@ public class MorphLearnerRedup implements Serializable
         ois.close();
         return mlr;
     }
-    private void init(Trie prefixTrie, SuffixTrie suffixTrie, Trie popTrie, Trie posTrie, Trie vowelChangeTrie, Vector<RewriteRule> infixList) {
+
+	private void init(Trie prefixTrie, SuffixTrie suffixTrie, Trie popTrie, Trie posTrie, Trie vowelChangeTrie, Vector<RewriteRule> infixList) {
         this.popTrie = popTrie;
         this.posTrie = posTrie;
         this.prefixTrie = prefixTrie;
@@ -140,7 +142,8 @@ public class MorphLearnerRedup implements Serializable
         this.infixList = infixList;
         rec = new RuleExtractorContext(RuleExtractorContext.Learners.SWSRedup, prefixTrie, (SuffixTrie) suffixTrie, infixList);        
     }
-    public void extractRules(String morphed, String orig) {        
+
+	public void extractRules(String morphed, String orig) {
         Vector<MorphRule> v = rec.extractRules(morphed,orig,  null, null);
         MorphRule r;
         String trimmed;
@@ -156,7 +159,8 @@ public class MorphLearnerRedup implements Serializable
 //            }
 //            vowelChangeTrie.store(r.getMorphedVowelChange(),r.getVowelChangeRule());                        
         }
-    }    
+    }
+
     private void addToRulesTable(String s, RewriteRule r, Hashtable t) {
         HashSet set = (HashSet) t.get(s);
         if (set == null) {
@@ -165,6 +169,7 @@ public class MorphLearnerRedup implements Serializable
         set.add(r);
         t.put(s,set);
     }
+
     private void addToRulesCountTable(String s, RewriteRule r, Hashtable t) {
         CountingTable ct = (CountingTable) t.get(s);
         if (ct == null)
@@ -248,6 +253,7 @@ public class MorphLearnerRedup implements Serializable
             ct.adjustCounts();
         }        */
     }
+
     public MAResult analyzeMultipleCanonicals(String orig) {
         int i,j;
         Vector<String> prefixes = prefixTrie.getAllPossibleMatch(orig);
@@ -414,7 +420,7 @@ public class MorphLearnerRedup implements Serializable
 //    				}
 //    			}
     			maxResult = rewriteBothAffix(prefixes, suffixes, reducedWord, tempResult, maxResult);
-//				println("maxREsult 2222: " + maxResult.prefix);
+				println("maxREsult 2222: " + maxResult.prefix);
     		}
 
 			for(i=0;i<prefixes.size();i++) {
@@ -446,7 +452,7 @@ public class MorphLearnerRedup implements Serializable
 
     	// Set the number of affixes found
     	tempWord.setAffixCount(infixes.size() + affixCount);
-    	// Store collected affixes by pre,inf, and suff    	
+    	// Store collected affixes by pre, inf, and suf
     	ArrayList<Affix> tempInfixes = wordInfixes;    	
     	tempWord.setInfixes((tempInfixes));
     	tempWord.setPrefixes(wordPrefixes);
@@ -469,6 +475,8 @@ public class MorphLearnerRedup implements Serializable
     	// check if tempWord contents are ok!
     	tempWord.finalContentsReady(false);
     	setWordObject(tempWord);
+
+
 
 //    	println("All from global : " + this.globalPrefixList.toString());
     	
@@ -918,8 +926,8 @@ public class MorphLearnerRedup implements Serializable
        trimmedCanonicals = result;
        
        posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
-       popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
-       posEnum = posTable.keys();      
+//       popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable); // not used eh
+//       posEnum = posTable.keys(); // not used din eh
        /*
        while(posEnum.hasMoreElements()) 
        {
@@ -1169,7 +1177,7 @@ public class MorphLearnerRedup implements Serializable
 		Enumeration posEnum;
 
 		// Print this shit
-//		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
+		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
 
 		/*
 		 * Error when
@@ -1191,43 +1199,48 @@ public class MorphLearnerRedup implements Serializable
 
 
 //		If simple substring manipulation returns a rootword already
-
 		try {
 //			println("checking lookup by substring manip");
 			if( lex.lookup(result) )
 			{
-//				println("\n    well it's: " + result);
-
+				println("\n    well it's: " + result);
+				// instantiate the MAResult
 				ma = new MAResult (result, 1.0);
+				// get the prefix in the word
 				ma.prefix = orig.substring( 0, prefix.length() );
 
-//					println(" ma.prefix: " + ma.prefix);
+				println(" ma.prefix: " + ma.prefix);
 				ma.suffix = orig.substring( orig.length() - suffix.length(), orig.length());
 
 				this.globalPrefix = prefix;
 				this.globalSuffix = suffix;
 				// to force the system in trying to overstem
 				this.shouldStop   = true;
-
+//				when the substring is already a root word
 				return ma;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-
+//		when the whitespaces are removed and the resulting string is a ""
 		if( result.trim().equals("") )
 		{
 			return new MAResult( "", 0.0 );
 		}
 
 		trimmedCanonicals = result;
-		trimmed 		  = result;
+//		trimmed 		  = result; // not used tho
 
+//		The substring wherein the prefix is removed as well as the substring
 		result = orig.substring( prefix.length(), orig.length() - suffix.length() );
-//		println("First Result: " + result);
+//
+// 		println("First Result: " + result);
+
+//		After the prefix and suffixes were removed, reduplicated areas of the string are planned to be removed.
 		result = reduceRedup( result );
 //		println("Second Result: " + result);
+
 		posTable = posTrie.possibleMatchList(trimmedCanonicals, posRulesTable);
 		popTable = popTrie.possibleMatchList(trimmedCanonicals, popRulesTable);
 		posEnum = posTable.keys();
