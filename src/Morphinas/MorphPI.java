@@ -43,6 +43,7 @@ public class MorphPI
 
 	public void pushFile()
 	{
+		println("Pushing " + fileName);
 		FilePush filePush = new FilePush(this.address, this.fileName);
 		this.gPush = filePush;
 	}
@@ -58,29 +59,12 @@ public class MorphPI
 		}
 
 //		Read from the file sent to FilePush through gPush
-		String[] wordsLIst 	= gPush.readFromFile();
+		String[] wordsList 	= gPush.readFromFile();
 		boolean skip 		= false;
 		Formatter fm;
 		Word word;
 //		Open up the database
 		DBLexiconSQL t 		= new DBLexiconSQL();
-
-
-		
-		return result;
-	}
-
-	public String startIt() throws Exception
-	{
-		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
-		String[] wordsList = tm.readFromFile();
-		boolean skip = false;
-		String result = "";
-		MAResult maresult;
-		Formatter fm;
-		Word word;
-
-		DBLexiconSQL t = new DBLexiconSQL();
 
 		for( int i = 0; i < wordsList.length; i++ )
 		{
@@ -88,6 +72,11 @@ public class MorphPI
 			String single = wordsList[i];
 			single = single.toLowerCase();
 			single = Formatter.removeNonLetters(single);
+
+			if( i == 0 )
+			{
+				result = result + ":FS";
+			}
 
 			if( single.equalsIgnoreCase(".") )
 			{
@@ -131,10 +120,74 @@ public class MorphPI
 		println("");
 		println(result);
 
-
-
 		return result;
 	}
+
+//	public String startIt() throws Exception
+//	{
+//		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
+//		String[] wordsList = tm.readFromFile();
+//		boolean skip = false;
+//		String result = "";
+//		MAResult maresult;
+//		Formatter fm;
+//		Word word;
+//
+//		DBLexiconSQL t = new DBLexiconSQL();
+//
+//		for( int i = 0; i < wordsList.length; i++ )
+//		{
+////			println("wordList"+"[" + i + "]: " + wordsList[i]);
+//			String single = wordsList[i];
+//			single = single.toLowerCase();
+//			single = Formatter.removeNonLetters(single);
+//
+//			if( single.equalsIgnoreCase(".") )
+//			{
+//				result = result + "#" + single + "\n";
+//				skip   = true;
+//			}
+//
+//			else if( t.lookup(single) && !skip )
+//			{
+//				result 	= result + "#" + single + " ";
+//				skip 	= true;
+//			} else {
+//				skip = false;
+//
+//				// because all tagalog words are already root when <= 3
+//				if( single.length() > 3 && !skip)
+//				{
+//					mpl.globalPrefix = "";
+//					mpl.globalSuffix = "";
+//					mpl.analyzeMultipleMod(single);
+//					word = mpl.getWordObject();
+//					fm   = new Formatter(word);
+//
+//					if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+//					{
+//						result = result + fm.generateFeaturesResult() + " ";
+//					} else {
+//						result = result + "*" + single + " ";
+//					}
+//
+//				} else {
+//					result = result + "*" + single + " ";
+//				}
+//			}
+//
+//
+//
+//
+//		}
+//
+//		println("");
+//		println(result);
+//
+//
+//
+//		return result;
+//	}
 
 	public void println(String input)
 	{

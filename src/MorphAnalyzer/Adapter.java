@@ -1,4 +1,5 @@
 package MorphAnalyzer;
+import DataStructures.MAResult;
 
 public class Adapter {
 	

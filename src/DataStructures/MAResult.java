@@ -1,4 +1,4 @@
-package Morphinas;
+package DataStructures;
 
 import MorphAnalyzer.RewriteRule;
 import MorphAnalyzer.WordSemantic;
@@ -6,7 +6,7 @@ import MorphAnalyzer.WordSemantic;
 /**
  * Created by laurenztolentino on 05/31/2016.
  */
-class MAResult {
+public class MAResult {
 	public String result;
 	public double confidence;
 	public WordSemantic semantic;

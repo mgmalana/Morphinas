@@ -320,6 +320,7 @@ public class MorphLearnerRedup implements Serializable
         String reducedWord, prefix, suffix;
         MAResult tempResult = null, maxResult = null;
 
+
         // Laurenz here
         Word tempWord = new Word(orig);
         ArrayList<Affix> affixes = new ArrayList<Affix>();
@@ -420,7 +421,7 @@ public class MorphLearnerRedup implements Serializable
 //    				}
 //    			}
     			maxResult = rewriteBothAffix(prefixes, suffixes, reducedWord, tempResult, maxResult);
-				println("maxREsult 2222: " + maxResult.prefix);
+//				println("maxREsult 2222: " + maxResult.prefix);
     		}
 
 			for(i=0;i<prefixes.size();i++) {
@@ -1177,7 +1178,7 @@ public class MorphLearnerRedup implements Serializable
 		Enumeration posEnum;
 
 		// Print this shit
-		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
+//		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
 
 		/*
 		 * Error when
@@ -1203,13 +1204,13 @@ public class MorphLearnerRedup implements Serializable
 //			println("checking lookup by substring manip");
 			if( lex.lookup(result) )
 			{
-				println("\n    well it's: " + result);
+//				println("\n    well it's: " + result);
 				// instantiate the MAResult
 				ma = new MAResult (result, 1.0);
 				// get the prefix in the word
 				ma.prefix = orig.substring( 0, prefix.length() );
 
-				println(" ma.prefix: " + ma.prefix);
+//				println(" ma.prefix: " + ma.prefix);
 				ma.suffix = orig.substring( orig.length() - suffix.length(), orig.length());
 
 				this.globalPrefix = prefix;
