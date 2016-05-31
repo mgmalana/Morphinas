@@ -1,5 +1,6 @@
 package Morphinas;
 
+import DataStructures.MAResult;
 import MorphAnalyzer.*;
 import MorphAnalyzer.MorphLearnerRedup;
 
@@ -48,6 +49,41 @@ public class MorphPI
 		this.gPush = filePush;
 	}
 
+	public void pushWord(String sWord) throws Exception
+	{
+		println("Running sampleSingleRun:");
+		MorphLearnerRedup mpl = new MorphLearnerRedup();
+		String input = Formatter.removeNonLetters(sWord);
+
+
+		Formatter fm;
+		WordPair wp;
+		input = input.toLowerCase();
+//		println("Finding root of: " + input);
+		// String ng result only
+		String root = "";
+		root = mpl.analyzeMultipleMod(input).result;
+		// Result using MAResult
+		MAResult maresult = mpl.analyzeMultipleMod(input); // Not working properly #why
+		Word word = mpl.getWordObject();
+
+
+		fm = new Formatter(word);
+		fm.printWordContentDetailed();
+		// fm.printBracketedResult();
+		fm.printFormattedResult();
+		fm.printFeaturesResult();
+		println("");
+//		AffixBreakdown ab = new AffixBreakdown();
+
+		try {
+			fm.printLongestOnly();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			println("whoopsies. Didn't find the longest ");
+		}
+	}
+
 	public String pullFeaturedResults() throws Exception
 	{
 		String result = "";
@@ -71,50 +107,59 @@ public class MorphPI
 //			println("wordList"+"[" + i + "]: " + wordsList[i]);
 			String single = wordsList[i];
 			single = single.toLowerCase();
-			single = Formatter.removeNonLetters(single);
 
+
+//			Checks if the word is either the first word in the entire input or first word of the sentence.
 			if( i == 0 )
 			{
-				result = result + ":FS";
+				result  = result + ":FS";
+				skip	= true;
 			}
-
-			if( single.equalsIgnoreCase(".") )
+//			If the word's first letter is capital
+			if( !single.equals(wordsList[i]) && !skip)
 			{
-				result = result + "#" + single + "\n";
-				skip   = true;
-			}
-
-			else if( t.lookup(single) && !skip )
-			{
-				result 	= result + "#" + single + " ";
+				result 	= result + ":F" + single + " ";
 				skip 	= true;
-			} else {
-				skip = false;
-
-				// because all tagalog words are already root when <= 3
-				if( single.length() > 3 && !skip)
+			}
+//			Start
+			if( !skip )
+			{
+				if( single.equalsIgnoreCase(".") && !skip)
 				{
-					mpl.globalPrefix = "";
-					mpl.globalSuffix = "";
-					mpl.analyzeMultipleMod(single);
-					word = mpl.getWordObject();
-					fm   = new Formatter(word);
+					result = result + "#" + single + "\n" + ":FS";
+					skip   = true;
+				}
+				else if( t.lookup(single) && !skip )
+				{
+					result 	= result + "#" + single + " ";
+					skip 	= true;
+				}
+				else {
+					single = Formatter.removeNonLetters(single);
+					skip = false;
 
-					if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+					// because all tagalog words are already root when <= 3
+					if( single.length() > 3 && !skip)
 					{
-						result = result + fm.generateFeaturesResult() + " ";
-					} else {
-						result = result + "*" + single + " ";
-					}
+						mpl.globalPrefix = "";
+						mpl.globalSuffix = "";
+						mpl.analyzeMultipleMod(single);
+						word = mpl.getWordObject();
+						fm   = new Formatter(word);
 
-				} else {
-					result = result + "*" + single + " ";
+						if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+						{
+							result = result + fm.generateFeaturesResult() + " ";
+						} else {
+							result = result + "*" + single + " ";
+						}
+
+					} else {
+						result = result + "#" + single + " ";
+					}
 				}
 			}
-
-
-
-
+			skip = false;
 		}
 
 		println("");
