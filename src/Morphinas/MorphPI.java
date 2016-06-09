@@ -49,9 +49,13 @@ public class MorphPI
 		this.gPush = filePush;
 	}
 
+	public void pushLine(String input) throws Exception
+	{
+
+	}
+
 	public void pushWord(String sWord) throws Exception
 	{
-		println("Running sampleSingleRun:");
 		MorphLearnerRedup mpl = new MorphLearnerRedup();
 		String input = Formatter.removeNonLetters(sWord);
 
@@ -84,18 +88,10 @@ public class MorphPI
 		}
 	}
 
-	public String pullFeaturedResults() throws Exception
+	public String generateFeaturedResult(String[] wordsList) throws Exception
 	{
 		String result = "";
 
-		if( address.equalsIgnoreCase("") || fileName.equalsIgnoreCase("") )
-		{
-			println("Will not pull until address and fileName is not blank.");
-			 System.exit(0);
-		}
-
-//		Read from the file sent to FilePush through gPush
-		String[] wordsList 	= gPush.readFromFile();
 		boolean skip 		= false;
 		Formatter fm;
 		Word word;
@@ -118,7 +114,7 @@ public class MorphPI
 //			If the word's first letter is capital
 			if( !single.equals(wordsList[i]) && !skip)
 			{
-				result 	= result + ":F" + single + " ";
+				result 	= result + ":F*" + single + " ";
 				skip 	= true;
 			}
 //			Start
@@ -164,6 +160,24 @@ public class MorphPI
 
 		println("");
 		println(result);
+
+		return result;
+	}
+
+	public String pullFeaturedResultsFromFile() throws Exception
+	{
+		String result = "";
+
+		if( address.equalsIgnoreCase("") || fileName.equalsIgnoreCase("") )
+		{
+			println("Will not pull until address and fileName is not blank.");
+			 System.exit(0);
+		}
+
+//		Read from the file sent to FilePush through gPush
+		String[] wordsList 	= gPush.readFromFile();
+
+		result = generateFeaturedResult(wordsList);
 
 		return result;
 	}

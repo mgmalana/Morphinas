@@ -23,7 +23,7 @@ public class Main {
 	{
 		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
 		mpi.pushFile();
-		mpi.pullFeaturedResults();
+		mpi.pullFeaturedResultsFromFile();
 		endTime = System.currentTimeMillis();
 
 		printElapsedTime(startTime, endTime);
@@ -37,11 +37,12 @@ public class Main {
 	}
 
 
+
 	public static void main(String[] args) throws Exception
 	{
 		Main m = new Main();
 		m.sampleLongRun();
-//		m.sampleSingleRun("harangan");
+//		m.sampleSingleRun("inaani");
 	}
 
 	public void printElapsedTime(long startTime, long endTime)

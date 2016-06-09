@@ -280,7 +280,7 @@ public class Formatter
 		{
 			println("Original: " + word.getRootWord() + "| Root: " + this.rootWord);
 			println("Number of Affixes in the original word: " + word.getAffixCount());
-
+			println("Prefixes: " + this.prefixes.size() + " | Infixes: " + this.infixes.size() + " | Suffixes: " + this.suffixes.size());
 			println("Printing Prefixes:");
 			for(int i = 0; i < this.prefixes.size(); i++)
 			{
@@ -508,12 +508,24 @@ public class Formatter
 				isRoot = true;
 			}
 		} catch (Exception e) {
-			println("checkIfRootViaDB encountered a MySQL Problem huhuhuhuuh");
+			println("checkIfRootViaDB encountered a MySQL Problem huhuhuhuhu");
 			e.printStackTrace();
 		}
 
 		return isRoot;
 	}
+
+	public static void printAllAffixes(ArrayList<Affix> affixes)
+	{
+		println("Printing all affixes: ");
+		for(int i = 0; i < affixes.size(); i++)
+		{
+			print(affixes.get(i).getAffix() + " | ");
+		}
+		println("");
+	}
+
+	public static void print(String in) { System.out.print("" + in); }
 
 	public static void println(String in)
 	{

@@ -304,7 +304,8 @@ public class MorphLearnerRedup implements Serializable
      * The operations in this method includes finding the infixes/suffix/affix and then removing them.
      * Log: Method is not anymore near the original. Performed atomicity to make code abstracted.
      * @param orig
-     * Word to be morphologically analyzed
+     * The string 'passed' in this variable has been reduced to contain only prefixes and suffixes.
+	 * Reduplication and infix reduction has already been performed before arriving at this step.
      * @return
      * A string that consists of the root of the input string
      * @laurenz
@@ -366,7 +367,11 @@ public class MorphLearnerRedup implements Serializable
 
 			// Start performRewriteActions on prefix then suffix with alternating rules
     		
-			// NO PREFIX
+			/*
+			* NO PREFIX:
+			* When the word only contains suffixes
+			* Ex: Tira+in, Lupa+in
+			*/
     		for( j = 0; j < suffixes.size(); j++ )
     		{
     			maxResult = rewriteNoAntiAffix(0,j, suffixes, reducedWord, tempResult, maxResult);
@@ -381,7 +386,11 @@ public class MorphLearnerRedup implements Serializable
 
     		}
 
-    		// NO SUFFIX
+    		/*
+    		 * NO SUFFIX:
+    		 * When the word only contains prefixes.
+    		 * Ex: Pag+ipon, pag+patay, Pag+pasa
+    		*/
     		for( i = 0; i < prefixes.size(); i++ )
     		{
     			maxResult = rewriteNoAntiAffix(1, i, prefixes, reducedWord, tempResult, maxResult);
@@ -393,46 +402,35 @@ public class MorphLearnerRedup implements Serializable
     				wordPrefixes.add(wordPrefix);
         			affixes.add(wordPrefix);
     			}    			
-    		}    		
+    		}
 
-    		// complete prefix and suffix 
+			/*
+			* BOTH PREFIX AND SUFFIX ARE PRESENT
+			* Ex: Pag+pasa+han, [Pi~nag]+
+			*/
     		for( i = 0; i < prefixes.size(); i++ )
     		{
-//    			affixCount++;
-//
-//    			if( prefixes.elementAt(i) != null )
-//    			{
-//       				wordPrefix = addToPrefix(prefixes.elementAt(i));
-//    				wordPrefixes.add(wordPrefix);
-//    				affixes.add(wordPrefix);
-//    			}
-//
-//    			for( j = 0; j < suffixes.size(); j++)
-//    			{
-//
-//    				if( suffixes.elementAt(j) != null )
-//    				{
-//        				affixCount++;
-//        				println("a suffix was added :( ");
-//        				wordSuffix = addToSuffix(suffixes.elementAt(j));
-//        				wordSuffixes.add(wordSuffix);
-//						println("added wordsuffix: " + wordSuffix.getAffix());
-//        				affixes.add(wordSuffix);
-//    				}
-//    			}
     			maxResult = rewriteBothAffix(prefixes, suffixes, reducedWord, tempResult, maxResult);
 //				println("maxREsult 2222: " + maxResult.prefix);
     		}
 
-			for(i=0;i<prefixes.size();i++) {
+			for(i=0;i<prefixes.size();i++)
+			{
 				prefix = prefixes.elementAt(i);
-				for(j=0;j<suffixes.size();j++) {
+				for(j=0;j<suffixes.size();j++)
+				{
 					suffix = suffixes.elementAt(j);
+
 					tempResult = rewriteMultipleNoSemantic(reducedWord,prefix,suffix);
+
 					if (maxResult == null)
+					{
 						maxResult = tempResult;
+					}
 					else if(tempResult.confidence >= maxResult.confidence)
+					{
 						maxResult = tempResult;
+					}
 				}
 			}
     	}
@@ -450,6 +448,9 @@ public class MorphLearnerRedup implements Serializable
 			wordPrefixes.add(wordPrefix);
 		}
 
+		/*
+		FIX THIS PART @LAURENZ
+		 */
 
     	// Set the number of affixes found
     	tempWord.setAffixCount(infixes.size() + affixCount);
@@ -460,8 +461,10 @@ public class MorphLearnerRedup implements Serializable
     	tempWord.setSuffixes(wordSuffixes);
     	// Store MAResult with root information
     	tempWord.setMaresult(maxResult);
-    	
-    	// There's a problem here around maxResult == null
+
+		Formatter.printAllAffixes(tempWord.getPrefixes());
+
+		// There's a problem here around maxResult == null
     	if( maxResult == null )
     	{    		
     		maxResult = tempResult;
@@ -472,11 +475,10 @@ public class MorphLearnerRedup implements Serializable
     	{
     		tempWord.setRootWord(maxResult.result);	
     	}
-    	
+
     	// check if tempWord contents are ok!
     	tempWord.finalContentsReady(false);
     	setWordObject(tempWord);
-
 
 
 //    	println("All from global : " + this.globalPrefixList.toString());
@@ -1178,7 +1180,7 @@ public class MorphLearnerRedup implements Serializable
 		Enumeration posEnum;
 
 		// Print this shit
-//		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
+		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
 
 		/*
 		 * Error when

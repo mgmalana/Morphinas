@@ -110,5 +110,4 @@ public class Affix {
 		this.affixBrackets = affixBrackets;
 	}
 	
-	
 }
