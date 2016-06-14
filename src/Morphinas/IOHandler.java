@@ -1,22 +1,17 @@
 package Morphinas;
 
-import MorphAnalyzer.TestMaker;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
  * Created by laurenztolentino on 05/31/2016.
  */
-public class FilePush {
+public class IOHandler {
 	String fileDirectory = "/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/";
 	String fileName		 = "words.txt";
 
 
-	public FilePush()
+	public IOHandler()
 	{}
 
 	/**
@@ -24,7 +19,7 @@ public class FilePush {
 	 * @param fileDirectory
 	 * @param fileName
 	 */
-	public FilePush(String fileDirectory, String fileName)
+	public IOHandler(String fileDirectory, String fileName)
 	{
 		this.fileDirectory 	= fileDirectory;
 		this.fileName 		= fileName;
@@ -42,7 +37,7 @@ public class FilePush {
 		try
 		{
 			br = new BufferedReader( new FileReader(fileDirectory + fileName) );
-			println("started ....");
+			println("Reading from file ....");
 			while ((content = br.readLine()) != null)
 			{
 				finalContent = finalContent + content;
@@ -64,16 +59,26 @@ public class FilePush {
 		return words;
 	}
 
+	public void printToTxtFile(String toPrint) throws Exception
+	{
+		PrintWriter writer = new PrintWriter("morphinas-result.txt", "UTF-8");
+		// Write the result to file
+		writer.println(toPrint);
+		// Close the printer
+		writer.close();
+	}
+
 	public static void main(String[] args)
 	{
 
+		IOHandler fp = new IOHandler();
 		String[] testData;
 
-		TestMaker tm = new TestMaker();
+
 
 		try
 		{
-			testData = tm.readFromFile();
+			testData = fp.readFromFile();
 
 			for(int i = 0; i < testData.length; i++)
 			{

@@ -11,7 +11,7 @@ public class MorphPI
 {
 	MorphLearnerRedup mpl = new MorphLearnerRedup();
 	WordsLoader training = new WordsLoader(WordsLoader.TRAINING);
-	FilePush gPush;
+	IOHandler gPush;
 //	Enter filename here
 	String address;
 	String fileName;
@@ -31,7 +31,7 @@ public class MorphPI
 	{
 		this.address  = address;
 		this.fileName = fileName;
-		FilePush filePush = new FilePush(address, fileName);
+		IOHandler ioh = new IOHandler(address, fileName);
 	}
 
 	public void pushFile(String address, String fileName)
@@ -45,8 +45,8 @@ public class MorphPI
 	public void pushFile()
 	{
 		println("Pushing " + fileName);
-		FilePush filePush = new FilePush(this.address, this.fileName);
-		this.gPush = filePush;
+		IOHandler ioh = new IOHandler(this.address, this.fileName);
+		this.gPush = ioh;
 	}
 
 	public void pushLine(String input) throws Exception
@@ -106,10 +106,13 @@ public class MorphPI
 
 
 //			Checks if the word is either the first word in the entire input or first word of the sentence.
-			if( i == 0 )
+			if( i == 0)
 			{
 				result  = result + ":FS";
 				skip	= true;
+			}
+			if( i == wordsList.length - 1) {
+				skip = true;
 			}
 //			If the word's first letter is capital
 			if( !single.equals(wordsList[i]) && !skip)
@@ -159,8 +162,10 @@ public class MorphPI
 		}
 
 		println("");
-		println(result);
+//		println(result);
 
+		IOHandler ioh = new IOHandler();
+		ioh.printToTxtFile(result);
 		return result;
 	}
 
@@ -174,7 +179,7 @@ public class MorphPI
 			 System.exit(0);
 		}
 
-//		Read from the file sent to FilePush through gPush
+//		Read from the file sent to IOHandler through gPush
 		String[] wordsList 	= gPush.readFromFile();
 
 		result = generateFeaturedResult(wordsList);
@@ -184,7 +189,7 @@ public class MorphPI
 
 //	public String startIt() throws Exception
 //	{
-//		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
+
 //		String[] wordsList = tm.readFromFile();
 //		boolean skip = false;
 //		String result = "";

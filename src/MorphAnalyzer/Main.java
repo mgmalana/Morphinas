@@ -31,7 +31,7 @@ public class Main
      */
 	public void noGUI(String input)
 	{
-		TestMaker tm = new TestMaker();
+
 		Formatter fm;
 		WordPair wp;
 		input = input.toLowerCase();
@@ -72,7 +72,6 @@ public class Main
 
 //	public String startIt() throws Exception
 //	{
-//		TestMaker tm = new TestMaker("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
 //		String[] wordsList = tm.readFromFile();
 //		boolean skip = false;
 //		String result = "";

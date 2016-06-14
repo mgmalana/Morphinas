@@ -462,7 +462,7 @@ public class MorphLearnerRedup implements Serializable
     	// Store MAResult with root information
     	tempWord.setMaresult(maxResult);
 
-		Formatter.printAllAffixes(tempWord.getPrefixes());
+//		Formatter.printAllAffixes(tempWord.getPrefixes());
 
 		// There's a problem here around maxResult == null
     	if( maxResult == null )
@@ -1180,7 +1180,7 @@ public class MorphLearnerRedup implements Serializable
 		Enumeration posEnum;
 
 		// Print this shit
-		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
+//		println("orig: " + orig + " | prefix: " + prefix + " | suffix: " + suffix);
 
 		/*
 		 * Error when
