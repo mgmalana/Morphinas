@@ -88,6 +88,32 @@ public class MorphPI
 		}
 	}
 
+	public String generateRootResults(String[] wordsList) throws Exception
+	{
+		String result = "";
+
+		Formatter fm;
+		Word word;
+//		Open up the database
+		DBLexiconSQL t 		= new DBLexiconSQL();
+
+		for( int i = 0; i < wordsList.length; i++ )
+		{
+			String single = wordsList[i];
+			single = single.toLowerCase();
+			println("analyzing: " + single);
+			mpl.analyzeMultipleMod(single);
+			word = mpl.getWordObject();
+			fm = new Formatter(word);
+			result = result + fm.generateRootResult() + "\n";
+		}
+
+		IOHandler ioh = new IOHandler();
+		ioh.printToTxtFileRoot("manoLemma", result);
+
+		return result;
+	}
+
 	public String generateFeaturedResult(String[] wordsList) throws Exception
 	{
 		String result = "";
@@ -168,6 +194,25 @@ public class MorphPI
 		ioh.printToTxtFile(result);
 		return result;
 	}
+
+	public String pullRootResultsFromFile() throws Exception
+	{
+		String result = "";
+
+		if( address.equalsIgnoreCase("") || fileName.equalsIgnoreCase("") )
+		{
+			println("Will not pull until address and fileName is not blank.");
+			System.exit(0);
+		}
+
+//		Read from the file sent to IOHandler through gPush
+		String[] wordsList 	= gPush.readFromFile();
+
+		result = generateRootResults(wordsList);
+
+		return result;
+	}
+
 
 	public String pullFeaturedResultsFromFile() throws Exception
 	{

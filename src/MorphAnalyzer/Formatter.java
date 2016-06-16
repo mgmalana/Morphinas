@@ -51,6 +51,15 @@ public class Formatter
 
 		return result;
 	}
+
+	public String generateRootResult()
+	{
+		String result = "";
+		result = result + rootWord + " ";
+
+		return result;
+	}
+
 	public String generateDashedResult()
 	{
 		String result = "";

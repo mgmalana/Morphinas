@@ -31,18 +31,23 @@ public class IOHandler {
 		String finalContent = "";
 		String content = "";
 		String[] words = { "" };
-
+		int lineNumber = 0;
 		BufferedReader br;
 
 		try
 		{
 			br = new BufferedReader( new FileReader(fileDirectory + fileName) );
 			println("Reading from file ....");
+
 			while ((content = br.readLine()) != null)
 			{
-				finalContent = finalContent + content;
+				lineNumber++;
+				System.out.print(""+lineNumber);
+				System.out.print("\r " + lineNumber + " out of (lagpas sa sampung daliri)");
+				finalContent = finalContent + content + " ";
 			}
-
+			println("\n Done reading from file huhuhuhu");
+			println(finalContent);
 			words = finalContent.split(" ");
 
 
@@ -57,6 +62,16 @@ public class IOHandler {
 
 
 		return words;
+	}
+
+	public void printToTxtFileRoot(String fileName, String toPrint) throws Exception
+	{
+		String completeFileName = fileName + ".txt";
+		PrintWriter writer = new PrintWriter(completeFileName, "UTF-8");
+		// Write the result to file
+		writer.println(toPrint);
+		// Close the printer
+		writer.close();
 	}
 
 	public void printToTxtFile(String toPrint) throws Exception

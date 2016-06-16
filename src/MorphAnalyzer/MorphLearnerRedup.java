@@ -1196,7 +1196,14 @@ public class MorphLearnerRedup implements Serializable
 			return new MAResult( orig, 1.0);
 		}
 
-		result = orig.substring( prefix.length(), orig.length() - suffix.length() );
+//		println("prefix.length(): " + prefix.length() + " | orig.length: " + orig.length() + "| suffix.length(): " + suffix.length());
+		if( prefix.length() < ( orig.length() - prefix.length() ) )
+		{
+			result = orig.substring( prefix.length(), orig.length() - suffix.length() );
+		}
+		else {
+			return new MAResult( orig, 1.0 );
+		}
 
 //		println("=-=-=-=-= result: " + result);
 

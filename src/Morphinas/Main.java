@@ -29,6 +29,18 @@ public class Main {
 		printElapsedTime(startTime, endTime);
 	}
 
+	public void manoLongRun() throws Exception
+	{
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","Lemma.txt");
+		mpi.pushFile();
+		mpi.pullRootResultsFromFile();
+		println("reached here.");
+		endTime = System.currentTimeMillis();
+
+		printElapsedTime(startTime, endTime);
+
+	}
+
 	public void sampleSingleRun(String sWord) throws Exception
 	{
 		MorphPI mpi = new MorphPI();
@@ -41,8 +53,10 @@ public class Main {
 	public static void main(String[] args) throws Exception
 	{
 		Main m = new Main();
-		m.sampleLongRun();
-//		m.sampleSingleRun("inaani");
+//		m.sampleLongRun();
+		m.sampleSingleRun("inuman");
+//		m.manoLongRun();
+
 	}
 
 	public void printElapsedTime(long startTime, long endTime)
