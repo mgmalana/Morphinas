@@ -1,6 +1,7 @@
 package Morphinas;
 
 import DataStructures.MAResult;
+import DataStructures.Word;
 import MorphAnalyzer.*;
 import MorphAnalyzer.MorphLearnerRedup;
 
@@ -130,12 +131,11 @@ public class MorphPI
 			String single = wordsList[i];
 			single = single.toLowerCase();
 
-
 //			Checks if the word is either the first word in the entire input or first word of the sentence.
 			if( i == 0)
 			{
 				result  = result + ":FS";
-				skip	= true;
+				skip	= false;
 			}
 			if( i == wordsList.length - 1) {
 				skip = true;

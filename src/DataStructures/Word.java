@@ -1,7 +1,6 @@
-package MorphAnalyzer;
+package DataStructures;
 
 import java.util.ArrayList;
-import DataStructures.MAResult;
 
 public class Word {
 

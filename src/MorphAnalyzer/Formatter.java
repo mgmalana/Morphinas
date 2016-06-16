@@ -1,5 +1,8 @@
 package MorphAnalyzer;
 
+import DataStructures.Affix;
+import DataStructures.Word;
+
 import java.util.ArrayList;
 
 /**
@@ -26,6 +29,11 @@ public class Formatter
 		this.rootWord 	= word.getRootWord();
 	}
 
+	/**
+	 * Removes dashes and extra spaces on a single word.
+	 * @param input
+	 * @return
+	 */
 	public static String removeNonLetters(String input)
 	{
 		char[] nonLetters 	= { '-', ' ' };
@@ -52,6 +60,10 @@ public class Formatter
 		return result;
 	}
 
+	/**
+	 * Unfortunately, just adds an extra space after the end of the rootword.
+	 * @return
+	 */
 	public String generateRootResult()
 	{
 		String result = "";
@@ -60,6 +72,10 @@ public class Formatter
 		return result;
 	}
 
+	/**
+	 * Somehow returns what a bracketed result would look like.
+	 * @return
+	 */
 	public String generateDashedResult()
 	{
 		String result = "";
@@ -100,7 +116,7 @@ public class Formatter
 
 
 
-		if( gInfix.size() > 0 || gInfix != null)
+		if( gInfix.size() > 0)
 		{
 			try {
 				rootWithInfix = this.infixedRootWord(word.getOriginalWord(),word.getRootWord(), gInfix.get(0).getAffix());
@@ -189,7 +205,8 @@ public class Formatter
 
 			result = result + ab.convertPrefix( longPrefix.getAffix().toString() );
 		}
-		else {
+		else
+		{
 			// cycle through all the prefixes first
 			for( int i = 0; i < this.prefixes.size(); i++)
 			{
@@ -396,11 +413,11 @@ public class Formatter
 	 */
 	private ArrayList<Affix> cleanInfix(ArrayList<Affix> origInfix)
 	{
+
 		ArrayList<Affix> resultAffixes = new ArrayList<Affix>();
 		Affix tempAffix, resultAffix;
 		String resultingAffix = "";
 		String singleAffix;
-
 
 		for( int i = 0; i < origInfix.size(); i++ )
 		{
@@ -430,6 +447,14 @@ public class Formatter
 		return resultAffixes;
 	}
 
+	/**
+	 * Puts the @<infix>@ inside the parameter originalWord.
+	 * Use this for showing the breakdown that includes an infix in it.
+	 * @param originalWord
+	 * @param rootWord
+	 * @param infix
+	 * @return
+	 */
 	private String infixedRootWord(String originalWord, String rootWord, String infix)
 	{
 		String left;         // left side before the infix
@@ -506,6 +531,12 @@ public class Formatter
 		return length;
 	}
 
+	/**
+	 * Method used to check manually a word if it exists in the local Database.
+	 * @param word
+	 * @return
+	 * True if it is part of the database. False if it belongs in outer space.
+	 */
 	public static boolean checkIfRootViaDB(String word)
 	{
 		DBLexiconSQL lex 	= new DBLexiconSQL();
@@ -517,13 +548,18 @@ public class Formatter
 				isRoot = true;
 			}
 		} catch (Exception e) {
-			println("checkIfRootViaDB encountered a MySQL Problem huhuhuhuhu");
+			println("checkIfRootViaDB encountered a MySQL Problem. #DBisNotLoveAnymore");
 			e.printStackTrace();
 		}
 
 		return isRoot;
 	}
 
+	/**
+	 * Prints all found affixes. Used for debugging only and not for actual production.
+	 * @param affixes
+	 * The Array List of affixes you want to print.
+	 */
 	public static void printAllAffixes(ArrayList<Affix> affixes)
 	{
 		println("Printing all affixes: ");

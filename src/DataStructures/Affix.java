@@ -1,4 +1,4 @@
-package MorphAnalyzer;
+package DataStructures;
 
 public class Affix {
 
