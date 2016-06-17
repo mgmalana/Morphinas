@@ -1,9 +1,12 @@
 package Morphinas;
 
 import DataStructures.MAResult;
+import DataStructures.Sentence;
 import DataStructures.Word;
 import MorphAnalyzer.*;
 import MorphAnalyzer.MorphLearnerRedup;
+
+import java.util.ArrayList;
 
 /**
  * Created by laurenztolentino on 05/30/2016.
@@ -35,6 +38,15 @@ public class MorphPI
 		IOHandler ioh = new IOHandler(address, fileName);
 	}
 
+	/**
+	 * Starts file reading given an address and filename
+	 * @param address
+	 * Ex: /Users/.../something/
+	 * (Please do not forget the '/' at the end
+	 * @param fileName
+	 * Ex: file.txt
+	 * (Please include filename)
+	 */
 	public void pushFile(String address, String fileName)
 	{
 		this.address  = address;
@@ -45,9 +57,15 @@ public class MorphPI
 
 	public void pushFile()
 	{
-		println("Pushing " + fileName);
-		IOHandler ioh = new IOHandler(this.address, this.fileName);
-		this.gPush = ioh;
+		if( this.fileName != null & this.address != null )
+		{
+			println("Reading from " + fileName);
+			IOHandler ioh 	= new IOHandler(this.address, this.fileName);
+			this.gPush 		= ioh;
+		} else {
+			println("File name and/or address is null.");
+		}
+
 	}
 
 	public void pushLine(String input) throws Exception
@@ -115,6 +133,63 @@ public class MorphPI
 		return result;
 	}
 
+	/**
+	 * Breaks down wordsList into sentences. <br>
+	 * Ex: ["hello", "this", "is", "a", "sentence", "."], [ "this", "is", "another", "one". "."]
+	 * WordsList
+	 * @param wordsList
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<Sentence> createSentences(String[] wordsList) throws Exception
+	{
+		ArrayList<Sentence> sentences = new ArrayList<>();
+		ArrayList<Word> tempWords 	  = new ArrayList<>();
+		Sentence sentence;
+		Word word;
+
+		for( int i = 0; i < wordsList.length; i++ )
+		{
+			word = new Word(wordsList[i]);
+			tempWords.add(word);
+			/* Will create a sentence once a '.' is found. */
+			if( wordsList[i].equalsIgnoreCase(".") )
+			{
+				sentence = new Sentence(tempWords);
+				sentence.setOrigCount( sentence.getWordCount() );
+				sentences.add(sentence);
+				/* Clears the tempWords object. */
+				tempWords = new ArrayList<>();
+			}
+		}
+		return sentences;
+	}
+
+	public String featuredResultString(ArrayList<Sentence> sentences) throws Exception
+	{
+		/* Result to be returned */
+		String result = "";
+		/* Basic data structures objects */
+		Sentence sentence;
+		Formatter fm;
+		Word word;
+		/* Call the database (also opens a connection) */
+		DBLexiconSQL db = new DBLexiconSQL();
+
+		/* Iterate all existing sentences */
+		for( int s = 0; s < sentences.size(); s++ )
+		{
+			sentence = sentences.get(s);
+			for( int w = 0; w < sentence.getOrigCount(); w++ )
+			{
+				word = sentence.getWords().get(w);
+				fm = new Formatter(word);
+			}
+		}
+
+		return result;
+	}
+
 	public String generateFeaturedResult(String[] wordsList) throws Exception
 	{
 		String result = "";
@@ -135,7 +210,7 @@ public class MorphPI
 			if( i == 0)
 			{
 				result  = result + ":FS";
-				skip	= false;
+				skip	= true;
 			}
 			if( i == wordsList.length - 1) {
 				skip = true;
@@ -298,7 +373,23 @@ public class MorphPI
 //		return result;
 //	}
 
-	public void println(String input)
+
+
+	public static void main(String[] args) throws Exception
+	{
+
+		ArrayList<Sentence> sentences;
+		String testMe = "Hello , this is a new sentence . And this is another one . ";
+		MorphPI mpi = new MorphPI();
+
+		String[] splitMe = testMe.split(" ");
+		sentences = mpi.createSentences(splitMe);
+		println("" + sentences.size());
+
+
+	}
+
+	public static void println(String input)
 	{
 		System.out.println("" + input);
 	}
