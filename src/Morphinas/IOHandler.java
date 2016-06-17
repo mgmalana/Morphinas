@@ -46,12 +46,9 @@ public class IOHandler {
 				System.out.print("\r " + lineNumber + " out of (lagpas sa sampung daliri)");
 				finalContent = finalContent + content + " ";
 			}
-			println("\n Done reading from file huhuhuhu");
-			println(finalContent);
+			println("\n Done reading from file.");
+			/* Splits content by spaces. */
 			words = finalContent.split(" ");
-
-
-
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

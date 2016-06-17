@@ -20,6 +20,10 @@ public class Formatter
 
 	String bracketedResult;
 
+	/**
+	 * Only does magic on a single word.
+	 * @param word
+	 */
 	public Formatter(Word word)
 	{
 		this.word 		= word;

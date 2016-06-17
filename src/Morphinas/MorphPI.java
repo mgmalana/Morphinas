@@ -165,6 +165,12 @@ public class MorphPI
 		return sentences;
 	}
 
+	/**
+	 * OYEA
+	 * @param sentences
+	 * @return
+	 * @throws Exception
+	 */
 	public String featuredResultString(ArrayList<Sentence> sentences) throws Exception
 	{
 		/* Result to be returned */
@@ -175,18 +181,32 @@ public class MorphPI
 		Word word;
 		/* Call the database (also opens a connection) */
 		DBLexiconSQL db = new DBLexiconSQL();
-
+		/* Temp variables */
+		ArrayList<Word> words;
+		String single;
 		/* Iterate all existing sentences */
 		for( int s = 0; s < sentences.size(); s++ )
 		{
-			sentence = sentences.get(s);
-			for( int w = 0; w < sentence.getOrigCount(); w++ )
+			sentence  = sentences.get(s);
+			words     = sentence.getWords();
+			/* Iterate all words in a sentence */
+			for( int w = 0; w < words.size(); w++ )
 			{
-				word = sentence.getWords().get(w);
-				fm = new Formatter(word);
+				single = words.get(w).getOriginalWord();
+				/* For the first word in the sentence */
+				if( w == 0 )
+				{
+					result = result + ":FS";
+				}
+				result = result + single + " ";
+				/*mpl.analyzeMultipleMod( sentence.getWords().get(w).getOriginalWord() );
+				word  	= mpl.getWordObject();
+				fm 		= new Formatter( word );
+				fm.generateFeaturesResult();
+				fm.printFeaturesResult();*/
 			}
 		}
-
+		println(result);
 		return result;
 	}
 
@@ -379,12 +399,12 @@ public class MorphPI
 	{
 
 		ArrayList<Sentence> sentences;
-		String testMe = "Hello , this is a new sentence . And this is another one . ";
+		String testMe = "Ito ay isang halimbawa ng isang pangungusap . Ito ay pangalawang pangugusap . Leche , gumagana ba talaga ito ?";
 		MorphPI mpi = new MorphPI();
 
 		String[] splitMe = testMe.split(" ");
 		sentences = mpi.createSentences(splitMe);
-		println("" + sentences.size());
+		mpi.featuredResultString(sentences);
 
 
 	}
