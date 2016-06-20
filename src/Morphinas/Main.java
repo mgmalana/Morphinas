@@ -5,6 +5,7 @@ import MorphAnalyzer.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 /**
  * Created by laurenztolentino on 05/31/2016.
@@ -26,6 +27,20 @@ public class Main {
 		mpi.pullFeaturedResultsFromFile();
 		endTime = System.currentTimeMillis();
 
+		printElapsedTime(startTime, endTime);
+	}
+
+	public void sampleLongRunSentences() throws Exception
+	{
+		ArrayList<Sentence> sentences;
+
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
+		mpi.pushFile();
+		sentences   = mpi.createSentences(mpi.pullContent());
+		mpi.featuredResultString(sentences);
+		endTime = System.currentTimeMillis();
+
+		/* Print the elapsed time */
 		printElapsedTime(startTime, endTime);
 	}
 
@@ -53,10 +68,10 @@ public class Main {
 	public static void main(String[] args) throws Exception
 	{
 		Main m = new Main();
-		m.sampleLongRun();
+//		m.sampleLongRun();
 //		m.sampleSingleRun("inuman");
 //		m.manoLongRun();
-
+		m.sampleLongRunSentences();
 	}
 
 	public void printElapsedTime(long startTime, long endTime)

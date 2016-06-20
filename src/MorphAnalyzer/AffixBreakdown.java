@@ -49,11 +49,11 @@ public class AffixBreakdown
 	public HashMap initiateEquivalentBreakdown()
 	{
 		HashMap hm = new HashMap();
-		hm.put("pinag", 	 "~pi~nag");
-		hm.put("pinagpa",	 "~pi~nag~pa");
+		hm.put("pinag", 	 "~pinag");
+		hm.put("pinagpa",	 "~pinag~pa");
 		hm.put("ipang", 	 "~ipang");
-		hm.put("ipinag",	 "~i~pi~nag");
-		hm.put("ipinagpa", 	 "~i~pi~nag~pa");
+		hm.put("ipinag",	 "~i~pinag");
+		hm.put("ipinagpa", 	 "~i~pinag~pa");
 		hm.put("nakiki", 	 "~na$ki$ki");
 		hm.put("makiki", 	 "~ma$ki$ki");
 		hm.put("nakikipag",  "~na$ki$ki~pag");

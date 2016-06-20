@@ -68,6 +68,12 @@ public class MorphPI
 
 	}
 
+	public String[] pullContent() throws Exception
+	{
+		return gPush.readFromFile();
+
+	}
+
 	public void pushLine(String input) throws Exception
 	{
 
@@ -165,8 +171,14 @@ public class MorphPI
 		return sentences;
 	}
 
+	/*mpl.analyzeMultipleMod( sentence.getWords().get(w).getOriginalWord() );
+	word  	= mpl.getWordObject();
+	fm 		= new Formatter( word );
+	fm.generateFeaturesResult();
+	fm.printFeaturesResult();*/
+
 	/**
-	 * OYEA
+	 * Updated method
 	 * @param sentences
 	 * @return
 	 * @throws Exception
@@ -183,7 +195,7 @@ public class MorphPI
 		DBLexiconSQL db = new DBLexiconSQL();
 		/* Temp variables */
 		ArrayList<Word> words;
-		String single;
+		String single, tempSingle;
 		/* Iterate all existing sentences */
 		for( int s = 0; s < sentences.size(); s++ )
 		{
@@ -192,21 +204,92 @@ public class MorphPI
 			/* Iterate all words in a sentence */
 			for( int w = 0; w < words.size(); w++ )
 			{
-				single = words.get(w).getOriginalWord();
+				single 				= words.get(w).getOriginalWord();
+				single				= Formatter.removeNonLetters(single);
+				tempSingle 			= single;
+				boolean hasNonAlpha = single.matches("^.*[^a-zA-Z0-9 ].*$");
 				/* For the first word in the sentence */
 				if( w == 0 )
 				{
 					result = result + ":FS";
 				}
-				result = result + single + " ";
-				/*mpl.analyzeMultipleMod( sentence.getWords().get(w).getOriginalWord() );
-				word  	= mpl.getWordObject();
-				fm 		= new Formatter( word );
-				fm.generateFeaturesResult();
-				fm.printFeaturesResult();*/
+				/*
+					Start processing the features.
+				*/
+				/* When the current element is a non-alphabetical character */
+				if( single.equals(" ") || single.equals("") || single.charAt(0) == ' ')
+				{
+					//do nothing
+				}
+				else if( hasNonAlpha )
+				{
+					/* If it is a punctuation mark */
+					if( w == (words.size()-1) )
+					{
+						result = result + "#" + single + " \n";
+					}
+					else
+					{
+						result = result + "#" + single + " ";
+					}
+				}
+				/* When the first letter is capital (except for the first word in the sentence. */
+				else if( w > 1 && !single.equals(single.toLowerCase()) )
+				{
+					single = single.toLowerCase();
+					result = result + ":F*" + single + " ";
+				}
+				/* All words with 3 chars or less is already a root word (Bonus, 2003) */
+				else if( single.length() <= 3 && !single.equals(""))
+				{
+					single = single.toLowerCase();
+					result = result + "#" + single + " ";
+				}
+				/* If not mofo */
+				else
+				{
+					single = Formatter.removeNonLetters(single);
+					single = single.toLowerCase();
+					/* If the word is already a root word */
+					if( db.lookup( single ) )
+					{
+						result = result + "#" + single + " ";
+					}
+					/* When the word does not belong inside the database */
+					else
+					{
+						single = single.toLowerCase();
+						single = Formatter.removeNonLetters(single);
+
+						mpl.globalPrefix = "";
+						mpl.globalSuffix = "";
+						mpl.analyzeMultipleMod(single.toLowerCase());
+
+						word = mpl.getWordObject();
+						fm   = new Formatter(word);
+
+						tempSingle = fm.generateFeaturesResult();
+
+						if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+						{
+							result = result + tempSingle + " ";
+							if( tempSingle.equalsIgnoreCase("") || tempSingle.equalsIgnoreCase(" ") || tempSingle == null )
+							{
+								result = result + "*" + single + " ";
+							}
+						}
+						else
+						{
+							result = result + "*" + single + " ";
+						}
+					}
+				}
 			}
 		}
+
 		println(result);
+		IOHandler ioh = new IOHandler();
+		ioh.printToTxtFile(result);
 		return result;
 	}
 
