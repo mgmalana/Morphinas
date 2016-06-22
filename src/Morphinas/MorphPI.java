@@ -178,7 +178,13 @@ public class MorphPI
 	fm.printFeaturesResult();*/
 
 	/**
-	 * Updated method
+	 * USE THIS!!
+	 * This is how this method works:
+	 * Will process every sentence (in an ArrayList format).
+	 * For each sentence, the sentence's words are checked (including punctuation marks).
+	 * The checking includes: punctuation marks, *capitalized first-letter-of-the-word, and non-alphanumericals.
+	 *
+	 * *All capitalized first-letter-of-the-word are considered as nouns (except for the first word in the sentence).
 	 * @param sentences
 	 * @return
 	 * @throws Exception

@@ -112,9 +112,13 @@ public class MorphLearnerRedup implements Serializable
     {
         init(prefixTrie, suffixTrie, popTrie,posTrie, vowelChangeTrie, infixList);
     }
-    
-    
-    public void saveFile(String filename) throws Exception
+
+	/**
+	 * Hindi ako gumawa nito - Laurenz
+	 * @param filename
+	 * @throws Exception
+	 */
+	public void saveFile(String filename) throws Exception
     {
         FileOutputStream fos = new FileOutputStream(filename);
         ObjectOutputStream oos = new ObjectOutputStream(fos);

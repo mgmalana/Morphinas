@@ -46,6 +46,10 @@ public class Main {
 
 	public void manoLongRun() throws Exception
 	{
+		/*
+		MorphPI mpi = new MorphPI();
+
+		* */
 		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","Lemma.txt");
 		mpi.pushFile();
 		mpi.pullRootResultsFromFile();
