@@ -213,7 +213,8 @@ public class MorphPI
 				single 				= words.get(w).getOriginalWord();
 				single				= Formatter.removeNonLetters(single);
 				tempSingle 			= single;
-				boolean hasNonAlpha = single.matches("^.*[^a-zA-Z0-9 ].*$");
+				boolean hasNonAlpha = single.matches("^.*[^a-zA-Z].*$");
+				boolean isNumbers 	= single.matches("^.*[0-9].*$");
 				/* For the first word in the sentence */
 				if( w == 0 )
 				{
@@ -227,7 +228,11 @@ public class MorphPI
 				{
 					//do nothing
 				}
-				else if( hasNonAlpha )
+				else if( isNumbers )
+				{
+					result = result + "*" + single + " ";
+				}
+				else if( hasNonAlpha && !isNumbers )
 				{
 					/* If it is a punctuation mark */
 					if( w == (words.size()-1) )
@@ -486,16 +491,21 @@ public class MorphPI
 
 	public static void main(String[] args) throws Exception
 	{
+//
+//		ArrayList<Sentence> sentences;
+//		String testMe = "Ito ay isang halimbawa ng isang pangungusap . Ito ay pangalawang pangugusap . Leche , gumagana ba talaga ito ?";
+//		MorphPI mpi = new MorphPI();
+//
+//		String[] splitMe = testMe.split(" ");
+//		sentences = mpi.createSentences(splitMe);
+//		mpi.featuredResultString(sentences);
+//
+		String test = "1960";
+		boolean hasNonAlpha = test.matches("^.*[^a-zA-Z].*$");
+		boolean isNumbers 	= test.matches("^.*[0-9].*$");
 
-		ArrayList<Sentence> sentences;
-		String testMe = "Ito ay isang halimbawa ng isang pangungusap . Ito ay pangalawang pangugusap . Leche , gumagana ba talaga ito ?";
-		MorphPI mpi = new MorphPI();
-
-		String[] splitMe = testMe.split(" ");
-		sentences = mpi.createSentences(splitMe);
-		mpi.featuredResultString(sentences);
-
-
+		println("hasNonAlpha: " + hasNonAlpha);
+		println("isNumbers: " + isNumbers);
 	}
 
 	public static void println(String input)

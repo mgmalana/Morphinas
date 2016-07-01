@@ -100,6 +100,7 @@ public class Comparator
 				temp.add( elements[i] );
 			}
 		}
+
 		/* set result[] size */
 		result = new String[temp.size()];
 
@@ -121,37 +122,14 @@ public class Comparator
 	public static void main(String[] args)
 	{
 		/* Test input from morphinas-result.txt and compareWith.txt*/
-		String from = ":FS~ka+han #sa #mga ~ma #na #bansa #, #simula +ng #20 #siglo #, ~ma+ng #mga +ng #may :F*down *syndrome #ang ~na #sa #mga #institusyon #o +ng #hindi ~ka #sa *lipunan #. \n" +
-				":FS*magkaroon #ang #lugar #ng +ng ~ma #na #“ #rock *scene #” #sa +ng #1960’s #at #1970’s ~pa #ng :F*grand :F*ballroom #kasama #ng #mga +ng :F*alice :F*cooper #, :F*ted :F*nugent #, :F*mitch :F*ryder #, :F*rare :F*earth #, :F*brownsville :F*station #, :F*glenn :F*frey #, #at :F*bob :F*seger #. \n" +
-				":FS+an #si :F*grant #ng +ng +ng +ng #si :F*virginia :F*cherrill +ng *ika26 #ng :F*marso #, *1955 #dahil #sa #mga #paratang #na *binuntal #siya #ni :F*grant #. \n" +
-				":FS#nasa :F*refuge #ang #mga #pulo #, *coastal *wetlands #, *marshes #, #at #lupa #sa #tabi #ng #tubig #ng :F*detroit :F*river #at :F*western :F*lake :F*erie #. \n" +
-				":FS~in #ni :F*copeland #ang :F*onggo #sa ~n+ng :F*protoctista #, ~g +ng ~ma #ang #problema #ngunit ~ki #ang ~ka+ng #espesyal #na *katayuan #. \n" +
-				":FS#habang ~pa #, #hindi ~na #ni :F*dion #na ~ma #sa ~ka+an #. \n" +
-				":FS#“ :F*sinubukan *kong +in #ang ~n+ng #panunungkulan #, :F*ginoong :F*pangulo #” #. \n" +
-				":FS#gayunman #, #ang *topograpiya #at #kundisyon #ng #panahon #ang ~nag #ng #4 #% #lamang #sa #mga ~i #ng +in #. \n" +
-				":FS#ang +ng #paraan #ng ~pa #ng ~pag+in #ay ~pa *magkaroon #ng #food ~s #at #ang ~s #ay #ang ~n #sa ~pag #ng ~po #na ~nag #sa ~pag #ng #labor #na *binuo #ng +ng #paraan #ng #produksyon #. \n" +
-				":FS#sa +ng #normal #na ~pag #, ~pi+an #ng #mga #opisyal #ng #lungsod #na ~mag #ng #mga +han #at ~ma~pag+an #ng #mga #sundalo #, #dahil #sa #sitwasyon #na #ito ~na+an #ang #mga #tao #na ~mag #ng +han #at ~pag+in #para #sa ~n+ng #sarili #. ";
-		String to	= ":FS~ka+han #sa #mga #ma$u #na #bansa #, #simula +g *20 #siglo #, ~ma+ng #mga +ng #may :F*down *syndrome #ang ~na #sa #mga #institusyon #o +ng #hindi ~ka$tanggap #sa #lipunan #. \n" +
-				":FS~mag~ka #ang #lugar #ng +ng ~ma #na #\" *rock *scene #\" #sa +ng *1960's #at *1970's ~pa #ng :F*grand :F*ballroom ~ka #ng #mga +ng :F*alice :F*cooper #, :F*ted :F*nugent #, :F*mitch :F*ryder #, :F*rare :F*earth #, :F*brownsville :F*station #, :F*glenn :F*frey #, #at :F*bob :F*seger #. \n" +
-				":FS@in+an #si :F*grant #ng +ng +ng +ng #si :F*virginia :F*cherrill +g *ika-26 #ng :F*marso #, *1955 #dahil #sa #mga +ng #na @in #siya #ni :F*grant #. \n" +
-				":FS#nasa :F*refuge #ang #mga #pulo #, *coastal *wetlands #, *marshes #, #at #lupa #sa #tabi #ng #tubig #ng :F*detroit :F*river #at :F*western :F*lake :F*erie #. \n" +
-				":FS~in@i #ni :F*copeland #ang :F*onggo #sa +ng :F*protoctista #, +ng +ng ~ma #ang #problema #ngunit $ki+nin #ang +ng #espesyal #na #katayuan #. \n" +
-				"#habang ~nag$pa #, #hindi +na #ni :F*dion #na ~maka #sa ~ka+an #. \n" +
-				":FS#“ :F@in+an +ng +in #ang +ng # #, :F*ginoong :F*pangulo #\" #. \n" +
-				":FS#gayunman #, #ang #topograpiya #at #kundisyon #ng #panahon #ang ~nag$ta #ng #4 #% #lamang #sa #mga ~in$a #ng +in #. \n" +
-				":FS#ang +ng #paraan #ng ~pag #ng ~pag #ay ~pina+ng ~mag~ka #ng *food *surplus #at #ang *surplus #ay #ang +ng #sa ~pag #ng #populasyon #na ~nag$re #sa ~pag #ng #labor #na #binuo #ng +ng #paraan #ng #produksyon #. \n" +
-				":FS#sa +ng #normal #na ~pag #, ~ma$pi #ng #mga #opisyal #ng #lungsod #na ~mag #ng #mga +han #at ~ma~pag$ka+an #ng #mga #sundalo #, #dahil #sa #sitwasyon #na #ito ~na+an #ang #mga #tao #na ~mag #ng +han #at ~pag #para #sa +ng #sarili #. ";
-		String hpost = ":FS~ka #sa #mga ~ma$u #na *bansa #, *simula #noon#g *20 *siglo #, ~ma #mga #tao#ng #may :F*down *syndrome #ang ~na #mga ~i+n #o *kolonyang #hindi ~ka$tanggap- #sa *lipunan #. \n" +
-				":FS~ma #ang *lugar #ng #sa#ng~i ~ma #na #“ *rock *scene #” #sa *huling *1960’s #at *1970’s ~pa~i #ng :F*grand :F*ballroom ~ka *ng_mga *artistang :F*alice :F*cooper #, :F*ted :F*nugent #, :F*mitch :F*ryder #, :F*rare :F*earth #, :F*brownsville :F*station #, :F*glenn :F*frey #, #at :F*bob :F*seger #. \n" +
-				":FS@in #si :F*grant #ng #una#ng ~ni *asawang #si :F*virginia :F*cherrill #noon#g - #ng :F*marso #, *1955 *dahil_sa #mga ~pa #na @in #siya #ni :F*grant #. \n" +
-				"#nasa:FS :F*refuge *ang_mga *pulo #, *coastal *wetlands #, ~ma #, #at *lupa ~sa #ng *tubig #ng :F*detroit :F*river #at :F*western :F*lake :F*erie #. \n" +
-				":FS~i #ni :F*copeland #ang :F*onggo #sa #nya#ng~ka :F*protoctista #, ~ga *bahagyang ~ma~i #ang *problema #ngunit ~ki~ki$la #ang #lang~ka~ni *espesyal #na ~ka #. \n" +
-				"#habang:FS ~na #, #hindi ~na #ni :F*dion #na ~ma~ka #sa ~ka #. \n" +
-				"#“ :F@in #ko#ng *sirain #ang ~i ~pa+n$nu #, :F+g@in #ng#ulo:F~pa #” #. \n" +
-				"#yun#man:FS~ga #, #ang *topograpiya #at *kundisyon #ng #na#ho~pa+n #ang ~na #ng *4 #% #lamang #sa #mga ~i #ng *lupain #. \n" +
-				"#ang:FS #bago#ng ~pa #ng ~pa #ng ~pa #ay ~pa~pa@in ~ma #ng *food *surplus #at #ang *surplus #ay #ang ~pa~ni #sa ~pa #ng *populasyon #na ~na #sa ~pa #ng *labor #na #buo@in #ng #bago#ng ~pa #ng *produksyon #. \n" +
-				"#sa:FS #sa#ng~i *normal #na ~pa #, ~ma$pi *ng_mga *opisyal #ng *lungsod #na ~ma *ng_mga *tirahan #at ~ma~pa *ng_mga *sundalo #, *dahil_sa *sitwasyon #na #ito ~na *ang_mga #tao #na ~ma #ng *tirahan #at ~pa ~pa #nya#ng~ka ~sa #. ";
-		/* variables to be passed as params*/
+		String from = ":FS~pa #ng *masalawahang ~di #sa :F*smolensk +ng :F*agosto #16 #18 #, *nakagawa #rin #siya #ng *depensibong #posisyon #sa :F*borodino #. \n" +
+				":FS~i+ng #album #na #ito #ang ~pa #ni :F*dion #gayon #pa #man #, #at *nagpakita #si :F*dion #ng #ugali #na #husto #sa #gulang #sa #mga ~n+ng #\" :F*a :F*new :F*day :F*has :F*come #, #\" #\" #I'm :F*alive #, #\" #at #\" #Goodbye's #( :F*the :F*saddest :F*word #) #, #\" #ang ~ba+ng #naging #resulta #mula #sa ~n+ng +ng ~n *reponsibilidad #bilang +ng #ina #, #dahil #, #sa ~n+ng +ng #mga #salita #\" *becoming #a *mother *makes #you #a *grownup #. \n" +
+				":FS~ipag #para #sa *subhetibong ~ka+an #ng ~ka+han #, ~i #niya #na #, #\" :F*ang ~pag #sa *panlasa #, #samakatuwid #, #ay #hindi +ng *kognitibong ~pag #, #at #kaya #hindi #ito ~l #, #ngunit #ay #estetika #, #na ~nga #ito #na #hindi ~a+ng #maging #iba #kundi *subhetibo #ang ~nag *pantukoy #. ";
+		String to	= ":FS~pag #ng ~ma+g ~pag$di #sa :F*smolensk +g :F*agosto *16 #- *18 #, ~naka #rin #siya #ng +ng #posisyon #sa :F*borodino #. \n" +
+				":FS+ng *album #na #ito #ang ~pinaka #ni :F*dion #gayon #pa #man #, #at ~nag~pa #si :F*dion #ng #ugali #na #husto #sa #gulang #sa #mga +ng #\" :F*A :F*new :F*day :F*has :F*come #, #\" #\" :F*i'm :F*alive #, #\" #at #\" :F*goodbye's #( :F*the :F*saddest :F*word #) #, #\" #ang ~pag$ba+ng #naging #resulta #mula #sa +ng +ng #mga #salita #\" *becoming #a *mother *makes *you #a *grown-up #\" #. \n" +
+				":FS~i~pinag$ta #para #sa +ng ~ka+an #ng ~ka+han #, ~i@in #niya #na #, #\" :F*ang ~pag #sa ~pan #, #samakatuwid #, #ay #hindi +ng +ng ~pag #, #at #kaya #hindi #ito #lohikal #, #ngunit #ay *estetika #, #na ~na$nga+g #ito #na #hindi +ng #maging #iba #kundi +ng #ang ~na$gi ~pan #. ";
+
+		/* variables to be passed as params */
 		String[] compareFrom;
 		String[] compareTo;
 

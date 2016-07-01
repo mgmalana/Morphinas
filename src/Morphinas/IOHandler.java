@@ -25,6 +25,13 @@ public class IOHandler {
 		this.fileName 		= fileName;
 	}
 
+	public String[] readFromFile (String fileName) throws Exception
+	{
+		this.fileDirectory 	= "";
+		this.fileName 	  	= fileName;
+		return readFromFile();
+	}
+
 	public String[] readFromFile () throws Exception
 	{
 		ArrayList<String> input;
@@ -55,9 +62,7 @@ public class IOHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
-
+		/* return result */
 		return words;
 	}
 
