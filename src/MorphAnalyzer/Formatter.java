@@ -43,6 +43,13 @@ public class Formatter
 		char[] nonLetters 	= { '-', ' ' };
 		String result 		= "";
 		boolean willAdd 	= false;
+
+		/* when it's a single hyphen */
+		if( input.length() < 2 )
+		{
+			return input;
+		}
+
 		for( int i = 0; i < input.length(); i++ )
 		{
 
