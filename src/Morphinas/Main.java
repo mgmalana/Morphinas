@@ -73,7 +73,7 @@ public class Main {
 	{
 		Main m = new Main();
 //		m.sampleLongRun();
-//		m.sampleSingleRun("inuman");
+//		m.sampleSingleRun(".s");
 //		m.manoLongRun();
 		m.sampleLongRunSentences();
 	}

@@ -158,8 +158,13 @@ public class MorphPI
 		{
 			word = new Word(wordsList[i]);
 			tempWords.add(word);
+			boolean nextWord = true;
+			if( i < wordsList.length - 1)
+			{
+				nextWord =  wordsList[i+1].equals(wordsList[i+1].toLowerCase());
+			}
 			/* Will create a sentence once a '.' is found. */
-			if( wordsList[i].equalsIgnoreCase(".") )
+			if( wordsList[i].equalsIgnoreCase(".") && nextWord)
 			{
 				sentence = new Sentence(tempWords);
 				sentence.setOrigCount( sentence.getWordCount() );
@@ -232,12 +237,21 @@ public class MorphPI
 				{
 					result = result + "*" + single + " ";
 				}
+				/*
+				 * Fix me
+				 * - not all '.' means a new line
+				 *
+				 */
 				else if( hasNonAlpha && !isNumbers )
 				{
 					/* If it is a punctuation mark */
 					if( w == (words.size()-1) )
 					{
-						result = result + "#" + single + " \n";
+						result = result +"#" + single + " \n";
+					}
+					else if ( single.length() > 1 )
+					{
+						result = result + "*" + single + " ";
 					}
 					else
 					{
@@ -253,8 +267,42 @@ public class MorphPI
 				/* All words with 3 chars or less is already a root word (Bonus, 2003) */
 				else if( single.length() <= 3 && !single.equals(""))
 				{
-					single = single.toLowerCase();
-					result = result + "#" + single + " ";
+					if( single.charAt(0) == '.')
+					{
+						single = single.toLowerCase();
+						result = result + "*" + single + " ";
+					}
+					/* if the word starts with a '.' such as '.s'*/
+					else if( single.length() > 1 && single.charAt(0) == '.')
+					{
+						single = single.toLowerCase();
+						result = result + "*" + single + " ";
+					}
+					else if( single.length() == 1 && words.get( w + 1 ).getOriginalWord().charAt(0) == '.' &&  words.get( w + 1 ).getOriginalWord().length() > 1 )
+					{
+						if( !single.equals( single.toLowerCase() ) )
+						{
+							single = single.toLowerCase();
+							if( w > 1)
+							{
+								result = result + ":F*" + single + " ";
+							}
+							else
+							{
+								result = result + "*" + single + " ";
+							}
+						}
+						else
+						{
+							single = single.toLowerCase();
+							result = result + "*" + single + " ";
+						}
+					}
+					else {
+						single = single.toLowerCase();
+						result = result + "#" + single + " ";
+					}
+
 				}
 				/* If not mofo */
 				else
@@ -500,7 +548,7 @@ public class MorphPI
 //		sentences = mpi.createSentences(splitMe);
 //		mpi.featuredResultString(sentences);
 //
-		String test = "1960";
+		String test = ".s";
 		boolean hasNonAlpha = test.matches("^.*[^a-zA-Z].*$");
 		boolean isNumbers 	= test.matches("^.*[0-9].*$");
 
