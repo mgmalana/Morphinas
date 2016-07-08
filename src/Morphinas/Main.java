@@ -1,7 +1,6 @@
 package Morphinas;
 
 import DataStructures.*;
-import MorphAnalyzer.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -22,24 +21,43 @@ public class Main {
 
 	public void sampleLongRun() throws Exception
 	{
-		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
-		mpi.pushFile();
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","testHPOST.words");
+		mpi.readFromFile();
 		mpi.pullFeaturedResultsFromFile();
 		endTime = System.currentTimeMillis();
 
 		printElapsedTime(startTime, endTime);
 	}
 
+	/*
+	* PRIMARY
+	* */
 	public void sampleLongRunSentences() throws Exception
 	{
 		ArrayList<Sentence> sentences;
-
-		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/","testHPOST.words");
-		mpi.pushFile();
-		sentences   = mpi.createSentences(mpi.pullContent());
-		mpi.featuredResultString(sentences);
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","minitext.txt");
+		mpi.readFromFile();
+		sentences   = mpi.createSentences( mpi.pullContent() );
+		mpi.featuredResultString( sentences );
+		for( Word word: sentences.get(0).getWords() ) {
+			println(""+word.getOriginalWord());
+		}
+		/* for computing the elapsed time */
 		endTime = System.currentTimeMillis();
+		/* Print the elapsed time */
+		printElapsedTime(startTime, endTime);
+	}
 
+	public void sampleLongRunSentencesLemma() throws Exception
+	{
+		ArrayList<Sentence> sentences;
+
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","minitext.txt");
+		mpi.readFromFile();
+		sentences   = mpi.createSentences(mpi.pullContent());
+		mpi.lemmaResultStrig(sentences);
+
+		endTime = System.currentTimeMillis();
 		/* Print the elapsed time */
 		printElapsedTime(startTime, endTime);
 	}
@@ -48,10 +66,9 @@ public class Main {
 	{
 		/*
 		MorphPI mpi = new MorphPI();
-
 		* */
 		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","Lemma.txt");
-		mpi.pushFile();
+		mpi.readFromFile();
 		mpi.pullRootResultsFromFile();
 		println("reached here.");
 		endTime = System.currentTimeMillis();
@@ -63,11 +80,8 @@ public class Main {
 	public void sampleSingleRun(String sWord) throws Exception
 	{
 		MorphPI mpi = new MorphPI();
-
 		mpi.pushWord(sWord);
 	}
-
-
 
 	public static void main(String[] args) throws Exception
 	{
@@ -75,6 +89,7 @@ public class Main {
 //		m.sampleLongRun();
 //		m.sampleSingleRun(".s");
 //		m.manoLongRun();
+//		m.sampleLongRunSentencesLemma();
 		m.sampleLongRunSentences();
 	}
 

@@ -47,15 +47,15 @@ public class MorphPI
 	 * Ex: file.txt
 	 * (Please include filename)
 	 */
-	public void pushFile(String address, String fileName)
+	public void readFromFile(String address, String fileName)
 	{
 		this.address  = address;
 		this.fileName = fileName;
 
-		pushFile();
+		readFromFile();
 	}
 
-	public void pushFile()
+	public void readFromFile()
 	{
 		if( this.fileName != null & this.address != null )
 		{
@@ -139,6 +139,37 @@ public class MorphPI
 		return result;
 	}
 
+
+	public ArrayList<Sentence> createSentences( String[] sentenceStringList ) throws Exception
+	{
+		/* result to be returned */
+		ArrayList<Sentence> sentences = new ArrayList<>();
+		/* morphinas data structures */
+		ArrayList<Word> words = new ArrayList<>();
+		/* temp variables */
+		Sentence sentence;
+		String[] sWords;
+		Word word;
+		/* iterate the entire sentence array */
+		for( String sSentence: sentenceStringList)
+		{
+			/* split it kapag may espasyo */
+			sWords = sSentence.split(" ");
+			/* iterate ang panibagong listahan ng mga salita*/
+			for( String sWord: sWords)
+			{
+				word = new Word(sWord);
+				words.add(word);
+			}
+			/* i-updeyt ang panibagong sentence */
+			sentence = new Sentence();
+			sentence.setWords( words );
+			sentences.add(sentence);
+		}
+		/* finally return it with love */
+		return sentences;
+	}
+
 	/**
 	 * Breaks down wordsList into sentences. <br>
 	 * Ex: ["hello", "this", "is", "a", "sentence", "."], [ "this", "is", "another", "one". "."]
@@ -147,31 +178,53 @@ public class MorphPI
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<Sentence> createSentences(String[] wordsList) throws Exception
+	public ArrayList<Sentence> createSentencesDONOTUSE(String[] wordsList) throws Exception
 	{
 		ArrayList<Sentence> sentences = new ArrayList<>();
 		ArrayList<Word> tempWords 	  = new ArrayList<>();
 		Sentence sentence;
 		Word word;
 
-		for( int i = 0; i < wordsList.length; i++ )
+
+		/* temp variable */
+		String single;
+		for (String aWordsList : wordsList)
 		{
-			word = new Word(wordsList[i]);
-			tempWords.add(word);
-			boolean nextWord = true;
-			if( i < wordsList.length - 1)
-			{
-				nextWord =  wordsList[i+1].equals(wordsList[i+1].toLowerCase());
-			}
-			/* Will create a sentence once a '.' is found. */
-			if( wordsList[i].equalsIgnoreCase(".") && nextWord)
-			{
-				sentence = new Sentence(tempWords);
-				sentence.setOrigCount( sentence.getWordCount() );
-				sentences.add(sentence);
-				/* Clears the tempWords object. */
-				tempWords = new ArrayList<>();
-			}
+			println("ayaw :( ");
+
+//			single = aWordsList;
+//			word = new Word(single);
+//			tempWords.add(word);
+//
+//			sentence = new Sentence(tempWords);
+//			sentence.setOrigCount(sentence.getWordCount());
+//			sentences.add(sentence);
+
+
+//			if( i < wordsList.length - 1)
+//			{
+//				nextWord =  wordsList[i+1].equals(wordsList[i+1].toLowerCase());
+//			}
+//			else
+//			{
+//				nextWord = false;
+//			}
+//			if( single.equalsIgnoreCase(".\n") || single.matches(".\n") || single.equalsIgnoreCase(".\n ") )
+//			{
+//				println("there has been a split done. ");
+//				single = ".";
+//			}
+//			/* Will create a sentence once a '.' is found. */
+//			if( ( single.equalsIgnoreCase(".") || single.equalsIgnoreCase("?") || single.equalsIgnoreCase("!") )
+//					&& nextWord )
+//			{
+//				println("hello world");
+//				sentence = new Sentence(tempWords);
+//				sentence.setOrigCount( sentence.getWordCount() );
+//				sentences.add(sentence);
+//				/* Clears the tempWords object. */
+//				tempWords = new ArrayList<>();
+//			}
 		}
 		return sentences;
 	}
@@ -199,7 +252,7 @@ public class MorphPI
 		/* Result to be returned */
 		String result = "";
 		/* Basic data structures objects */
-		Sentence sentence;
+//		Sentence sentence;
 		Formatter fm;
 		Word word;
 		/* Call the database (also opens a connection) */
@@ -208,9 +261,9 @@ public class MorphPI
 		ArrayList<Word> words;
 		String single, tempSingle;
 		/* Iterate all existing sentences */
-		for( int s = 0; s < sentences.size(); s++ )
+		for( Sentence sentence: sentences )
 		{
-			sentence  = sentences.get(s);
+//			sentence  = sentences.get(s);
 			words     = sentence.getWords();
 			/* Iterate all words in a sentence */
 			for( int w = 0; w < words.size(); w++ )
@@ -352,6 +405,159 @@ public class MorphPI
 		return result;
 	}
 
+	/**
+	 * USE THIS to get only lemmas/roots
+	 * @param sentences
+	 * @return
+	 * @throws Exception
+	 */
+	public String lemmaResultStrig(ArrayList<Sentence> sentences) throws Exception
+	{
+		/* Result to be returned */
+		String result = "";
+
+		/* Basic data structures objects */
+		Formatter fm;
+		Word word;
+		/* Call the database (also opens a connection) */
+		DBLexiconSQL db = new DBLexiconSQL();
+		/* Temp variables */
+		ArrayList<Word> words;
+		String single, tempSingle;
+
+		/* Iterate all existing sentences */
+		for( Sentence sentence: sentences )
+		{
+			//sentence  = sentences.get(s);
+			words     = sentence.getWords();
+			/* Iterate all words in a sentence */
+			for( int w = 0; w < words.size(); w++ )
+			{
+				single 				= words.get(w).getOriginalWord();
+				single				= Formatter.removeNonLetters(single);
+				tempSingle 			= single;
+				boolean hasNonAlpha = single.matches("^.*[^a-zA-Z].*$");
+				boolean isNumbers 	= single.matches("^.*[0-9].*$");
+
+				/*
+					Start processing the features.
+				*/
+				/* When the current element is a non-alphabetical character */
+				if( single.equals(" ") || single.equals("") || single.charAt(0) == ' ')
+				{
+					//do nothing
+				}
+				else if( isNumbers )
+				{
+					result = result + single + " ";
+				}
+				/*
+				 * Fix me
+				 * - not all '.' means a new line
+				 *
+				 */
+				else if( hasNonAlpha && !isNumbers )
+				{
+					/* If it is a punctuation mark */
+					if( w == (words.size()-1) )
+					{
+						result = result + single + " \n";
+					}
+					else if ( single.length() > 1 )
+					{
+						result = result + single + " ";
+					}
+					else
+					{
+						result = result + single + " ";
+					}
+				}
+				/* When the first letter is capital (except for the first word in the sentence. */
+				else if( w > 1 && !single.equals(single.toLowerCase()) )
+				{
+					single = single.toLowerCase();
+					result = result + single + " ";
+				}
+				/* All words with 3 chars or less is already a root word (Bonus, 2003) */
+				else if( single.length() <= 3 && !single.equals(""))
+				{
+					if( single.charAt(0) == '.')
+					{
+						single = single.toLowerCase();
+						result = result + single + " ";
+					}
+					/* if the word starts with a '.' such as '.s'*/
+					else if( single.length() > 1 && single.charAt(0) == '.')
+					{
+						single = single.toLowerCase();
+						result = result + single + " ";
+					}
+					else if( single.length() == 1 && words.get( w + 1 ).getOriginalWord().charAt(0) == '.' &&  words.get( w + 1 ).getOriginalWord().length() > 1 )
+					{
+						if( !single.equals( single.toLowerCase() ) )
+						{
+							single = single.toLowerCase();
+							result = result + single + " ";
+						}
+						else
+						{
+							single = single.toLowerCase();
+							result = result + single + " ";
+						}
+					}
+					else {
+						single = single.toLowerCase();
+						result = result + single + " ";
+					}
+
+				}
+				/* If not mofo */
+				else
+				{
+					single = Formatter.removeNonLetters(single);
+					single = single.toLowerCase();
+					/* If the word is already a root word */
+					if( db.lookup( single ) )
+					{
+						result = result + single + " ";
+					}
+					/* When the word does not belong inside the database */
+					else
+					{
+						single = single.toLowerCase();
+						single = Formatter.removeNonLetters(single);
+
+						mpl.globalPrefix = "";
+						mpl.globalSuffix = "";
+						mpl.analyzeMultipleMod(single.toLowerCase());
+
+						word = mpl.getWordObject();
+						fm   = new Formatter(word);
+						tempSingle = word.getRootWord();
+//						tempSingle = fm.generateRootResult();
+
+						if( !fm.generateFeaturesResult().equalsIgnoreCase(""))
+						{
+							result = result + tempSingle + " ";
+							if( tempSingle.equalsIgnoreCase("") || tempSingle.equalsIgnoreCase(" ") || tempSingle == null )
+							{
+								result = result + single + " ";
+							}
+						}
+						else
+						{
+							result = result + single + " ";
+						}
+					}
+				}
+			}
+		}
+
+		println(result);
+		IOHandler ioh = new IOHandler();
+		ioh.printToTxtFile(result);
+		return result;
+	}
 	public String generateFeaturedResult(String[] wordsList) throws Exception
 	{
 		String result = "";
@@ -540,25 +746,47 @@ public class MorphPI
 	public static void main(String[] args) throws Exception
 	{
 //
-//		ArrayList<Sentence> sentences;
+		ArrayList<Sentence> sentences;
 //		String testMe = "Ito ay isang halimbawa ng isang pangungusap . Ito ay pangalawang pangugusap . Leche , gumagana ba talaga ito ?";
-//		MorphPI mpi = new MorphPI();
+		MorphPI mpi = new MorphPI();
 //
 //		String[] splitMe = testMe.split(" ");
 //		sentences = mpi.createSentences(splitMe);
 //		mpi.featuredResultString(sentences);
 //
-		String test = ".s";
-		boolean hasNonAlpha = test.matches("^.*[^a-zA-Z].*$");
-		boolean isNumbers 	= test.matches("^.*[0-9].*$");
+//		String test = ".s";
+//		boolean hasNonAlpha = test.matches("^.*[^a-zA-Z].*$");
+//		boolean isNumbers 	= test.matches("^.*[0-9].*$");
 
-		println("hasNonAlpha: " + hasNonAlpha);
-		println("isNumbers: " + isNumbers);
+//		println("hasNonAlpha: " + hasNonAlpha);
+//		println("isNumbers: " + isNumbers);
+
+		String test = "abc .\n talo . \n";
+		String[] testList = test.split(" ");
+		sentences = mpi.createSentences(testList);
+
+		for( int i = 0; i < sentences.size(); i++ )
+		{
+			Sentence sentence = sentences.get(i);
+			for( int k = 0; k < sentence.getWordCount(); k++ )
+			{
+				Word word   = sentence.getWords().get(k);
+				String temp = word.getOriginalWord();
+				if( temp.equals(".\n") ) {
+					temp = ".";
+				}
+				print(temp + " ");
+			}
+
+
+		}
+
 	}
 
-	public static void println(String input)
+	public static void print(Object input) { System.out.print("" + input.toString()); }
+	public static void println(Object input)
 	{
-		System.out.println("" + input);
+		System.out.println("" + input.toString());
 	}
 
 }

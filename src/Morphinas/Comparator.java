@@ -26,7 +26,7 @@ public class Comparator
 	 * @param compareFrom
 	 * @return
 	 */
-	public double compare(String[] compareTo, String[] compareFrom)
+	public double compare( String[] compareTo, String[] compareFrom )
 	{
 		/* constructor thingy */
 		this.compareFrom = compareFrom;
@@ -62,7 +62,9 @@ public class Comparator
 			if( from.equals(to) )
 			{
 				correct++;
-			} else {
+			}
+			else
+			{
 				println("["+ i +"] r"+ from + " != " + to);
 			}
 		}

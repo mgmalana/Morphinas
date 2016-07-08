@@ -50,12 +50,18 @@ public class IOHandler {
 			{
 				lineNumber++;
 				System.out.print(""+lineNumber);
-				System.out.print("\r " + lineNumber + " out of (lagpas sa sampung daliri)");
-				finalContent = finalContent + content + " ";
+				System.out.print("\r " + lineNumber + " out of (lagpas sa sampung daliriri)");
+				if( content.toString().matches("^.*[.].*$")) {
+					if( content.toString().length() > 1 )
+					{
+
+					}
+				}
+				finalContent = finalContent + content + "\n";
 			}
 			println("\n Done reading from file.");
 			/* Splits content by spaces. */
-			words = finalContent.split(" ");
+			words = finalContent.split("\n");
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -85,31 +91,30 @@ public class IOHandler {
 		writer.close();
 	}
 
-	public static void main(String[] args)
+	public static void main( String[] args ) throws Exception
 	{
-
-		IOHandler fp = new IOHandler();
-		String[] testData;
-
-
-
-		try
-		{
-			testData = fp.readFromFile();
-
-			for(int i = 0; i < testData.length; i++)
-			{
-				println("" + testData[i]);
-			}
-
+		IOHandler ioh = new IOHandler("/Users/laurenztolentino/Developer/Morphinas/morphinas/","minitext.txt");
+		String[] test = new String[0];
+		try {
+			test = ioh.readFromFile();
 		} catch (Exception e) {
-			e.printStackTrace();
+			println("Error reading file. File is probably missing. <sad face emoticon>");
 		}
+
+		for ( String temp: test )
+		{
+			println(temp + "");
+		}
+
 
 	}
 
-	public static void println(String input)
+	public static void print( Object input )
 	{
-		System.out.println("" + input);
+		System.out.print("" + input.toString() );
+	}
+	public static void println(Object input)
+	{
+		System.out.println("" + input.toString());
 	}
 }
