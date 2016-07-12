@@ -9,12 +9,11 @@ public class Word {
 	private String rootWord;
 	private int affixCount = 0;
 	private boolean isRoot = false;
-	//	private Affix affixes;	
+	private int frequencyCount = 0;
+	//	private Affix affixes;
 	private ArrayList<Affix> prefixes;
 	private ArrayList<Affix> suffixes;
 	private ArrayList<Affix> infixes;
-
-
 
 	private ArrayList<Affix> redups;
 

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 /**
  * Created by laurenztolentino on 05/31/2016.
  */
-public class IOHandler {
+public class IOHandler
+{
 	String fileDirectory = "/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/";
 	String fileName		 = "words.txt";
 
@@ -27,7 +28,7 @@ public class IOHandler {
 
 	public String[] readFromFile (String fileName) throws Exception
 	{
-		this.fileDirectory 	= "";
+		//this.fileDirectory 	= "";
 		this.fileName 	  	= fileName;
 		return readFromFile();
 	}

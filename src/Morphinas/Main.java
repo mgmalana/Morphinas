@@ -35,14 +35,12 @@ public class Main {
 	public void sampleLongRunSentences() throws Exception
 	{
 		ArrayList<Sentence> sentences;
-		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","minitext.txt");
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","testHPOST.words");
 		mpi.readFromFile();
 		sentences   = mpi.createSentences( mpi.pullContent() );
 		mpi.featuredResultString( sentences );
-		for( Word word: sentences.get(0).getWords() ) {
-			println(""+word.getOriginalWord());
-		}
-		/* for computing the elapsed time */
+
+//		/* for computing the elapsed time */
 		endTime = System.currentTimeMillis();
 		/* Print the elapsed time */
 		printElapsedTime(startTime, endTime);
@@ -52,7 +50,7 @@ public class Main {
 	{
 		ArrayList<Sentence> sentences;
 
-		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","minitext.txt");
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","testHPOST2.words");
 		mpi.readFromFile();
 		sentences   = mpi.createSentences(mpi.pullContent());
 		mpi.lemmaResultStrig(sentences);

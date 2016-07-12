@@ -71,7 +71,6 @@ public class MorphPI
 	public String[] pullContent() throws Exception
 	{
 		return gPush.readFromFile();
-
 	}
 
 	public void pushLine(String input) throws Exception
@@ -139,7 +138,6 @@ public class MorphPI
 		return result;
 	}
 
-
 	public ArrayList<Sentence> createSentences( String[] sentenceStringList ) throws Exception
 	{
 		/* result to be returned */
@@ -165,7 +163,9 @@ public class MorphPI
 			sentence = new Sentence();
 			sentence.setWords( words );
 			sentences.add(sentence);
+			words = new ArrayList<>();
 		}
+
 		/* finally return it with love */
 		return sentences;
 	}
@@ -229,6 +229,18 @@ public class MorphPI
 		return sentences;
 	}
 
+	public void printSentencesTest(ArrayList<Sentence> sentences)
+	{
+		for( Sentence sentence: sentences )
+		{
+			for(Word word: sentence.getWords() )
+			{
+				print( word.getOriginalWord() + " ");
+			}
+			println("");
+		}
+	}
+
 	/*mpl.analyzeMultipleMod( sentence.getWords().get(w).getOriginalWord() );
 	word  	= mpl.getWordObject();
 	fm 		= new Formatter( word );
@@ -260,6 +272,11 @@ public class MorphPI
 		/* Temp variables */
 		ArrayList<Word> words;
 		String single, tempSingle;
+
+		ArrayList<Sentence> tempSentences = sentences;
+
+
+
 		/* Iterate all existing sentences */
 		for( Sentence sentence: sentences )
 		{

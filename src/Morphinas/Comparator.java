@@ -1,6 +1,7 @@
 package Morphinas;
 
 import java.util.ArrayList;
+import DataStructures.*;
 import java.util.Objects;
 
 /**
@@ -19,6 +20,17 @@ public class Comparator
 
 	/* constructor */
 	public Comparator() {}
+
+
+	public double uniqueComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences)
+	{
+		/* Value to be returned a.k.a. the result */
+		double result = 0.0;
+
+
+
+		return result;
+	}
 
 	/**
 	 * Starts comparing from a to b :)
@@ -121,7 +133,7 @@ public class Comparator
 		System.out.println("" + input.toString());
 	}
 
-	public static void main(String[] args)
+	public void oldMain()
 	{
 		/* Test input from morphinas-result.txt and compareWith.txt*/
 		/* PASTE BELOW */
@@ -182,6 +194,20 @@ public class Comparator
 
 		/* start comparing */
 		comp.compare(compareTo, compareFrom);
+	}
+
+	public void runComparator()
+	{
+		/* file handler */
+		IOHandler ioh;
+		/* ArrayLists */
+
+
+	}
+
+	public static void main(String[] args)
+	{
+
 	}
 
 }
