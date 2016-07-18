@@ -33,6 +33,12 @@ public class IOHandler
 		return readFromFile();
 	}
 
+	/**
+	 *
+	 * @return
+	 * an array list of sentences. Each array contains a sentence (one line = one sentence).
+	 * @throws Exception
+	 */
 	public String[] readFromFile () throws Exception
 	{
 		ArrayList<String> input;

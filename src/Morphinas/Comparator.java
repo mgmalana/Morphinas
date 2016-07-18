@@ -2,6 +2,8 @@ package Morphinas;
 
 import java.util.ArrayList;
 import DataStructures.*;
+
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -22,12 +24,45 @@ public class Comparator
 	public Comparator() {}
 
 
-	public double uniqueComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences)
+	public double lemmaComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences)
 	{
 		/* Value to be returned a.k.a. the result */
 		double result = 0.0;
+		/* HashSet of unique words */
+		HashSet<String> uniqueWords = new HashSet<>();
+		/* temp variables */
+		ArrayList<Word> goldWords, testWords;
+		Sentence goldSentence, testSentence;
+		String to, from;
+		/* lengths and sizes */
+		int sentencesSize = testeeSentences.size();
+		int goldWordsLength, testWordsLength;
+		/* iterate all sentences */
+		for( int i = 0; i < sentencesSize; i++ )
+		{
+			/* place values */
+			testSentence = testeeSentences.get(i);
+			goldSentence = goldStandardSentences.get(i);
+			goldWords 	 = goldSentence.getWords();
+			testWords 	 = testSentence.getWords();
+			/* update lengths */
+			goldWordsLength = goldWords.size();
+			testWordsLength  = testWords.size();
+			/* make sure both sentences are aligned (same no. of words) */
+			if( goldWordsLength != testWordsLength )
+			{
+				println("Sentence #" + i + " are not of the same length between gold standard and system output. G-"+ goldWordsLength + " T-" + testWordsLength);
+				System.exit(0);
+			}
+			/* otherwise */
+			for( int k = 0; k < goldWordsLength; k++ )
+			{
+				from = goldWords.get(k).getRootWord().toLowerCase();
+				to 	 = testWords.get(k).getRootWord().toLowerCase();
 
 
+			}
+		}
 
 		return result;
 	}
@@ -196,18 +231,83 @@ public class Comparator
 		comp.compare(compareTo, compareFrom);
 	}
 
+	public void runUniqueComparator()
+	{
+		/* ArrayLists */
+		ArrayList<Sentence> goldStandardSentences = new ArrayList<>();
+		ArrayList<Sentence> testeeSentences 	  = new ArrayList<>();
+		ArrayList<Word> goldenWords				  = new ArrayList<>();
+		ArrayList<Word> testeeWords				  = new ArrayList<>();
+		Sentence testSentence, goldSentence;
+		String test, gold;
+
+	}
+
 	public void runComparator()
 	{
-		/* file handler */
-		IOHandler ioh;
+		/*
+		* Requirements for running UniqueComparator
+		* */
 		/* ArrayLists */
+		ArrayList<Sentence> goldStandardSentences = new ArrayList<>();
+		ArrayList<Sentence> testSentences 	      = new ArrayList<>();
+		ArrayList<Word> goldenWords				  = new ArrayList<>();
+		ArrayList<Word> testWords				  = new ArrayList<>();
+		Sentence testSentence 					  = new Sentence();
+		Sentence goldSentence 					  = new Sentence();
+		/* Example sentence */
+		String test = ":FS~ka+han #sa #mga ~ma #na #bansa #, #simula +ng *20 #siglo #, ~ma+ng #mga +ng #may :F*down *syndrome #ang ~na #sa #mga #institusyon #o +ng #hindi ~ka #sa *lipunan #. ";
+		String gold = ":FS~ka+han #sa #mga #ma$u #na #bansa #, #simula +g *20 #siglo #, ~ma+ng #mga +ng #may :F*down *syndrome #ang ~na #sa #mga #institusyon #o +ng #hindi ~ka$tanggap #sa #lipunan #. ";
+		/* String to Word()s */
+		String[] aTest = test.split(" ");
+		String[] aGold = gold.split(" ");
+		goldenWords	   = convertToWordsList(aGold);
+		testWords      = convertToWordsList(aTest);
+		/* Word()s to Sentence() */
+		goldSentence.setWords(goldenWords);
+		testSentence.setWords(testWords);
+		/* Sentence() to Sentence()s*/
+		goldStandardSentences.add(goldSentence);
+		testSentences.add(testSentence);
+		/* Start uniqueComparator*/
+		lemmaComparator(testSentences, goldStandardSentences);
+	}
+
+	public ArrayList<Word> convertToWordsList(String[] sWords)
+	{
+		ArrayList<Word> words = new ArrayList<>();
+
+		for( String word: sWords )
+		{
+			Word wWord = new Word(word);
+			words.add(wWord);
+		}
+
+		return words;
+	}
+
+	public void testHashSetCode()
+	{
+		HashSet<String> testSet = new HashSet<>();
+
+		testSet.add("cheska");
+		testSet.add("gela");
+		testSet.add("rissa");
+
+		println("HashSet test: " + testSet.contains("Gela"));
+	}
+
+	public void testLemmaComparator()
+	{
 
 
 	}
 
 	public static void main(String[] args)
 	{
-
+		Comparator comp = new Comparator();
+		/*comp.testLemmaComparator();*/
+		comp.testHashSetCode();
 	}
 
 }
