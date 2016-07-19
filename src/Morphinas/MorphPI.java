@@ -78,7 +78,7 @@ public class MorphPI
 
 	}
 
-	public void pushWord(String sWord) throws Exception
+	public void analyzeWord(String sWord) throws Exception
 	{
 		MorphLearnerRedup mpl = new MorphLearnerRedup();
 		String input = Formatter.removeNonLetters(sWord);

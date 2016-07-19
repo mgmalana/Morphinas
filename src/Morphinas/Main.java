@@ -49,8 +49,8 @@ public class Main {
 	public void sampleLongRunSentencesLemma() throws Exception
 	{
 		ArrayList<Sentence> sentences;
-
-		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","testHPOST2.words");
+		//testHPOST2.words
+		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/","minitext.txt");
 		mpi.readFromFile();
 		sentences   = mpi.createSentences(mpi.pullContent());
 		mpi.lemmaResultStrig(sentences);
@@ -78,7 +78,7 @@ public class Main {
 	public void sampleSingleRun(String sWord) throws Exception
 	{
 		MorphPI mpi = new MorphPI();
-		mpi.pushWord(sWord);
+		mpi.analyzeWord(sWord);
 	}
 
 	public static void main(String[] args) throws Exception
@@ -87,8 +87,8 @@ public class Main {
 //		m.sampleLongRun();
 //		m.sampleSingleRun(".s");
 //		m.manoLongRun();
-//		m.sampleLongRunSentencesLemma();
-		m.sampleLongRunSentences();
+		m.sampleLongRunSentencesLemma();
+//		m.sampleLongRunSentences();
 	}
 
 	public void printElapsedTime(long startTime, long endTime)

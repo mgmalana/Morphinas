@@ -2,19 +2,27 @@ package Morphinas;
 
 import java.io.*;
 import java.util.ArrayList;
-
+import DataStructures.Sentence;
+import DataStructures.Word;
 /**
  * Created by laurenztolentino on 05/31/2016.
  */
 public class IOHandler
 {
-	String fileDirectory = "/Users/laurenztolentino/Eclipse/workspace/Morphinas/src/";
+	String fileDirectory = "/Users/laurenztolentino/Developer/Morphinas/morphinas/";
 	String fileName		 = "words.txt";
-
 
 	public IOHandler()
 	{}
 
+	/**
+	 * Wherein the fileDirectory is the default "/Users/laurenztolentino/Developer/Morphinas/morphinas/" and you need to feed a fileName.
+	 * @param fileName
+	 */
+	public IOHandler( String fileName )
+	{
+		this.fileName = fileName;
+	}
 	/**
 	 * When you have a custom fileDirectory and fileName
 	 * @param fileDirectory
@@ -61,7 +69,7 @@ public class IOHandler
 				if( content.toString().matches("^.*[.].*$")) {
 					if( content.toString().length() > 1 )
 					{
-
+						/* hmmmm what goes in here? */
 					}
 				}
 				finalContent = finalContent + content + "\n";
@@ -77,6 +85,60 @@ public class IOHandler
 		}
 		/* return result */
 		return words;
+	}
+
+	/**
+	 * Runs readFromFileToSentence() with a modified fileName to be read from.
+	 * @param fileName
+	 * A fileName that is different from the one used in the constructor
+	 * @return
+	 * result from the original readFromFileToSentence using the modified fileName
+	 * @throws Exception
+	 */
+	public ArrayList<Sentence> readFromFileToSentence( String fileName ) throws Exception
+	{
+		this.fileName = fileName;
+		return readFromFileToSentences();
+	}
+
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<Sentence> readFromFileToSentences() throws Exception
+	{
+		/* to be returned */
+		ArrayList<Sentence> resultSentences = new ArrayList<>();
+		/* usable variables */
+		String[] stringSentences;
+		String[] stringWords;
+		/* DataStructure variables */
+		ArrayList<Word> words;
+		Sentence sentence;
+		Word word;
+		/* get String[] of sentences from readFromFile */
+		stringSentences = readFromFile();
+
+		for( String singleSentence: stringSentences )
+		{
+			/* generate String[] of words */
+			stringWords = singleSentence.split(" ");
+			/* create array list of words that will be added to the sentence */
+			words = new ArrayList<>();
+			/* iterate all words in the String[] */
+			for( String singleWord: stringWords )
+			{
+				word = new Word( singleWord );
+				words.add( word );
+			}
+			/* add the generated word()s to a sentence */
+			sentence = new Sentence();
+			sentence.setWords( words );
+			/* update resultSentences with the new sentence() generated */
+			resultSentences.add( sentence );
+		}
+
+		return resultSentences;
 	}
 
 	public void printToTxtFileRoot(String fileName, String toPrint) throws Exception
