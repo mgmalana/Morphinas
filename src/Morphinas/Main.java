@@ -81,15 +81,25 @@ public class Main {
 		mpi.analyzeWord(sWord);
 	}
 
+	/*
+	 *
+	 * MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN
+	 *
+	 */
+
 	public static void main(String[] args) throws Exception
 	{
 		Main m = new Main();
 //		m.sampleLongRun();
 //		m.sampleSingleRun(".s");
 //		m.manoLongRun();
-		m.sampleLongRunSentencesLemma();
-//		m.sampleLongRunSentences();
+//		m.sampleLongRunSentencesLemma();
+		m.sampleLongRunSentences();
 	}
+
+	/*
+	* UTILITY
+	* */
 
 	public void printElapsedTime(long startTime, long endTime)
 	{
