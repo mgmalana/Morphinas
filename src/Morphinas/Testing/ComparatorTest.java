@@ -6,7 +6,6 @@ package Morphinas.Testing;
 import DataStructures.Sentence;
 import DataStructures.Word;
 import Morphinas.Comparator;
-import Morphinas.MorphPI;
 import Morphinas.IOHandler;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class ComparatorTest
 
 	public void oldMain()
 	{
-		/* Test input from morphinas-result.txt and compareWith.txt*/
+		/* Test input from morphinas-result.txt and compareWith.txt */
 		/* PASTE BELOW */
 		String from = ":FS~ka+han #sa #mga ~ma #na #bansa #, #simula +ng *20 #siglo #, ~ma+ng #mga +ng #may :F*down *syndrome #ang ~na #sa #mga #institusyon #o +ng #hindi ~ka #sa *lipunan #. \n" +
 				":FS*magkaroon #ang #lugar #ng +ng ~ma #na #“ #rock *scene #” #sa +ng *1960’s #at *1970’s ~pa #ng :F*grand :F*ballroom #kasama #ng #mga +ng :F*alice :F*cooper #, :F*ted :F*nugent #, :F*mitch :F*ryder #, :F*rare :F*earth #, :F*brownsville :F*station #, :F*glenn :F*frey #, #at :F*bob :F*seger #. \n" +
@@ -109,8 +108,8 @@ public class ComparatorTest
 		/* String to Word()s */
 		String[] aTest = test.split(" ");
 		String[] aGold = gold.split(" ");
-		goldenWords	   = convertToWordsList(aGold);
-		testWords      = convertToWordsList(aTest);
+		goldenWords	   = comp.convertToWordsList(aGold);
+		testWords      = comp.convertToWordsList(aTest);
 		/* Word()s to Sentence() */
 		goldSentence.setWords(goldenWords);
 		testSentence.setWords(testWords);
@@ -121,43 +120,47 @@ public class ComparatorTest
 		comp.lemmaComparator(testSentences, goldStandardSentences);
 	}
 
-	public ArrayList<Word> convertToWordsList(String[] sWords)
-	{
-		ArrayList<Word> words = new ArrayList<>();
-
-		for( String word: sWords )
-		{
-			Word wWord = new Word(word);
-			words.add(wWord);
-		}
-
-		return words;
-	}
-
 	public void testHashSetCode()
 	{
 		HashSet<String> testSet = new HashSet<>();
 
-		testSet.add("cheska");
-		testSet.add("gela");
-		testSet.add("rissa");
+		testSet.add("besh");
+		testSet.add("pak");
+		testSet.add("ganern");
 
-		println("HashSet test: " + testSet.contains("Gela"));
+		println("HashSet test: " + testSet.contains("pak"));
 	}
 
 	public void testLemmaComparator() throws Exception
 	{
-		MorphPI mpi = new MorphPI("/Users/laurenztolentino/Developer/Morphinas/morphinas/", "minitext.txt");
+		/* IOHandler */
+		IOHandler ioh = new IOHandler();
+		/* usable variables */
+		ArrayList<Sentence> test, gold;
+		/* resulting accuracy */
+		double result = 0.0;
 
+		/* read from file and transfer to local variables */
+		gold = ioh.readFromFileToSentence("minitext-morphinas.txt");
+		test = ioh.readFromFileToSentence("morphinas-result.txt");
 
+		/* lemma comparator in Comparator() */
+		result = comp.lemmaComparator( test, gold );
+		println( "result: " + result );
 	}
+
+	/*
+	 *
+	 * MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN
+	 *
+	 */
+
 	public static void main(String[] args) throws Exception
 	{
-		IOHandler ioh = new IOHandler();
-		MorphPI morphPI = new MorphPI();
-
-
+		ComparatorTest compTest = new ComparatorTest();
+		compTest.testLemmaComparator();
 	}
+
 	/*
 	 * UTILITY CODE
 	 *

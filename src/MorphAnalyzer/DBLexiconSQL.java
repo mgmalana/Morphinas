@@ -62,6 +62,7 @@ public class DBLexiconSQL {
         return t.lookup(word);
     }
 
+
 	public static boolean staticLookup(String word) throws Exception
 	{
 		DBLexiconSQL lex = new DBLexiconSQL();

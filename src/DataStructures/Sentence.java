@@ -89,8 +89,24 @@ public class Sentence
 		return this.words;
 	}
 
-	public static void println(String input)
+	public void printString()
 	{
-		System.out.println("" + input);
+		for( Word word : words )
+		{
+			print( word.getOriginalWord() + " ");
+		}
+	}
+
+	/*
+	*  UTILITY CODE
+	* */
+	public static void print(Object in)
+	{
+		System.out.print("" + in.toString() );
+	}
+
+	public static void println(Object input)
+	{
+		System.out.println("" + input.toString() );
 	}
 }

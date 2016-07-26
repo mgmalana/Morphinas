@@ -27,8 +27,10 @@ public class Comparator
 	public double lemmaComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences)
 	{
 		/* Value to be returned a.k.a. the result */
-		double result = 0.0;
-		double total, currentScore = 0.00;
+		double result;
+		/* Values for computing resulting accuracy */
+		double currentScore = 0.00;
+		double total 		= 0.00;
 		/* HashSet of unique words */
 		HashSet<String> uniqueWords = new HashSet<>();
 		/* temp variables */
@@ -36,12 +38,21 @@ public class Comparator
 		Sentence goldSentence, testSentence;
 		String to, from;
 		/* lengths and sizes */
-		int sentencesSize = testeeSentences.size();
-		int goldWordsLength, testWordsLength;
+		int sentencesSize, goldWordsLength, testWordsLength;
+		/*
+		* Check if sentence sizes of both gold standard and test are equal.
+		* Program will exit if they are not of the same sizes.
+		* */
+		if( testeeSentences.size() == goldStandardSentences.size() )
+		{
+			sentencesSize = testeeSentences.size();
+		} else {
+			sentencesSize = -99;
+		}
 		/* iterate all sentences */
 		for( int i = 0; i < sentencesSize; i++ )
 		{
-			/* place values */
+			/* update temp values */
 			testSentence = testeeSentences.get(i);
 			goldSentence = goldStandardSentences.get(i);
 			goldWords 	 = goldSentence.getWords();
@@ -53,26 +64,55 @@ public class Comparator
 			if( goldWordsLength != testWordsLength )
 			{
 				println("Sentence #" + i + " are not of the same length between gold standard and system output. G-"+ goldWordsLength + " T-" + testWordsLength);
+				println("sentence gold: ");
+				goldSentence.printString();
+				println("");
+				println("sentence testee: ");
+				testSentence.printString();
 				System.exit(0);
+			} else {
+//				total = total + goldWordsLength;
 			}
 			/* otherwise */
 			for( int k = 0; k < goldWordsLength; k++ )
 			{
-				from = goldWords.get(k).getRootWord().toLowerCase();
-				to 	 = testWords.get(k).getRootWord().toLowerCase();
-				/* if the word in from is not present in the uniqueWords set */
+				from = testWords.get(k).getOriginalWord().toLowerCase();
+				to 	 = goldWords.get(k).getOriginalWord().toLowerCase();
+				if( k == 0 )
+				{
+					uniqueWords.add( from );
+					currentScore++;
+					total++;
+				}
 				if( !uniqueWords.contains( from ) )
 				{
-					if( from.equals(to) )
+					uniqueWords.add( from );
+					if( from.equalsIgnoreCase( to ) )
 					{
-						/* add to hashlist of known words */
-						uniqueWords.add(from);
-						/* update the score */
 						currentScore++;
 					}
+					total++;
 				}
-			}
-		}
+
+			} /* /iterates all words */
+		} /* /iterates all sentences */
+
+		/* prints all found unique words :> */
+//		for( String testWord: uniqueWords)
+//		{
+//			println(testWord);
+//		}
+
+		result = currentScore / ( total);
+		return result;
+	}
+
+	public ArrayList<String> findNoneUniqueWords(ArrayList<Sentence> testSentences, ArrayList<Sentence> goldSentences)
+	{
+		/* Result */
+		ArrayList<String> result = new ArrayList<>();
+
+
 
 		return result;
 	}
@@ -173,11 +213,17 @@ public class Comparator
 		return result;
 	}
 
-	public static void main(String[] args)
+	public ArrayList<Word> convertToWordsList(String[] sWords)
 	{
-		Comparator comp = new Comparator();
-		/*comp.testLemmaComparator();*/
-//		comp.testHashSetCode();
+		ArrayList<Word> words = new ArrayList<>();
+
+		for( String word: sWords )
+		{
+			Word wWord = new Word(word);
+			words.add(wWord);
+		}
+
+		return words;
 	}
 
 	/*
@@ -188,3 +234,5 @@ public class Comparator
 		System.out.println("" + input.toString());
 	}
 }
+
+
