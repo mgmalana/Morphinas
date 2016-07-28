@@ -13,6 +13,9 @@ import java.util.HashSet;
 
 public class ComparatorTest
 {
+	private final static String FEATURES = "features";
+	private final static String LEMMA 	 = "lemma";
+
 	Comparator comp = new Comparator();
 
 	public void oldMain()
@@ -117,7 +120,7 @@ public class ComparatorTest
 		goldStandardSentences.add(goldSentence);
 		testSentences.add(testSentence);
 		/* Start uniqueComparator*/
-		comp.lemmaComparator(testSentences, goldStandardSentences);
+		comp.multiComparator(testSentences, goldStandardSentences, LEMMA);
 	}
 
 	public void testHashSetCode()
@@ -145,8 +148,42 @@ public class ComparatorTest
 		test = ioh.readFromFileToSentence("morphinas-result.txt");
 
 		/* lemma comparator in Comparator() */
-		result = comp.lemmaComparator( test, gold );
+		result = comp.multiComparator( test, gold, LEMMA );
 		println( "result: " + result );
+	}
+
+	public void testFeatureComparator() throws Exception
+	{
+		/* IOHandler */
+		IOHandler ioh = new IOHandler();
+		/* usable variables */
+		ArrayList<Sentence> test, gold;
+		/* resulting accuracy */
+		double result = 0.0;
+
+		/* read from file and transfer to local variables */
+		test = ioh.readFromFileToSentence("morphTest.pinas");
+		gold = ioh.readFromFileToSentence("morphGold.pinas");
+
+		/* lemma comparator in Comparator() */
+		result = comp.multiComparator( test, gold, FEATURES );
+		println( "result: " + result );
+	}
+
+	public void printUnaligned() throws Exception
+	{
+		/* IOHandler */
+		IOHandler ioh = new IOHandler();
+		/* usable variables */
+		ArrayList<Sentence> test, gold;
+		/* resulting accuracy */
+		double result = 0.0;
+
+		/* read from file and transfer to local variables */
+		test = ioh.readFromFileToSentence("morphTest.pinas");
+		gold = ioh.readFromFileToSentence("morphGold.pinas");
+
+		println( comp.unalignedFinder(test, gold) );
 	}
 
 	/*
@@ -158,7 +195,8 @@ public class ComparatorTest
 	public static void main(String[] args) throws Exception
 	{
 		ComparatorTest compTest = new ComparatorTest();
-		compTest.testLemmaComparator();
+//		compTest.testFeatureComparator();
+		compTest.printUnaligned();
 	}
 
 	/*

@@ -97,6 +97,17 @@ public class Sentence
 		}
 	}
 
+	public String stringSentence()
+	{
+		String result = "";
+		for( Word word : words )
+		{
+			result = result + word.getOriginalWord() + " ";
+		}
+
+		return result;
+	}
+
 	/*
 	*  UTILITY CODE
 	* */

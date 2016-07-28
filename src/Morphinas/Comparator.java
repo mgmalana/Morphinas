@@ -23,8 +23,53 @@ public class Comparator
 	/* constructor */
 	public Comparator() {}
 
+	public String unalignedFinder( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldSentences)
+	{
+		/* result */
+		String result = "";
+		/* temp variables */
+		ArrayList<Word> goldWords, testWords;
+		Sentence goldSentence, testSentence;
+		String to, from;
+		/* lengths and sizes */
+		int sentencesSize, goldWordsLength, testWordsLength;
+		/*
+		* Check if sentence sizes of both gold standard and test are equal.
+		* Program will exit if they are not of the same sizes.
+		* */
+		if( testeeSentences.size() == goldSentences.size() )
+		{
+			sentencesSize = testeeSentences.size();
+		} else {
+			sentencesSize = -99;
+		}
+		for( int i = 0; i < sentencesSize; i++ )
+		{
+			/* update temp values */
+			testSentence = testeeSentences.get(i);
+			goldSentence = goldSentences.get(i);
+			goldWords 	 = goldSentence.getWords();
+			testWords 	 = testSentence.getWords();
+			/* update lengths */
+			goldWordsLength = goldWords.size();
+			testWordsLength  = testWords.size();
+			/* make sure both sentences are aligned (same no. of words) */
+			if( goldWordsLength != testWordsLength )
+			{
+//				println("Sentence #" + i + " are not of the same length between gold /n standard and system output. G-length: "+ goldWordsLength + "vs T-length: " + testWordsLength);
+//				println("Your Annotation: ");
+//				goldSentence.printString();
+//				println("");
+//				println("My Morphinas: ");
+				testSentence.printString();
+				result = result + " LINE-" + (i+388) + "\n GOLD: \n" + goldSentence.stringSentence() + "\n MORPHINAS: \n " + testSentence.stringSentence() + "\n";
+			}
+		}
 
-	public double lemmaComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences)
+		return result;
+	}
+
+	public double multiComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences, String compareType)
 	{
 		/* Value to be returned a.k.a. the result */
 		double result;
@@ -73,28 +118,52 @@ public class Comparator
 			} else {
 //				total = total + goldWordsLength;
 			}
-			/* otherwise */
-			for( int k = 0; k < goldWordsLength; k++ )
+			/* if we are comparing root words/lemma*/
+			if( compareType.equalsIgnoreCase("lemma") || compareType.equalsIgnoreCase("root") || compareType.equalsIgnoreCase("rootword"))
 			{
-				from = testWords.get(k).getOriginalWord().toLowerCase();
-				to 	 = goldWords.get(k).getOriginalWord().toLowerCase();
-				if( k == 0 )
+				/* otherwise */
+				for( int k = 0; k < goldWordsLength; k++ )
 				{
-					uniqueWords.add( from );
-					currentScore++;
-					total++;
-				}
-				if( !uniqueWords.contains( from ) )
+					from = testWords.get(k).getOriginalWord().toLowerCase();
+					to 	 = goldWords.get(k).getOriginalWord().toLowerCase();
+					if( k == 0 )
+					{
+						uniqueWords.add( from );
+						currentScore++;
+						total++;
+					}
+					if( !uniqueWords.contains( from ) )
+					{
+						uniqueWords.add( from );
+						if( from.equalsIgnoreCase( to ) )
+						{
+							currentScore++;
+						}
+						total++;
+					}
+
+				} /* /iterates all words */
+			}
+			/* if we are comparing features*/
+			else if ( compareType.equalsIgnoreCase("features") || compareType.equalsIgnoreCase("feature") )
+			{
+				for( int k = 0; k < goldWordsLength; k++ )
 				{
-					uniqueWords.add( from );
-					if( from.equalsIgnoreCase( to ) )
+					from = testWords.get(k).getOriginalWord().toLowerCase();
+					to 	 = goldWords.get(k).getOriginalWord().toLowerCase();
+					if( from.equalsIgnoreCase(to) )
 					{
 						currentScore++;
 					}
 					total++;
 				}
+			}
+			/* if user did not specify anything #dickmove */
+			else
+			{
+				println("Please input comparison type: 'lemma' or 'features'");
+			}
 
-			} /* /iterates all words */
 		} /* /iterates all sentences */
 
 		/* prints all found unique words :> */
@@ -106,6 +175,8 @@ public class Comparator
 		result = currentScore / ( total);
 		return result;
 	}
+
+
 
 	public ArrayList<String> findNoneUniqueWords(ArrayList<Sentence> testSentences, ArrayList<Sentence> goldSentences)
 	{
