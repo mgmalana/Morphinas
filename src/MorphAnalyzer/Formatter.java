@@ -315,7 +315,7 @@ public class Formatter
 		println("Printing contents of the Word object/class.");
 		if( word.finalContentsReady(true) == true)
 		{
-			println("Original: " + word.getRootWord() + "| Root: " + this.rootWord);
+			println("Original: " + word.getOriginalWord() + "| Root: " + this.rootWord);
 			println("Number of Affixes in the original word: " + word.getAffixCount());
 			println("Prefixes: " + this.prefixes.size() + " | Infixes: " + this.infixes.size() + " | Suffixes: " + this.suffixes.size());
 			println("Printing Prefixes:");

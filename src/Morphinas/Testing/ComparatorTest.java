@@ -166,7 +166,7 @@ public class ComparatorTest
 		gold = ioh.readFromFileToSentence("morphGold.pinas");
 
 		/* lemma comparator in Comparator() */
-		result = comp.multiComparator( test, gold, FEATURES );
+		result = comp.multiComparator( test, gold, FEATURES, 1 );
 		println( "result: " + result );
 	}
 
@@ -195,8 +195,8 @@ public class ComparatorTest
 	public static void main(String[] args) throws Exception
 	{
 		ComparatorTest compTest = new ComparatorTest();
-//		compTest.testFeatureComparator();
-		compTest.printUnaligned();
+		compTest.testFeatureComparator();
+//		compTest.printUnaligned();
 	}
 
 	/*

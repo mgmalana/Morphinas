@@ -3,6 +3,7 @@ package Morphinas;
 import java.util.ArrayList;
 import DataStructures.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -23,10 +24,65 @@ public class Comparator
 	/* constructor */
 	public Comparator() {}
 
+	public HashMap<String, String> hashOriginalToFeatures(ArrayList<Sentence> originalSentences, ArrayList<Sentence> featureSentences)
+	{
+		HashMap<String, String> knownPairs = new HashMap<>();
+
+		for( int s = 0; s < originalSentences.size(); s++ )
+		{
+			/* Get the Word()s in each sentences */
+			ArrayList<Word> originalWords = originalSentences.get(s).getWords();
+			ArrayList<Word> featuredWords = featureSentences.get(s).getWords();
+			/* Number of Word()s in each sentence */
+			int length = 0;
+			/*
+			 *	Make sure that the number of Word()s the current sentence is same for both original and featured
+			 */
+			if( originalWords.size() == featuredWords.size() )
+			{
+				length = originalWords.size();
+			} else {
+				length = -9999;
+				println("Well, the number of words in a certain sentence is wrong: Sentence No. " + s);
+				System.exit( 0 );
+			}
+			/*
+			 *	Iterate all words in the current sentence
+			 */
+			for( int w = 0; w < length; w++ )
+			{
+				String original = originalWords.get(w).getOriginalWord();
+				String featured = featuredWords.get(w).getOriginalWord();
+				if( knownPairs.size() == 0 )
+				{
+					knownPairs.put( original, featured );
+				}
+				else
+				{
+					if( !knownPairs.containsKey( original ) )
+					{
+						knownPairs.put( original, featured );
+					}
+				}
+			}
+		}
+
+		return knownPairs;
+	}
+
+	public double multiComparatorUnique(ArrayList<Sentence> testSentences, ArrayList<Sentence> goldSentences, ArrayList<Sentence> origSentences, String comparatorType )
+	{
+		/* Resulting accuracy */
+		double accuracy = 0.0;
+
+		/* return the accuracy */
+		return accuracy;
+	}
+
 	public String unalignedFinder( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldSentences)
 	{
 		/* result */
-		String result = "";
+		String result = "\n";
 		/* temp variables */
 		ArrayList<Word> goldWords, testWords;
 		Sentence goldSentence, testSentence;
@@ -62,14 +118,19 @@ public class Comparator
 //				println("");
 //				println("My Morphinas: ");
 				testSentence.printString();
-				result = result + " LINE-" + (i+388) + "\n GOLD: \n" + goldSentence.stringSentence() + "\n MORPHINAS: \n " + testSentence.stringSentence() + "\n";
+				result = result + " LINE-" + (i+21) + "\n GOLD: \n" + goldSentence.stringSentence() + "\n MORPHINAS: \n " + testSentence.stringSentence() + "\n";
 			}
 		}
 
 		return result;
 	}
 
-	public double multiComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences, String compareType)
+	public double multiComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences, String compareType )
+	{
+		return multiComparator( testeeSentences, goldStandardSentences, compareType, 0);
+	}
+
+	public double multiComparator( ArrayList<Sentence> testeeSentences, ArrayList<Sentence> goldStandardSentences, String compareType, int options)
 	{
 		/* Value to be returned a.k.a. the result */
 		double result;
@@ -154,6 +215,13 @@ public class Comparator
 					if( from.equalsIgnoreCase(to) )
 					{
 						currentScore++;
+					}
+					else
+					{
+						if( options == 1 )
+						{
+							println("[" + i + "-"+ k + "]" +from + " || " + to);
+						}
 					}
 					total++;
 				}
