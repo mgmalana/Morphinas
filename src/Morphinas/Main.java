@@ -90,10 +90,10 @@ public class Main {
 	{
 		Main m = new Main();
 //		m.sampleLongRun();
-		m.sampleSingleRun("lipunan");
+//		m.sampleSingleRun("lipunan");
 //		m.manoLongRun();
 //		m.sampleLongRunSentencesLemma();
-//		m.sampleLongRunSentences();
+		m.sampleLongRunSentences();
 	}
 
 	/*
