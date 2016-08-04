@@ -332,7 +332,12 @@ public class MorphPI
 				else if( w > 1 && !single.equals(single.toLowerCase()) )
 				{
 					single = single.toLowerCase();
-					result = result + ":F*" + single + " ";
+					if( db.lookup(single) ) {
+						result = result + ":F#" + single + " ";
+					}
+					else {
+						result = result + ":F*" + single + " ";
+					}
 				}
 				/* All words with 3 chars or less is already a root word (Bonus, 2003) */
 				else if( single.length() <= 3 && !single.equals(""))
@@ -379,6 +384,19 @@ public class MorphPI
 				{
 					single = Formatter.removeNonLetters(single);
 					single = single.toLowerCase();
+					/* When the first letter is capital (except for the first word in the sentence. */
+					/*if( w > 1 && !single.equals(single.toLowerCase()) )
+					{
+						single = single.toLowerCase();
+						*//*result = result + ":F";*//*
+						if( db.lookup( single ) )
+						{
+							result = result + ":F#" + single + " ";
+						}
+						else {
+							result = result + ":F*" + single + " ";
+						}
+					}*/
 					/* If the word is already a root word */
 					if( db.lookup( single ) )
 					{
