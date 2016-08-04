@@ -16,7 +16,13 @@ public class ComparatorTest
 	private final static String FEATURES = "features";
 	private final static String LEMMA 	 = "lemma";
 
+	/* IOHandler */
+	IOHandler ioh = new IOHandler();
 	Comparator comp = new Comparator();
+	/* usable variables */
+	ArrayList<Sentence> test, gold, orig;
+	/* resulting accuracy */
+	double result = 0.0;
 
 	public void oldMain()
 	{
@@ -172,18 +178,22 @@ public class ComparatorTest
 
 	public void printUnaligned() throws Exception
 	{
-		/* IOHandler */
-		IOHandler ioh = new IOHandler();
-		/* usable variables */
-		ArrayList<Sentence> test, gold;
-		/* resulting accuracy */
-		double result = 0.0;
 
+		/* read from file and transfer to local variables */
+		this.test = ioh.readFromFileToSentence("morphTest.pinas");
+		this.gold = ioh.readFromFileToSentence("morphGold.pinas");
+
+		println( comp.unalignedFinder(this.test, this.gold) );
+	}
+
+	public void testComparatorWithHash() throws Exception
+	{
 		/* read from file and transfer to local variables */
 		test = ioh.readFromFileToSentence("morphTest.pinas");
 		gold = ioh.readFromFileToSentence("morphGold.pinas");
-
-		println( comp.unalignedFinder(test, gold) );
+		orig = ioh.readFromFileToSentence("morphOriginal.pinas");
+		/* run */
+		comp.multiComparatorUnique( test, gold, orig, "feature" );
 	}
 
 	/*
@@ -195,8 +205,9 @@ public class ComparatorTest
 	public static void main(String[] args) throws Exception
 	{
 		ComparatorTest compTest = new ComparatorTest();
-		compTest.testFeatureComparator();
+//		compTest.testFeatureComparator();
 //		compTest.printUnaligned();
+		compTest.testComparatorWithHash();
 	}
 
 	/*

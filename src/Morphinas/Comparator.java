@@ -24,6 +24,12 @@ public class Comparator
 	/* constructor */
 	public Comparator() {}
 
+	/**
+	 * Converts two Sentence()s: original as the key and feature as the value, into a HashMap that only contains unique key and value.
+	 * @param originalSentences
+	 * @param featureSentences
+	 * @return
+	 */
 	public HashMap<String, String> hashOriginalToFeatures(ArrayList<Sentence> originalSentences, ArrayList<Sentence> featureSentences)
 	{
 		HashMap<String, String> knownPairs = new HashMap<>();
@@ -74,8 +80,40 @@ public class Comparator
 	{
 		/* Resulting accuracy */
 		double accuracy = 0.0;
+		double current  = 0.0;
+		double total    = 0.0;
+		/* HashMap to contain unique words and it's equivalent feature String */
+		HashMap<String, String> goldHash;
+		HashMap<String, String> testHash;
+		/**/
+		Object[] goldObj;
+		goldHash = hashOriginalToFeatures(origSentences, goldSentences);
+		testHash = hashOriginalToFeatures(origSentences, testSentences);
+		/*  */
+		HashMap.Entry<String, String> goldEntry;
+		HashMap.Entry<String, String> testEntry;
+		for( HashMap.Entry<String, String> gold : goldHash.entrySet() )
+		{
+			String origString, testString, goldString;
+			origString = gold.getKey();
+			testString = testHash.get(origString);
+			goldString = gold.getValue();
 
+			if( testString.equals(goldString) )
+			{
+				current++;
+			} else {
+				println(origString + " = " + testString + " vs " + goldString );
+			}
+			total++;
+		}
+		/* get accuracy */
+//		total  	 = goldHash.size();
+		/* compute for the accuracy (or rather the average ;) )*/
+		accuracy = current / total;
 		/* return the accuracy */
+		println("accuracy = " + current + " + " + total);
+		println("Accuracy: " + accuracy);
 		return accuracy;
 	}
 
