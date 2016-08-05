@@ -98,10 +98,12 @@ public class MorphLearnerRedup implements Serializable
          */
         suffixTrie.store("an"); // has a lot of issues 
         suffixTrie.store("in");
-//        suffixTrie.store("nan"); // just added ( w/o -> tawan; w/ -> tawa)
+//      suffixTrie.store("nan"); // just added ( w/o -> tawan; w/ -> tawa)
         suffixTrie.store("han");
         suffixTrie.store("hin");
 		suffixTrie.store("ng");
+		suffixTrie.store("g"); // ADDED AUG 5
+		infixList.add(new RewriteRule("ni", "")); // ADDED AUG 5
         infixList.add(new RewriteRule("in",""));
         infixList.add(new RewriteRule("um",""));
         init(prefixTrie, (SuffixTrie) suffixTrie, popTrie,posTrie, vowelChangeTrie, infixList);

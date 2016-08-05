@@ -75,6 +75,7 @@ public class AffixBreakdown
 		hm.put("mapaki", 	 "~ma~pa~ki");
 		hm.put("mapakiki", 	 "~ma~pa$ki$ki");
 		hm.put("paki", 		 "~pa~ki");
+		hm.put("pagka", 	 "~pag~ka");
 		hm.put("pakiki", 	 "~pa$ki$ki");
 		hm.put("pakikipag",  "~pa$ki$ki~pag");
 		hm.put("pagki", 	 "~pag~ki");

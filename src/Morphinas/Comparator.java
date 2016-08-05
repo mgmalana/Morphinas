@@ -102,7 +102,12 @@ public class Comparator
 			if( testString.equals(goldString) )
 			{
 				current++;
-			} else {
+			}
+			else if( testString.contains("#") )
+			{
+				current++;
+			}
+			else {
 				println(origString + " = " + testString + " vs " + goldString );
 			}
 			total++;
