@@ -178,7 +178,7 @@ public class ComparatorTest
 
 	public void printUnaligned() throws Exception
 	{
-
+		println("Printing all found unaligned lines");
 		/* read from file and transfer to local variables */
 		this.test = ioh.readFromFileToSentence("morphTest.pinas");
 		this.gold = ioh.readFromFileToSentence("morphGold.pinas");
@@ -206,8 +206,8 @@ public class ComparatorTest
 	{
 		ComparatorTest compTest = new ComparatorTest();
 //		compTest.testFeatureComparator();
-//		compTest.printUnaligned();
-		compTest.testComparatorWithHash();
+		compTest.printUnaligned();
+//		compTest.testComparatorWithHash();
 	}
 
 	/*

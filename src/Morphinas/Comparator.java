@@ -150,8 +150,10 @@ public class Comparator
 			goldWords 	 = goldSentence.getWords();
 			testWords 	 = testSentence.getWords();
 			/* update lengths */
-			goldWordsLength = goldWords.size();
+			goldWordsLength  = goldWords.size();
 			testWordsLength  = testWords.size();
+			/* set countPad to 1 if you are checking line numbers starting from 1, otherwise use an appropriate offset */
+			int countPad = 1;
 			/* make sure both sentences are aligned (same no. of words) */
 			if( goldWordsLength != testWordsLength )
 			{
@@ -161,7 +163,7 @@ public class Comparator
 //				println("");
 //				println("My Morphinas: ");
 				testSentence.printString();
-				result = result + " LINE-" + (i+21) + "\n GOLD: \n" + goldSentence.stringSentence() + "\n MORPHINAS: \n " + testSentence.stringSentence() + "\n";
+				result = result + " LINE-" + (i + countPad) + "\n GOLD: \n" + goldSentence.stringSentence() + "\n MORPHINAS: \n " + testSentence.stringSentence() + "\n";
 			}
 		}
 
