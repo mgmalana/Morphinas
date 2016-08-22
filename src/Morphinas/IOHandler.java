@@ -9,7 +9,7 @@ import DataStructures.Word;
  */
 public class IOHandler
 {
-	String fileDirectory = "/Users/laurenztolentino/Developer/Morphinas/morphinas/";
+	String fileDirectory = "/Users/laurenz/Developer/morphinas/Morphinas/";
 	String fileName		 = "words.txt";
 
 	public IOHandler()

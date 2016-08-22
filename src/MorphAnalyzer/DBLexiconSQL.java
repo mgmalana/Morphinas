@@ -9,7 +9,7 @@ public class DBLexiconSQL {
 
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://localhost:3306/movedb?autoReconnect=true&useSSL=false";
+	static final String DB_URL = "jdbc:mysql://localhost:3306/morphinas?autoReconnect=true&useSSL=false";
 	// Database credentials
 	static final String USER = "root";
 	static final String PASS = "dlsu1234";

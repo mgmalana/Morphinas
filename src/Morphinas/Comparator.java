@@ -413,7 +413,7 @@ public class Comparator
 	/*
 	 * Utility Code
 	 */
-	public static void println(Object input)
+	public static void println(String input)
 	{
 		System.out.println("" + input.toString());
 	}
