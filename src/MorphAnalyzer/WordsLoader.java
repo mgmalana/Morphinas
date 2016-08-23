@@ -14,8 +14,10 @@ import java.util.*;
 /**
  *
  * @author Solomon See
+ * another author Laurenz Tolentino
  */
-public class WordsLoader {
+public class WordsLoader
+{
     Connection con;
     ResultSet rs;
     public static final int TRAINING=0;
@@ -23,7 +25,7 @@ public class WordsLoader {
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/movedb?autoReconnect=true&useSSL=false";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/morphinas?autoReconnect=true&useSSL=false";
     // Database credentials
     static final String USER = "root";
     static final String PASS = "dlsu1234";
@@ -52,7 +54,7 @@ public class WordsLoader {
         }
         else {
             con.close();
-            return null;            
+            return null;
         }
     }
     

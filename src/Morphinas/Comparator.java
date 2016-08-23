@@ -49,7 +49,8 @@ public class Comparator
 				length = originalWords.size();
 			} else {
 				length = -9999;
-				println("Well, the number of words in a certain sentence is wrong: Sentence No. " + s);
+				println("Well, the number of words in a certain sentence is wrong: Sentence No. " + (s+1) );
+				originalSentences.get(s).printString();
 				System.exit( 0 );
 			}
 			/*

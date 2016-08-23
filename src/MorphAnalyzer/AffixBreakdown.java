@@ -63,6 +63,7 @@ public class AffixBreakdown
 		hm.put("makipag", 	 "~ma~ki~pag");
 		hm.put("makikipag",  "~ma~ki~pag");
 		hm.put("naka", 		 "~na~ka");
+		hm.put("nagpa", 	 "~nag~pa");
 		hm.put("nakaka", 	 "~na$ka$ka");
 		hm.put("maka", 	 	 "~ma~ka");
 		hm.put("makaka", 	 "~ma$ka$ka");

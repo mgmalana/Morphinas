@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class MorphPI
 {
 	MorphLearnerRedup mpl = new MorphLearnerRedup();
-	WordsLoader training = new WordsLoader(WordsLoader.TRAINING);
+//	WordsLoader training = new WordsLoader(WordsLoader.TRAINING);
 	IOHandler gPush;
 //	Enter filename here
 	String address;
@@ -146,13 +146,16 @@ public class MorphPI
 		ArrayList<Word> words = new ArrayList<>();
 		/* temp variables */
 		Sentence sentence;
+		String replaceUnderscore;
 		String[] sWords;
 		Word word;
 		/* iterate the entire sentence array */
 		for( String sSentence: sentenceStringList)
 		{
+			/* removes '_' in a sentence and splits them */
+			replaceUnderscore = sSentence.replace("_", " ");
 			/* split it kapag may espasyo */
-			sWords = sSentence.split(" ");
+			sWords = replaceUnderscore.split(" ");
 			/* iterate ang panibagong listahan ng mga salita*/
 			for( String sWord: sWords)
 			{

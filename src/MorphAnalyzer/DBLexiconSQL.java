@@ -1,6 +1,7 @@
-package MorphAnalyzer;
+ package MorphAnalyzer;
 
 import java.sql.*;
+import java.util.Vector;
 
 import DataStructures.DefaultTrieImpl;
 import DataStructures.Trie;
@@ -17,7 +18,8 @@ public class DBLexiconSQL {
 	ResultSet rs;   
     PreparedStatement psFindRoot = null;
     Trie t = new Trie(new DefaultTrieImpl());
-    
+
+
 	public DBLexiconSQL()
 	{
 		Connection conn = null;
@@ -62,6 +64,30 @@ public class DBLexiconSQL {
         return t.lookup(word);
     }
 
+    public Vector getAllPossibleMatches(String word) throws Exception
+	{
+		return t.getAllPossibleMatch(word);
+	}
+
+    public String getJdbcDriver()
+	{
+		return this.JDBC_DRIVER;
+	}
+
+	public String getDbUrl()
+	{
+		return this.DB_URL;
+	}
+
+	public String getUser()
+	{
+		return this.USER;
+	}
+
+	public String getPass()
+	{
+		return this.PASS;
+	}
 
 	public static boolean staticLookup(String word) throws Exception
 	{

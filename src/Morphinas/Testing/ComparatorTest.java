@@ -206,8 +206,8 @@ public class ComparatorTest
 	{
 		ComparatorTest compTest = new ComparatorTest();
 //		compTest.testFeatureComparator();
-		compTest.printUnaligned();
-//		compTest.testComparatorWithHash();
+//		compTest.printUnaligned();
+		compTest.testComparatorWithHash();
 	}
 
 	/*
