@@ -101,10 +101,10 @@ public class Main {
 		println("Hello world");
 		Main m = new Main();
 //		m.sampleLongRun();
-//		m.sampleSingleRun("nagpakita");
+		m.sampleSingleRun("magulohan");
 //		m.manoLongRun();
 //		m.sampleLongRunSentencesLemma();
-		m.sampleLongRunSentences();
+//		m.sampleLongRunSentences();
 	}
 
 	/*
