@@ -101,7 +101,7 @@ public class Main {
 		println("Hello world");
 		Main m = new Main();
 //		m.sampleLongRun();
-		m.sampleSingleRun("magulohan");
+		m.sampleSingleRun("maguluhan");
 //		m.manoLongRun();
 //		m.sampleLongRunSentencesLemma();
 //		m.sampleLongRunSentences();

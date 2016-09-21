@@ -127,6 +127,8 @@ public class Comparator
 	{
 		/* result */
 		String result = "\n";
+		/* set countPad to 1 if you are checking line numbers starting from 1, otherwise use an appropriate offset */
+		int countPad = 388;
 		/* temp variables */
 		ArrayList<Word> goldWords, testWords;
 		Sentence goldSentence, testSentence;
@@ -153,8 +155,7 @@ public class Comparator
 			/* update lengths */
 			goldWordsLength  = goldWords.size();
 			testWordsLength  = testWords.size();
-			/* set countPad to 1 if you are checking line numbers starting from 1, otherwise use an appropriate offset */
-			int countPad = 1;
+
 			/* make sure both sentences are aligned (same no. of words) */
 			if( goldWordsLength != testWordsLength )
 			{
