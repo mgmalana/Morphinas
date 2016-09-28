@@ -115,13 +115,17 @@ public class Reduplication_Exp
 
 		public void compareByLetter(String left, String right)
 		{
+			String commonSubstring  = "";
+			char changePoint;
+			int length = left.length();
+
 			if( left.length() != right.length() )
 			{
 				println("Left & Right part are not of the same length");
 			}
-			else {
+			else
+			{
 
-				int length = left.length();
 			}
 
 
