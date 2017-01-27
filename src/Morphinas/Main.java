@@ -13,13 +13,14 @@ public class Main {
 
 	// for printing running time
 	long startTime, endTime;
-	String addressPrefix = "/Users/laurenz/Developer/morphinas/Morphinas/";
+	String addressPrefix = "/Users/laurenz/Developer/morphinas/Morphinas/Matthew/";
 
 	/* testHPOST Variations to load */
 	final String testHPOSTuncleaned = "testHPOST-uncleaned.words";
-	final String testHPOST = "testHPOST.words";
-	final String morphRead = "morphRead.pinas";
-
+	final String testHPOST 			= "testHPOST.words";
+	final String morphRead 			= "morphRead.pinas";
+	final String minitext			= "minitext.txt";
+	final String readThisFile		= "correct_words.txt";
 	public Main() throws Exception
 	{
 		this.startTime  = System.currentTimeMillis();
@@ -44,7 +45,7 @@ public class Main {
 	public void sampleLongRunSentences() throws Exception
 	{
 		ArrayList<Sentence> sentences;
-		MorphPI mpi = new MorphPI(addressPrefix, testHPOSTuncleaned );
+		MorphPI mpi = new MorphPI(addressPrefix, minitext );
 		mpi.readFromFile();
 		sentences   = mpi.createSentences( mpi.pullContent() );
 		mpi.featuredResultString( sentences );
@@ -74,7 +75,7 @@ public class Main {
 		/*
 		MorphPI mpi = new MorphPI();
 		* */
-		MorphPI mpi = new MorphPI(addressPrefix,"Lemma.txt");
+		MorphPI mpi = new MorphPI(addressPrefix, readThisFile);
 		mpi.readFromFile();
 		mpi.pullRootResultsFromFile();
 		println("reached here.");
@@ -101,8 +102,8 @@ public class Main {
 		println("Hello world");
 		Main m = new Main();
 //		m.sampleLongRun();
-		m.sampleSingleRun("pinaghati-hatian");
-//		m.manoLongRun();
+//		m.sampleSingleRun("mamaril");
+		m.manoLongRun();
 //		m.sampleLongRunSentencesLemma();
 //		m.sampleLongRunSentences();
 	}
