@@ -449,7 +449,7 @@ public class MorphPI
 	 * @return
 	 * @throws Exception
 	 */
-	public String lemmaResultStrig(ArrayList<Sentence> sentences) throws Exception
+	public String lemmaResultString(ArrayList<Sentence> sentences) throws Exception
 	{
 		/* Result to be returned */
 		String result = "";

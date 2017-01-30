@@ -63,7 +63,7 @@ public class Main {
 		MorphPI mpi = new MorphPI(addressPrefix,"minitext.txt");
 		mpi.readFromFile();
 		sentences   = mpi.createSentences(mpi.pullContent());
-		mpi.lemmaResultStrig(sentences);
+		mpi.lemmaResultString(sentences);
 
 		endTime = System.currentTimeMillis();
 		/* Print the elapsed time */
