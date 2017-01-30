@@ -333,7 +333,7 @@ public class Method1 implements Runnable
 			String test = "pinagkainan";
 
 
-			tm.test1(test);
+			tm.test3(test);
 //			tm.testWordObject();
 		}
 
@@ -395,12 +395,29 @@ public class Method1 implements Runnable
 		 */
 		public void test2(String test)
 		{
-			Stem stem = new Stem("pinagkainan");
+			Stem stem = new Stem(test);
 			Method1 m1 = new Method1("Thread-1", stem, _LEFT);
 			m1.start();
 			Method1 m2 = new Method1("Thread-2", stem, _RIGHT);
 			m2.start();
 
+		}
+
+		/**
+		 * Runs a single thread only (left directed)
+		 * @param test
+		 */
+		public void test3(String test)
+		{
+			Stem stem = new Stem(test);
+			Method1 m1 = new Method1("Thread-1", stem, _LEFT);
+			m1.start();
+
+			println("");
+			for(String e: m1.foundRoots )
+			{
+				println("Found: " + e);
+			}
 		}
 
 		public void testWordObject()
