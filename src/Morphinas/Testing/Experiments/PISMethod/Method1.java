@@ -232,7 +232,7 @@ public class Method1 implements Runnable
 			{
 				println("Found: " + el);
 			}
-			Thread.sleep(50);
+			thread.wait();
 		} catch (Exception e)
 		{
 			println(this.threadName + " stopped working.");
@@ -333,7 +333,7 @@ public class Method1 implements Runnable
 			String test = "pinagkainan";
 
 
-			tm.test3(test);
+			tm.test2(test);
 //			tm.testWordObject();
 		}
 
