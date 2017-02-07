@@ -55,6 +55,7 @@ public class MorphLearnerRedup implements Serializable
         prefixTrie.store("in");
         prefixTrie.store("ka");
         prefixTrie.store("ni");
+        /* most of these will be processed by AffixBreakdown first */
         prefixTrie.store("napag");
         prefixTrie.store("mapag");
         prefixTrie.store("nakipag");
@@ -69,8 +70,8 @@ public class MorphLearnerRedup implements Serializable
         prefixTrie.store("makaka");    
         prefixTrie.store("nagka");
         prefixTrie.store("nagkaka");        
-        prefixTrie.store("magka");
-        prefixTrie.store("magkaka"); 
+//        prefixTrie.store("magka");
+//        prefixTrie.store("magkaka");
         prefixTrie.store("napa");
         prefixTrie.store("napaki");
         prefixTrie.store("napakiki");
@@ -87,12 +88,18 @@ public class MorphLearnerRedup implements Serializable
          * Add NEW prefixTrie.store here 
          */
 		prefixTrie.store("ina");
+		/* 2017 adds */
+		prefixTrie.store("ika");
+		prefixTrie.store("ika-");
+		prefixTrie.store("isa-");
 //		prefixTrie.store("ku");
         //prefixTrie.store("pi");
         prefixTrie.store("pinag");
         prefixTrie.store("pinagpa"); // W/ this = pinagpaliban -> liban
+		// except pinagpala -> ala is wrong
         //prefixTrie.store("ipinagpa"); // w/ this = ?
-        //
+
+		prefixTrie.store("paki");
         /*
          * Start of suffixTrie.stores
          */

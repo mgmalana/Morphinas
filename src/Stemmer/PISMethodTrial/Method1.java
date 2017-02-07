@@ -1,4 +1,4 @@
-package Morphinas.Testing.Experiments.PISMethod;
+package Stemmer.PISMethodTrial;
 
 
 import java.util.ArrayList;
@@ -331,7 +331,6 @@ public class Method1 implements Runnable
 			Method1 m1 		= new Method1();
 			TestMethod1 tm 	= new TestMethod1(m1);
 			String test = "pinagkainan";
-
 
 			tm.test2(test);
 //			tm.testWordObject();

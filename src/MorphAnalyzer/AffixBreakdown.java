@@ -69,8 +69,8 @@ public class AffixBreakdown
 		hm.put("makaka", 	 "~ma$ka$ka");
 		hm.put("nagka", 	 "~nag~ka");
 		hm.put("nagkaka", 	 "~nag$ka$ka");
-		hm.put("magka", 	 "~mag~ka");
-		hm.put("magkaka", 	 "~mag$ka$ka");
+//		hm.put("magka", 	 "~mag~ka");
+//		hm.put("magkaka", 	 "~mag$ka$ka");
 		hm.put("napaki", 	 "~na~pa~ki");
 		hm.put("napakiki", 	 "~na~pa$ki$ki");
 		hm.put("mapaki", 	 "~ma~pa~ki");
@@ -82,7 +82,25 @@ public class AffixBreakdown
 		hm.put("pagki", 	 "~pag~ki");
 		hm.put("pagkiki", 	 "~pag$ki$ki");
 		hm.put("pagkikipag", "~pag$ki$ki~pag");
-
+		/* recently added jan 2017 */
+		hm.put("ika", 		 "~i~ka");
+		hm.put("ikapag",	 "~i~ka~pag");
+		hm.put("ikapagpa", 	 "~i~ka~pag~pa");
+		hm.put("ikina", 	 "~i~ka@in");
+		hm.put("ikapang", 	 "~i~ka~pang");
+		hm.put("ipa", 		 "~i~pa");
+		hm.put("ipaki", 	 "~i~paki");
+		hm.put("ipag", 		 "~i~pag");
+		hm.put("ipagka", 	 "~i~pag~ka");
+		hm.put("ipagpa", 	 "~i~pag~pa");
+		hm.put("ipapang", 	 "~i$pa$pang");
+		hm.put("makapag", 	 "~maka~pag");
+		hm.put("magkanda", 	 "~mag~kanda");
+		hm.put("magkang", 	 "~mag~ka~ng");
+		hm.put("magkasing",  "~mag~ka~sing");
+		hm.put("maging",  	 "~maging");
+		hm.put("nakapag-", 	 "~nakapag");
+		hm.put("nakapaka", 	 "~napa~ka");
 		return hm;
 	}
 

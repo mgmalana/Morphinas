@@ -13,7 +13,7 @@ public class DBLexiconSQL_Test
 
 	public void testGetAllPosibleMatches() throws Exception
 	{
-		String word = "taong";
+		String word = "malimit";
 		Vector result;
 		DBLexiconSQL db = new DBLexiconSQL();
 		result = db.getAllPossibleMatches(word);

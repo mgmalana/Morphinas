@@ -13,7 +13,7 @@ public class Main {
 
 	// for printing running time
 	long startTime, endTime;
-	String addressPrefix = "/Users/laurenz/Developer/morphinas/Morphinas/Matthew/";
+	String addressPrefix = "/Users/laurenz/Developer/morphinas/Morphinas/ReadFiles/";
 
 	/* testHPOST Variations to load */
 	final String testHPOSTuncleaned = "testHPOST-uncleaned.words";
@@ -45,7 +45,8 @@ public class Main {
 	public void sampleLongRunSentences() throws Exception
 	{
 		ArrayList<Sentence> sentences;
-		MorphPI mpi = new MorphPI(addressPrefix, minitext );
+//		MorphPI mpi = new MorphPI(addressPrefix, minitext );
+		MorphPI mpi = new MorphPI(addressPrefix, testHPOST);
 		mpi.readFromFile();
 		sentences   = mpi.createSentences( mpi.pullContent() );
 		mpi.featuredResultString( sentences );
@@ -100,10 +101,11 @@ public class Main {
 	public static void main(String[] args) throws Exception
 	{
 		println("Hello world");
+
 		Main m = new Main();
 //		m.sampleLongRun();
-//		m.sampleSingleRun("mamaril");
-		m.manoLongRun();
+		m.sampleSingleRun("pinalalaro");
+//		m.manoLongRun();
 //		m.sampleLongRunSentencesLemma();
 //		m.sampleLongRunSentences();
 	}

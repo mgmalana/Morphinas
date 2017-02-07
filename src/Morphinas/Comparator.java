@@ -115,10 +115,10 @@ public class Comparator
 		}
 		/* get accuracy */
 //		total  	 = goldHash.size();
-		/* compute for the accuracy (or rather the average ;) )*/
+		/* compute for the accuracy (or rather the average ;) ) */
 		accuracy = current / total;
 		/* return the accuracy */
-		println("accuracy = " + current + " + " + total);
+		println("accuracy = " + current + " / " + total);
 		println("Accuracy: " + accuracy);
 		return accuracy;
 	}
