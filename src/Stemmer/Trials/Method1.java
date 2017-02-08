@@ -1,4 +1,4 @@
-package Stemmer.PISMethodTrial;
+package Stemmer.Trials;
 
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package Stemmer.ObjectPool;
+package Stemmer.Model.ObjectPool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
