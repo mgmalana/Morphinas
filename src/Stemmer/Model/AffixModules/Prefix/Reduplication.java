@@ -1,4 +1,4 @@
-package Stemmer.Model.AffixModules.Suffix.Submodules;
+package Stemmer.Model.AffixModules.Prefix;
 
 /**
  * Created by laurenztolentino on 02/09/2017.

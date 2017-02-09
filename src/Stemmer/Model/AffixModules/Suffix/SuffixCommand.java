@@ -7,7 +7,7 @@ import static Utility.print.println;
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
-public class SuffixCommander
+public class SuffixCommand
 {
 	public static class test
 	{
