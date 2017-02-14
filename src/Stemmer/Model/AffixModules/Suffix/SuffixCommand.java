@@ -1,6 +1,7 @@
 package Stemmer.Model.AffixModules.Suffix;
 
 import Stemmer.Model.AffixModules.Suffix.Submodules.RemoveCommonSuffix;
+import Stemmer.Model.Stem;
 
 import static Utility.print.println;
 
@@ -15,9 +16,10 @@ public class SuffixCommand
 		{
 			RemoveCommonSuffix cs = new RemoveCommonSuffix();
 			String word = "ihawin";
+			Stem stem = new Stem(word);
 
-			word = cs.reduceStem(word);
-			println("word: " + word);
+			stem = cs.reduceStem(stem);
+			println("word: " + word + " -> " + stem.getStem());
 			println("Affix: " + cs.getFoundAffix());
 			println("AffixFeatured: " + cs.getFoundAffixFeatured());
 		}

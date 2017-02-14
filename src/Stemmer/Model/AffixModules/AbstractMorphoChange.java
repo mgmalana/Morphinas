@@ -1,13 +1,16 @@
 package Stemmer.Model.AffixModules;
 
 
+import Stemmer.Model.Stem;
+
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
 public abstract class AbstractMorphoChange
 {
 	public String foundAffix, foundAffixFeatured = null, leftStem, rightStem;
-	public abstract String reduceStem(String stem);
+	Stem stem;
+	public abstract Stem reduceStem(Stem stem);
 	public abstract String applyFeature(String foundAffix);
 
 	public String getFoundAffixFeatured() {

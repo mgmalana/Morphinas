@@ -1,6 +1,7 @@
 package Stemmer.Model.AffixModules.Infix;
 
 import Stemmer.Model.AffixModules.Infix.Submodules.RemoveCommonInfix;
+import Stemmer.Model.Stem;
 
 import static Utility.print.println;
 
@@ -9,15 +10,28 @@ import static Utility.print.println;
  */
 public class InfixCommand
 {
+
+	Stem stem;
+
+	public InfixCommand()
+	{}
+
+	public Stem performStemming(Stem stem)
+	{
+		RemoveCommonInfix rci = new RemoveCommonInfix();
+		return stem;
+	}
+
 	public static class test
 	{
 		public static void main(String[] args)
 		{
 			RemoveCommonInfix ci = new RemoveCommonInfix();
 			String word = "sinindi";
-
-			word = ci.reduceStem(word);
-			println("word: " + word);
+			Stem stem = new Stem(word);
+			stem = ci.reduceStem(stem);
+//			word = ci.reduceStem(word);
+			println("word: " + stem.getStem());
 			println("Affix: " + ci.getFoundAffix());
 			println("AffixFeatured: " + ci.getFoundAffixFeatured());
 		}

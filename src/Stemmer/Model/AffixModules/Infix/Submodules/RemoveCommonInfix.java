@@ -2,6 +2,7 @@ package Stemmer.Model.AffixModules.Infix.Submodules;
 
 import Stemmer.Model.AffixModules.AbstractMorphoChange;
 import Stemmer.Model.AffixModules.AffixList;
+import Stemmer.Model.Stem;
 
 import static Utility.print.println;
 /**
@@ -12,24 +13,27 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 	String[] commonInfixes = AffixList.getCommonInfixes();
 
 	@Override
-	public String reduceStem(String stem)
+	public Stem reduceStem(Stem stem)
 	{
+		String word = stem.getStem();
 		String inString;
 		int infixLength;
-		int stemLength = stem.length();
+		int stemLength = word.length();
 		for( String infix: commonInfixes )
 		{
 			infixLength = infix.length();
 			for( int i = 1; i < (stemLength/2) + 1; i++ )
 			{
-				inString = stem.substring(i, i+infixLength);
+				inString = word.substring(i, i+infixLength);
 				if ( infix.equalsIgnoreCase(inString) )
 				{
-					leftStem 	= stem.substring(0, i);
-					rightStem 	= stem.substring( i+infixLength);
+					leftStem 	= word.substring(0, i);
+					rightStem 	= word.substring( i+infixLength);
 					foundAffix 	= infix;
-					applyFeature(infix);
-					return leftStem.concat(rightStem);
+					/* Set or Update stem properties */
+					stem.setFeature( applyFeature(infix) );
+					stem.setStem(leftStem.concat(rightStem));
+					return stem;
 				}
 			}
 		}
