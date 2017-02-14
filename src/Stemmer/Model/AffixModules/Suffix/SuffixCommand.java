@@ -10,6 +10,14 @@ import static Utility.print.println;
  */
 public class SuffixCommand
 {
+	Stem stem;
+
+	public Stem performStemmingModules(Stem stem)
+	{
+		RemoveCommonSuffix rcs = new RemoveCommonSuffix();
+		stem = rcs.reduceStem(stem);
+		return stem;
+	}
 	public static class test
 	{
 		public static void main(String[] args)

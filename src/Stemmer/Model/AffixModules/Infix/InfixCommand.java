@@ -16,9 +16,10 @@ public class InfixCommand
 	public InfixCommand()
 	{}
 
-	public Stem performStemming(Stem stem)
+	public Stem performStemmingModules(Stem stem)
 	{
 		RemoveCommonInfix rci = new RemoveCommonInfix();
+		stem = rci.reduceStem(stem);
 		return stem;
 	}
 
