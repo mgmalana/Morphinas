@@ -1,5 +1,6 @@
 package Stemmer.Model.AffixModules.Prefix;
 
+import Stemmer.Model.AffixModules.AbstractAffixCommand;
 import Stemmer.Model.AffixModules.Prefix.Submodules.RemoveCommonPrefix;
 import Stemmer.Model.Stem;
 
@@ -8,21 +9,19 @@ import static Utility.print.println;
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
-public class PrefixCommand {
+public class PrefixCommand extends AbstractAffixCommand
+{
 	String word;
 
-	public PrefixCommand() {
+	public PrefixCommand(Stem stem)
+	{
+		super(stem);
 	}
 
-	public PrefixCommand(Stem stem) {
-		this.word = stem.getStemString();
-//		performStemmingModules(stem);
-	}
-
-	public Stem performStemmingModules(Stem stem)
+	public Stem performStemmingModules()
 	{
 		RemoveCommonPrefix rcp = new RemoveCommonPrefix();
-		stem = rcp.reduceStem( stem );
+		newStem = rcp.reduceStem( stem );
 		return stem;
 	}
 
@@ -38,14 +37,11 @@ public class PrefixCommand {
 	{
 		public static void main(String[] args)
 		{
-			RemoveCommonPrefix cp = new RemoveCommonPrefix();
-			String word = "pinahiram";
-			Stem stem = new Stem(word);
-
-			stem = cp.reduceStem(stem);
-			println("word: " + word + " -> " + stem.getStemString());
-			println("Affix: " + cp.getFoundAffix());
-			println("AffixFeatured: " + cp.getFoundAffixFeatured());
+			String word = "pinahintay";
+			Stem stem  	= new Stem(word);
+			PrefixCommand pc = new PrefixCommand( stem );
+			println( "Changes: " + pc.isChanged() );
+			println( "StemString: " + pc.stem.getStemString() );
 		}
 	}
 }

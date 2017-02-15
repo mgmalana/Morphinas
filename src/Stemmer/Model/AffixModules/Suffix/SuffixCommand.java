@@ -1,5 +1,6 @@
 package Stemmer.Model.AffixModules.Suffix;
 
+import Stemmer.Model.AffixModules.AbstractAffixCommand;
 import Stemmer.Model.AffixModules.Suffix.Submodules.RemoveCommonSuffix;
 import Stemmer.Model.Stem;
 
@@ -8,14 +9,18 @@ import static Utility.print.println;
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
-public class SuffixCommand
+public class SuffixCommand extends AbstractAffixCommand
 {
-	Stem stem;
 
-	public Stem performStemmingModules(Stem stem)
+	public SuffixCommand(Stem stem)
+	{
+		super(stem);
+	}
+
+	public Stem performStemmingModules()
 	{
 		RemoveCommonSuffix rcs = new RemoveCommonSuffix();
-		stem = rcs.reduceStem(stem);
+		newStem = rcs.reduceStem(stem);
 		return stem;
 	}
 	public static class test

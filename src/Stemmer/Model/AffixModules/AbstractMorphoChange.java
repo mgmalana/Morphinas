@@ -10,6 +10,7 @@ public abstract class AbstractMorphoChange
 {
 	public String foundAffix, foundAffixFeatured = null, leftStem, rightStem;
 	Stem stem;
+
 	public abstract Stem reduceStem(Stem stem);
 	public abstract String applyFeature(String foundAffix);
 

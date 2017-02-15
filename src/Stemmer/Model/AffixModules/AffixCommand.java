@@ -4,6 +4,9 @@ import Stemmer.Model.AffixModules.Infix.InfixCommand;
 import Stemmer.Model.AffixModules.Prefix.PrefixCommand;
 import Stemmer.Model.AffixModules.Suffix.SuffixCommand;
 import Stemmer.Model.Stem;
+
+import java.util.ArrayList;
+
 import static Utility.print.*;
 
 /**
@@ -18,19 +21,63 @@ public class AffixCommand
 	boolean doneInfix 	= false;
 	boolean doneSuffix	= false;
 	/* Commands */
-	PrefixCommand pc 	= new PrefixCommand();
-	InfixCommand ic 	= new InfixCommand();
-	SuffixCommand sc 	= new SuffixCommand();
+	PrefixCommand pc;
+	InfixCommand ic;
+	SuffixCommand sc;
 
 	public AffixCommand()
 	{
 
 	}
 
+	public void testTree()
+	{
+		/* mmhmm */
+		ArrayList<ArrayList<Branch>> treeY = new ArrayList<>();
+		ArrayList<Branch> treeX = new ArrayList<>();
+		/* user given */
+		String word = "pinahintayan";
+		Stem stem = new Stem(word);
+		/* treeStruct contents */
+		Branch p, i, s, root;
+		/* root of tree */
+		root = new Branch(stem);
+		treeX.add( root );
+		treeY.add( treeX );
+		/* first row of children */
+		treeX = null;
+		treeX = new ArrayList<>();
+		root.generateBranchChildren();
+		p = root.getPrefixBranch();
+		i = root.getInfixBranch();
+		s = root.getSuffixBranch();
+		treeX.add(p);
+		treeX.add(i);
+		treeX.add(s);
+		treeY.add(treeX);
+		/* try to print contents of tree */
+		for( int y = 0; y < treeY.size(); y++ )
+		{
+			ArrayList<Branch> tempTree = treeY.get(y);
+			for( int x = 0; x < tempTree.size(); x++ )
+			{
+				print( tempTree.size() +"-");
+				print( tempTree.get(x).getStem().getStemString() +" ");
+			}
+			println("");
+		}
+	}
+
 	public void testCommands()
 	{
-		Branch p, i, s, root;
+		/* mmhmm */
+		ArrayList<ArrayList<Branch>> treeY = new ArrayList<>();
+		ArrayList<Branch> treeX = new ArrayList<>();
+		/* user given */
 		String word = "pinahintayan";
+		/* treeStruct contents */
+		Branch p, i, s, root;
+
 		Stem stem = new Stem(word);
 
 		root = new Branch(stem);
@@ -42,7 +89,7 @@ public class AffixCommand
 		/* Prefix */
 		println(p.getStem().getStemString());
 		/* Infix */
-
+		println(i.getStem().getStemString());
 		println(i.getDirectionHistory());
 		/* Suffix */
 		println(s.getStem().getStemString());
@@ -53,7 +100,7 @@ public class AffixCommand
 		public static void main(String[] args)
 		{
 			AffixCommand ac = new AffixCommand();
-			ac.testCommands();
+			ac.testTree();
 		}
 	}
 
@@ -71,7 +118,7 @@ public class AffixCommand
 		private char direction;
 		/* Tree properties */
 		private boolean isTop = false, isRootWord = false, isTreeRoot = false, isTreeLeaf = false;
-		private int treeDepth;
+		private int treeDepth, nullCount = 0;
 
 		/**
 		 * Use this for root of the tree only (unstemmed)
@@ -122,25 +169,28 @@ public class AffixCommand
 		 * Branch children generators
 		 */
 
-		public Branch generatePrefixBranch(Stem parentStem) {
-			PrefixCommand pc = new PrefixCommand();
-			parentStem = pc.performStemmingModules(parentStem);
+		public Branch generatePrefixBranch(Stem parentStem)
+		{
+			PrefixCommand pc = new PrefixCommand(parentStem);
+//			parentStem = pc.performStemmingModules();
 //			println("pb: " + parentStem.getStemString());
-			this.prefixBranch = new Branch(_p, pc.performStemmingModules(parentStem), this.directionHistory);
+			this.prefixBranch = new Branch(_p, parentStem, this.directionHistory);
 			return prefixBranch;
 		}
 
-		public Branch generateInfixBranch(Stem parentStem) {
-			InfixCommand ic = new InfixCommand();
-			parentStem = ic.performStemmingModules(parentStem);
+		public Branch generateInfixBranch(Stem parentStem)
+		{
+			InfixCommand ic = new InfixCommand(parentStem);
+//			parentStem = ic.performStemmingModules();
 //			println("ib: " + parentStem.getStemString());
 			this.infixBranch = new Branch(_i, parentStem, this.directionHistory);
 			return infixBranch;
 		}
 
-		public Branch generateSuffixBranch(Stem parentStem) {
-			SuffixCommand sc = new SuffixCommand();
-			parentStem = sc.performStemmingModules(parentStem);
+		public Branch generateSuffixBranch(Stem parentStem)
+		{
+			SuffixCommand sc = new SuffixCommand(parentStem);
+//			parentStem = sc.performStemmingModules();
 //			println("sb: " + parentStem.getStemString());
 			this.suffixBranch = new Branch(_s, parentStem, this.directionHistory);
 			return suffixBranch;

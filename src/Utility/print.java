@@ -9,4 +9,9 @@ public class print {
 	{
 		System.out.println( text.toString() );
 	}
+
+	public static void print(Object text)
+	{
+		System.out.print( text.toString() );
+	}
 }

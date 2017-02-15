@@ -1,5 +1,6 @@
 package Stemmer.Model.AffixModules.Infix;
 
+import Stemmer.Model.AffixModules.AbstractAffixCommand;
 import Stemmer.Model.AffixModules.Infix.Submodules.RemoveCommonInfix;
 import Stemmer.Model.Stem;
 
@@ -8,18 +9,18 @@ import static Utility.print.println;
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
-public class InfixCommand
+public class InfixCommand extends AbstractAffixCommand
 {
 
-	Stem stem;
+	public InfixCommand(Stem stem)
+	{
+		super(stem);
+	}
 
-	public InfixCommand()
-	{}
-
-	public Stem performStemmingModules(Stem stem)
+	public Stem performStemmingModules()
 	{
 		RemoveCommonInfix rci = new RemoveCommonInfix();
-		stem = rci.reduceStem(stem);
+		newStem = rci.reduceStem( this.stem );
 		return stem;
 	}
 
