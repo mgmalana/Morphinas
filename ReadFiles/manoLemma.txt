@@ -16328,7 +16328,7 @@ wherf
 botas 
 gebel 
 awatd 
-stem 
+stemString
 som 
 mtaas 
 love” 
@@ -62121,7 +62121,7 @@ tugma-up
 konnekta 
 banrisul 
 -back 
-stem 
+stemString
 culpeper 
 saladero 
 mistress 
@@ -95558,7 +95558,7 @@ hyeroglipo
 hornbostel 
 saturnus 
 overhauled 
-stem-loops 
+stemString-loops
 mihtarlam 
 nonteyismo 
 vladimirov 

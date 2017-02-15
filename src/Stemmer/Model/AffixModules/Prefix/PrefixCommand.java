@@ -15,7 +15,7 @@ public class PrefixCommand {
 	}
 
 	public PrefixCommand(Stem stem) {
-		this.word = stem.getStem();
+		this.word = stem.getStemString();
 //		performStemmingModules(stem);
 	}
 
@@ -43,7 +43,7 @@ public class PrefixCommand {
 			Stem stem = new Stem(word);
 
 			stem = cp.reduceStem(stem);
-			println("word: " + word + " -> " + stem.getStem());
+			println("word: " + word + " -> " + stem.getStemString());
 			println("Affix: " + cp.getFoundAffix());
 			println("AffixFeatured: " + cp.getFoundAffixFeatured());
 		}

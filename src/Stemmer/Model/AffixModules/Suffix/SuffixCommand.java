@@ -27,7 +27,7 @@ public class SuffixCommand
 			Stem stem = new Stem(word);
 
 			stem = cs.reduceStem(stem);
-			println("word: " + word + " -> " + stem.getStem());
+			println("word: " + word + " -> " + stem.getStemString());
 			println("Affix: " + cs.getFoundAffix());
 			println("AffixFeatured: " + cs.getFoundAffixFeatured());
 		}

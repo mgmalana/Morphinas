@@ -16328,7 +16328,7 @@ Wherf
 botas
 Gebel
 Awatd
-stem
+stemString
 kasom
 mtaas
 Love”
@@ -95558,7 +95558,7 @@ hyeroglipo
 Hornbostel
 Saturninus
 overhauled
-stem-loops
+stemString-loops
 Mihtarlam
 nonteyismo
 Vladimirov

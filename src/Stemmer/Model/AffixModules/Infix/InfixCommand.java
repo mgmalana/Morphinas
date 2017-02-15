@@ -32,7 +32,7 @@ public class InfixCommand
 			Stem stem = new Stem(word);
 			stem = ci.reduceStem(stem);
 //			word = ci.reduceStem(word);
-			println("word: " + stem.getStem());
+			println("word: " + stem.getStemString());
 			println("Affix: " + ci.getFoundAffix());
 			println("AffixFeatured: " + ci.getFoundAffixFeatured());
 		}

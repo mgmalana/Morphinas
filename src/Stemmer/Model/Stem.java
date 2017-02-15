@@ -5,7 +5,7 @@ package Stemmer.Model;
  */
 public class Stem
 {
-	String stem;
+	String stemString;
 	String affix;
 	String feature;
 	String rootWord;
@@ -13,15 +13,15 @@ public class Stem
 
 	public Stem(String stem)
 	{
-		this.stem = stem;
+		this.stemString = stem;
 	}
 
-	public String getStem() {
-		return stem;
+	public String getStemString() {
+		return stemString;
 	}
 
-	public void setStem(String stem) {
-		this.stem = stem;
+	public void setStemString(String stemString) {
+		this.stemString = stemString;
 	}
 
 	public String getAffix() {

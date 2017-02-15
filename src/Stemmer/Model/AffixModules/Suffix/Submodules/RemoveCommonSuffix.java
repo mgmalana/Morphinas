@@ -13,7 +13,7 @@ public class RemoveCommonSuffix extends AbstractMorphoChange
 	@Override
 	public Stem reduceStem(Stem stem)
 	{
-		String word = stem.getStem();
+		String word = stem.getStemString();
 		int suffixLength;
 		for( String suffix: commonSuffixes )
 		{
@@ -24,7 +24,7 @@ public class RemoveCommonSuffix extends AbstractMorphoChange
 				foundAffix 	= suffix;
 				leftStem  	= word.substring(0, word.length()-suffixLength);
 				/* Update or Set stem properties */
-				stem.setStem(leftStem);
+				stem.setStemString(leftStem);
 				stem.setFeature( stem.getFeature() + "" + applyFeature( suffix ) );
 				return stem;
 			}
