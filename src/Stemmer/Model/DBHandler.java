@@ -64,9 +64,19 @@ public class DBHandler
 	{
 		this.word = word;
 		createConnection();
-		if( results != null)
+		try {
+			if (results.get(0) != null)
+			{
+				String result = results.get(0).toString();
+				// well para sure huhuhuhu
+				if( result.equalsIgnoreCase(word) )
+					return true;
+				else
+					return false;
+			}
+		} catch (Exception e)
 		{
-			return true;
+			return false;
 		}
 		return false;
 	}
@@ -88,6 +98,7 @@ public class DBHandler
 			println("Word: " + m.lookup("tao"));
 			println("Word: " + m.lookup("bangkay"));
 			println("Word: " + m.lookup("barangay"));
+			println("Word: " + m.lookup("vsdgfhdfg"));
 		}
 	}
 }

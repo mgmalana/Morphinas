@@ -1,5 +1,6 @@
 package Stemmer.Model.AffixModules;
 
+import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
 import static Utility.print.println;
 /**
@@ -7,8 +8,8 @@ import static Utility.print.println;
  */
 public abstract class AbstractAffixCommand {
 	/* stem and newStem will have the same value. */
-	protected Stem stem, oldStem, newStem;
-	protected boolean changed = false;
+	protected Stem stem, oldStem;
+	protected boolean changed = false, isRoot = false;
 
 	public AbstractAffixCommand(Stem stem)
 	{
@@ -16,7 +17,6 @@ public abstract class AbstractAffixCommand {
 		oldStem = new Stem( stem.getStemString() );
 		performStemmingModules();
 		checkForChanges( oldStem, stem );
-		performStemmingModules();
 	}
 
 	public abstract Stem performStemmingModules();
@@ -30,6 +30,12 @@ public abstract class AbstractAffixCommand {
 			setChanged( true );
 			return true;
 		}
+	}
+
+	public boolean checkDB()
+	{
+		DBHandler db = new DBHandler();
+		return db.lookup( stem.getStemString() );
 	}
 
 	public boolean isChanged() {

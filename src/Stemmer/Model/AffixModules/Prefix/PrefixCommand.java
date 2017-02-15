@@ -21,7 +21,7 @@ public class PrefixCommand extends AbstractAffixCommand
 	public Stem performStemmingModules()
 	{
 		RemoveCommonPrefix rcp = new RemoveCommonPrefix();
-		newStem = rcp.reduceStem( stem );
+		stem = rcp.reduceStem( stem );
 		return stem;
 	}
 

@@ -20,7 +20,7 @@ public class SuffixCommand extends AbstractAffixCommand
 	public Stem performStemmingModules()
 	{
 		RemoveCommonSuffix rcs = new RemoveCommonSuffix();
-		newStem = rcs.reduceStem(stem);
+		stem = rcs.reduceStem(stem);
 		return stem;
 	}
 	public static class test

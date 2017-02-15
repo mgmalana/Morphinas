@@ -12,6 +12,8 @@ import static Utility.print.println;
 public class InfixCommand extends AbstractAffixCommand
 {
 
+	String word;
+
 	public InfixCommand(Stem stem)
 	{
 		super(stem);
@@ -20,7 +22,7 @@ public class InfixCommand extends AbstractAffixCommand
 	public Stem performStemmingModules()
 	{
 		RemoveCommonInfix rci = new RemoveCommonInfix();
-		newStem = rci.reduceStem( this.stem );
+		stem = rci.reduceStem( stem );
 		return stem;
 	}
 
