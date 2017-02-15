@@ -11,7 +11,7 @@ import static Utility.print.*;
  */
 public class AffixCommand
 {
-	/* Tree properties */
+	/* TreeTest properties */
 	int treeDepth;
 	boolean mustStop 	= false;
 	boolean donePrefix 	= false;
@@ -29,14 +29,24 @@ public class AffixCommand
 
 	public void testCommands()
 	{
-		Branch p, i, s;
+		Branch p, i, s, root;
 		String word = "pinahintayan";
 		Stem stem = new Stem(word);
-		p = new Branch('p', pc.performStemmingModules(stem));
-		i = new Branch('i', stem);
-		s = new Branch('i', stem);
 
+		root = new Branch(stem);
+		root.generateChildrenForThisBranch();
+		println(root.getInfixBranch().getStem().getStem());
+		println(root.getPrefixBranch().getStem().getStem());
+		println(root.getSuffixBranch().getStem().getStem());
+	}
 
+	public static class Test
+	{
+		public static void main(String[] args)
+		{
+			AffixCommand ac = new AffixCommand();
+			ac.testCommands();
+		}
 	}
 
 	/**
@@ -44,13 +54,29 @@ public class AffixCommand
 	 */
 	public class Branch
 	{
+		/* Important properties */
+		Stem stem;
+		/* Children Branches */
+		Branch prefixBranch, infixBranch, suffixBranch;
 		/* directions */
-		final static char _s = 's', _i = 'i', _p = 'p';
+		final static char _s = 's', _i = 'i', _p = 'p', _c = 'R';
 		String directionHistory = "";
 		char direction;
-		Stem stem;
+		/* Tree properties */
+		boolean isTop = false, isRootWord = false, isTreeRoot = false, isTreeLeaf = false;
 		int treeDepth;
-		boolean isTop = false, isRoot = false;
+
+		/**
+		 * Use this for root of the tree only (unstemmed)
+		 * @param untouchedStem
+		 * The original input word by the user
+		 */
+		public Branch(Stem untouchedStem)
+		{
+			this.stem 				= untouchedStem;
+			this.direction 			= _c;
+			this.directionHistory 	= directionHistory + _c + "-";
+		}
 
 		/**
 		 * A branch in the tree.
@@ -73,6 +99,11 @@ public class AffixCommand
 			this.directionHistory 	= directionHistory + direction + "-";
 		}
 
+		public void generateChildrenForThisBranch()
+		{
+			generateChildrenForThisBranch( this.stem );
+		}
+
 		public void generateChildrenForThisBranch(Stem currentStem)
 		{
 			generatePrefixBranch( currentStem );
@@ -82,28 +113,27 @@ public class AffixCommand
 
 		public Branch generatePrefixBranch(Stem parentStem)
 		{
-			Branch prefixBranch;
-			PrefixCommand pc = new PrefixCommand();
-			parentStem 		 = pc.performStemmingModules( parentStem );
-			prefixBranch 	 = new Branch(_p, parentStem, this.directionHistory );
+			PrefixCommand pc 	= new PrefixCommand();
+			println("pb: " + pc.performStemmingModules( parentStem ).getStem());
+			this.prefixBranch 	= new Branch(_p, pc.performStemmingModules( parentStem ), this.directionHistory );
 			return prefixBranch;
 		}
 
 		public Branch generateInfixBranch(Stem parentStem)
 		{
-			Branch infixBranch;
-			InfixCommand ic = new InfixCommand();
-			parentStem		= ic.performStemmingModules( parentStem );
-			infixBranch 	= new Branch( _i, parentStem, this.directionHistory );
+			InfixCommand ic 	= new InfixCommand();
+			parentStem			= ic.performStemmingModules( parentStem );
+			println("ib: " + parentStem.getStem());
+			this.infixBranch 	= new Branch( _i, parentStem, this.directionHistory );
 			return infixBranch;
 		}
 
 		public Branch generateSuffixBranch(Stem parentStem)
 		{
-			Branch suffixBranch;
-			SuffixCommand sc = new SuffixCommand();
-			parentStem  	 = sc.performStemmingModules( parentStem );
-			suffixBranch 	 = new Branch( _s, parentStem, this.directionHistory );
+			SuffixCommand sc  	 = new SuffixCommand();
+			parentStem  	 	 = sc.performStemmingModules( parentStem );
+			println("sb: " + parentStem.getStem());
+			this.suffixBranch 	 = new Branch( _s, parentStem, this.directionHistory );
 			return suffixBranch;
 		}
 
@@ -122,13 +152,95 @@ public class AffixCommand
 		{
 			println( "B-Stem: " + this.stem.getStem() );
 		}
-	}
 
-	public static class Test
-	{
-		public static void main(String[] args)
-		{
+		public Branch getPrefixBranch() {
+			return prefixBranch;
+		}
 
+		public void setPrefixBranch(Branch prefixBranch) {
+			this.prefixBranch = prefixBranch;
+		}
+
+		public Branch getInfixBranch() {
+			return infixBranch;
+		}
+
+		public void setInfixBranch(Branch infixBranch) {
+			this.infixBranch = infixBranch;
+		}
+
+		public Branch getSuffixBranch() {
+			return suffixBranch;
+		}
+
+		public void setSuffixBranch(Branch suffixBranch) {
+			this.suffixBranch = suffixBranch;
+		}
+
+		public char getDirection() {
+			return direction;
+		}
+
+		public void setDirection(char direction) {
+			this.direction = direction;
+		}
+
+		public Stem getStem() {
+			return stem;
+		}
+
+		public void setStem(Stem stem) {
+			this.stem = stem;
+		}
+
+		public int getTreeDepth() {
+			return treeDepth;
+		}
+
+		public void setTreeDepth(int treeDepth) {
+			this.treeDepth = treeDepth;
+		}
+
+		public boolean isTop() {
+			return isTop;
+		}
+
+		public void setTop(boolean top) {
+			isTop = top;
+		}
+
+		public boolean isRoot() {
+			return this.isRootWord;
+		}
+
+		public void setRoot(boolean root) {
+			this.isRootWord = root;
+		}
+
+		public boolean isRootWord() {
+			return isRootWord;
+		}
+
+		public void setRootWord(boolean rootWord) {
+			isRootWord = rootWord;
+		}
+
+		public boolean isTreeRoot() {
+			return isTreeRoot;
+		}
+
+		public void setTreeRoot(boolean treeRoot) {
+			isTreeRoot = treeRoot;
+		}
+
+		public boolean isTreeLeaf() {
+			return isTreeLeaf;
+		}
+
+		public void setTreeLeaf(boolean treeLeaf) {
+			isTreeLeaf = treeLeaf;
 		}
 	}
+
+
 }

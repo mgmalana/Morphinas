@@ -16,11 +16,13 @@ public class PrefixCommand {
 
 	public PrefixCommand(Stem stem) {
 		this.word = stem.getStem();
-		performStemmingModules(stem);
+//		performStemmingModules(stem);
 	}
 
 	public Stem performStemmingModules(Stem stem)
 	{
+		RemoveCommonPrefix rcp = new RemoveCommonPrefix();
+		stem = rcp.reduceStem( stem );
 		return stem;
 	}
 
