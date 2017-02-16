@@ -36,12 +36,24 @@ public class AffixCommand
 		ArrayList<Branch> tX 			= new ArrayList<>();
 		/* Children of the Root */
 		Branch root, parent, prefixBranch, infixBranch, suffixBranch;
+		/* Stopping properties */
 		/* Stem */
 		Stem stem, temp;
 		/* Begin */
 		stem = new Stem(word);
 		root = new Branch(stem);
-
+		parent = new Branch(stem);
+		/* initialize first depth of arraylist */
+		tX.add(root);
+		tY.add(tX);
+		while( parent.stopper < 3 )
+		{
+			tX = new ArrayList<>();
+			parent.generateBranchChildren();
+			prefixBranch = parent.getPrefixBranch();
+			infixBranch  = parent.getInfixBranch();
+			suffixBranch = parent.getSuffixBranch();
+		}
 
 	}
 
@@ -115,7 +127,7 @@ public class AffixCommand
 		public static void main(String[] args)
 		{
 			AffixCommand ac = new AffixCommand();
-			ac.testTree();
+			ac.generatePISTree("pinakain");
 		}
 	}
 
