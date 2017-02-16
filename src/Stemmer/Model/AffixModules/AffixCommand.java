@@ -29,6 +29,47 @@ public class AffixCommand
 	public AffixCommand()
 	{}
 
+	public void generatePISTree2(String word)
+	{
+		/* saving the trees */
+		ArrayList<ArrayList<Branch>> tY = new ArrayList<>();
+		ArrayList<Branch> tX 			= new ArrayList<>();
+		ArrayList<Branch> newParents 	= new ArrayList<>();
+		/* Children of the Root */
+		Branch root, parent, prefixBranch, infixBranch, suffixBranch, tempParent;
+		int expectedTreeWidth = 1;
+		/* Initialize first stem */
+		Stem rootStem 	= new Stem( word );
+		root 			= new Branch( rootStem );
+
+		parent = root;
+		tX.add( parent );
+		tY.add( tX );
+
+		for ( int y = 0; y < tY.size(); y++ )
+		{
+			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
+			tX = new ArrayList<>();
+			ArrayList<Branch> tempX = tY.get( y );
+			println("tempX.size: " + tempX.size() );
+			for( int x = 0; x < tempX.size(); x++ )
+			{
+				tempX.get(x).generateBranchChildren();
+				tX.add( tempX.get(x).getPrefixBranch() );
+				tX.add( tempX.get(x).getInfixBranch() );
+				tX.add( tempX.get(x).getSuffixBranch() );
+			}
+			tY.add( tX );
+
+			if( tY.size() > 2 )
+			{
+				break;
+			}
+		}
+
+		printTreeContent(tY);
+	}
+
 	public void generatePISTree(String word)
 	{
 		/* saving the trees */
@@ -70,7 +111,7 @@ public class AffixCommand
 			{
 				newParents = tX;
 				tX = new ArrayList<>();
-				println( "NewParent: " + newParents.get(i).getStem().getStemString() );
+//				println( "NewParent: " + newParents.get(i).getStem().getStemString() );
 				tempParent = newParents.get(i);
 				if ( parent.getStem().getStemString().length() > 4 )
 				{
@@ -102,6 +143,11 @@ public class AffixCommand
 				}
 			}
 		}
+
+	}
+
+	public void printTreeContent(ArrayList<ArrayList<Branch>> tY)
+	{
 		/* try to print contents of tree */
 		for( int y = 0; y < tY.size(); y++ )
 		{
@@ -110,6 +156,10 @@ public class AffixCommand
 			{
 				print( tempTree.size() +"-");
 				print( tempTree.get(x).getStem().getStemString() +" ");
+				if( (x+1) % 3 == 0 )
+				{
+					print("|| ");
+				}
 			}
 			println("");
 		}
@@ -146,8 +196,10 @@ public class AffixCommand
 			ArrayList<Branch> tempTree = treeY.get(y);
 			for( int x = 0; x < tempTree.size(); x++ )
 			{
-				print( tempTree.size() +"-");
-				print( tempTree.get(x).getStem().getStemString() +" ");
+//				print( tempTree.size() +"-");
+				print( tempTree.get(x).getStem().getStemString() +"[");
+//				println( tempTree.get(x).getStem().getAffix());
+				print( tempTree.get(x).getDirectionHistory() + "]");
 			}
 			println("");
 		}
@@ -185,7 +237,8 @@ public class AffixCommand
 		public static void main(String[] args)
 		{
 			AffixCommand ac = new AffixCommand();
-			ac.generatePISTree("pinapahintay");
+			ac.generatePISTree2("pinahintayan");
+//			ac.generatePISTree("pinahintayan");
 		}
 	}
 
@@ -284,13 +337,14 @@ public class AffixCommand
 		{
 			PrefixCommand pc = new PrefixCommand(parentStem);
 			/* check if stem is already root word */
-			if( checkIfRoot(parentStem) )
-			{
-				isPrefixRoot = true;
-				parentStem.setRootWord( parentStem.getStemString() );
-				parentStem.setPathTaken( directionHistory );
-				stopper++;
-			}
+
+//			if( pc.checkDB() )
+//			{
+//				isPrefixRoot = true;
+//				parentStem.setRootWord( parentStem.getStemString() );
+//				parentStem.setPathTaken( directionHistory );
+//				stopper++;
+//			}
 			/* check if stem is too small for more stemming */
 			checkIfStemLengthAtSmallest( parentStem );
 			/* set this branch's p branch */
@@ -302,13 +356,13 @@ public class AffixCommand
 		{
 			InfixCommand ic = new InfixCommand(parentStem);
 			/* check if stem is already root word */
-			if( checkIfRoot(parentStem) )
-			{
-				isInfixRoot = true;
-				parentStem.setRootWord( parentStem.getStemString() );
-				parentStem.setPathTaken( directionHistory );
-				stopper++;
-			}
+//			if( ic.checkDB() )
+//			{
+//				isInfixRoot = true;
+//				parentStem.setRootWord( parentStem.getStemString() );
+//				parentStem.setPathTaken( directionHistory );
+//				stopper++;
+//			}
 			/* check if stem is too small for more stemming */
 			checkIfStemLengthAtSmallest( parentStem );
 			/* set this branch's i branch */
@@ -320,13 +374,13 @@ public class AffixCommand
 		{
 			SuffixCommand sc = new SuffixCommand(parentStem);
 			/* check if stem is already root word */
-			if( checkIfRoot(parentStem) )
-			{
-				isSuffixRoot = true;
-				parentStem.setRootWord( parentStem.getStemString() );
-				parentStem.setPathTaken( directionHistory );
-				stopper++;
-			}
+//			if( sc.checkDB() )
+//			{
+//				isSuffixRoot = true;
+//				parentStem.setRootWord( parentStem.getStemString() );
+//				parentStem.setPathTaken( directionHistory );
+//				stopper++;
+//			}
 			/* check if stem is too small for more stemming */
 			checkIfStemLengthAtSmallest( parentStem );
 			/* set this branch's s branch */

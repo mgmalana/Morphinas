@@ -19,7 +19,7 @@ public class Method1 implements Runnable
 	private String[] storedRoots 	= { "kain", "ka"};
 	/* found roots through stemming */
 	public static ArrayList<String> foundRoots = new ArrayList<>();
-	/* controlling variables*/
+	/* controlling variables */
 	private boolean mustStop		= false;
 	private boolean donePrefix		= false;
 	private boolean doneSuffix		= false;
