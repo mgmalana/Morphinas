@@ -34,8 +34,10 @@ public class AffixCommand
 		/* saving the trees */
 		ArrayList<ArrayList<Branch>> tY = new ArrayList<>();
 		ArrayList<Branch> tX 			= new ArrayList<>();
+		ArrayList<Branch> newParents 	= new ArrayList<>();
 		/* Children of the Root */
-		Branch root, parent, prefixBranch, infixBranch, suffixBranch;
+		Branch root, parent, prefixBranch, infixBranch, suffixBranch, tempParent;
+		int expectedTreeWidth = 1;
 		/* Stopping properties */
 		/* Stem */
 		Stem stem, temp;
@@ -46,15 +48,71 @@ public class AffixCommand
 		/* initialize first depth of arraylist */
 		tX.add(root);
 		tY.add(tX);
+		/* tree expander */
 		while( parent.stopper < 3 )
 		{
-			tX = new ArrayList<>();
+			expectedTreeWidth 	= expectedTreeWidth * 3;
+
+			tX 					= new ArrayList<>();
+
 			parent.generateBranchChildren();
 			prefixBranch = parent.getPrefixBranch();
 			infixBranch  = parent.getInfixBranch();
 			suffixBranch = parent.getSuffixBranch();
-		}
 
+			tX.add(prefixBranch);
+			tX.add(infixBranch);
+			tX.add(suffixBranch);
+			tY.add(tX);
+
+			boolean donePref = false, doneInf = false, doneSuff = false;
+			for( int i = 0; i < expectedTreeWidth; i++ )
+			{
+				newParents = tX;
+				tX = new ArrayList<>();
+				println( "NewParent: " + newParents.get(i).getStem().getStemString() );
+				tempParent = newParents.get(i);
+				if ( parent.getStem().getStemString().length() > 4 )
+				{
+					parent.generateBranchChildren();
+					prefixBranch = tempParent.getPrefixBranch();
+					infixBranch  = tempParent.getInfixBranch();
+					suffixBranch = tempParent.getSuffixBranch();
+
+					tX.add(prefixBranch);
+					tX.add(infixBranch);
+					tX.add(suffixBranch);
+
+					if( !donePref && !doneInf && !doneSuff )
+					{
+						donePref = true;
+					}
+					else if ( donePref && !doneInf && !doneSuff )
+					{
+						doneInf = true;
+					}
+					else if ( donePref && doneInf && !doneSuff )
+					{
+						doneSuff = true;
+					}
+					tY.add(tX);
+				}
+				else {
+					parent.stopper++;
+				}
+			}
+		}
+		/* try to print contents of tree */
+		for( int y = 0; y < tY.size(); y++ )
+		{
+			ArrayList<Branch> tempTree = tY.get(y);
+			for( int x = 0; x < tempTree.size(); x++ )
+			{
+				print( tempTree.size() +"-");
+				print( tempTree.get(x).getStem().getStemString() +" ");
+			}
+			println("");
+		}
 	}
 
 	public void testTree()
@@ -127,7 +185,7 @@ public class AffixCommand
 		public static void main(String[] args)
 		{
 			AffixCommand ac = new AffixCommand();
-			ac.generatePISTree("pinakain");
+			ac.generatePISTree("pinapahintay");
 		}
 	}
 

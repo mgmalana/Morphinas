@@ -3,7 +3,7 @@ package Stemmer.Model.AffixModules.Prefix.Submodules;
 import Stemmer.Model.AffixModules.AbstractMorphoChange;
 import Stemmer.Model.AffixModules.AffixList;
 import Stemmer.Model.Stem;
-
+import static Utility.print.*;
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
@@ -16,6 +16,10 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 	public Stem reduceStem(Stem stem)
 	{
 		String word = stem.getStemString();
+		if( word.length() <= 4)
+		{
+			return stem;
+		}
 		int prefixLength;
 		for( String prefix: commonPrefixes )
 		{
