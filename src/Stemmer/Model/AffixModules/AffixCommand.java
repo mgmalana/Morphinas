@@ -48,10 +48,15 @@ public class AffixCommand
 
 		for ( int y = 0; y < tY.size(); y++ )
 		{
+
 			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
+
+			tX = null;
 			tX = new ArrayList<>();
+
 			ArrayList<Branch> tempX = tY.get( y );
 			println("tempX.size: " + tempX.size() );
+
 			for( int x = 0; x < tempX.size(); x++ )
 			{
 				tempX.get(x).generateBranchChildren();
@@ -264,6 +269,7 @@ public class AffixCommand
 		private boolean isTop = false, isRootWord = false, isTreeRoot = false, isTreeLeaf = false;
 		private boolean isPrefixRoot = false, isInfixRoot = false, isSuffixRoot = false;
 		private int treeDepth, nullCount = 0;
+		private boolean canGenerate = true;
 		/* Stoppers */
 		int stopper = 0;
 

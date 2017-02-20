@@ -7,6 +7,10 @@ import java.util.HashMap;
  */
 public class AffixList
 {
+	final static char vowels[] = {
+			'a', 'e', 'i', 'o', 'u'
+	};
+
 	final static String commonPrefixes[] = {
 			"na", "nag", "ma", "mag", "i", "i-", "ika-", "isa-", "ipa",
 			"ipag", "ipang", "pa", "pag", "um", "in", "ka", "ni",
@@ -103,5 +107,9 @@ public class AffixList
 
 	public static String[] getCommonSuffixes() {
 		return commonSuffixes;
+	}
+
+	public static char[] getVowels() {
+		return vowels;
 	}
 }
