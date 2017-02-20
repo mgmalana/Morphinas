@@ -53,6 +53,18 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 		return stem;
 	}
 
+	/**
+	 * Assures that the resulting stem after removing the infix will satisfy the non-CCAfterInfixRemoval
+	 * @param word
+	 * Word to be stemmed
+	 * @param prevCharIndex
+	 * Location of the character at the left of the infix
+	 * @param nextCharIndex
+	 * Location of the character at the right of the infix
+	 * @return
+	 * Returns true if the infix spot will contain CC
+	 * False otherwise.
+	 */
 	public boolean ruleNotCCAfterStemming(String word, int prevCharIndex, int nextCharIndex)
 	{
 		int consonantCount = 0;
