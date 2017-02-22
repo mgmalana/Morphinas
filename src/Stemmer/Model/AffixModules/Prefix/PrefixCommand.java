@@ -11,37 +11,51 @@ import static Utility.print.println;
  */
 public class PrefixCommand extends AbstractAffixCommand
 {
-	String word;
+	Stem newStem;
 
-	public PrefixCommand(Stem stem)
-	{
-		super(stem);
-	}
+	public PrefixCommand(){}
 
-	public Stem performStemmingModules()
+	public Stem performStemmingModules(Stem stem)
 	{
+		/* Initialize new Stem objects for immutability */
+		Stem oldStem = stem.cloneThis();
+		Stem newStem = stem.cloneThis();
+		/* Initialize submodules for stemming */
 		RemoveCommonPrefix rcp = new RemoveCommonPrefix();
-		stem = rcp.reduceStem( stem );
-		return stem;
+		/* Perform stemming */
+		newStem = rcp.reduceStem( newStem );
+		/* Check for Changes and update boolean changed */
+		checkForChanges(oldStem, newStem);
+		return newStem;
 	}
 
-	public String getWord() {
-		return word;
+	/*
+	  * ********************************************************************
+	  *              Getters and Setters only beyond this point
+	  * ********************************************************************
+	 */
+
+	public Stem getNewStem() {
+		return newStem;
 	}
 
-	public void setWord(String word) {
-		this.word = word;
-	}
+	/*
+	  * ********************************************************************
+	  *                    Testing Only Beyond this Point
+	  * ********************************************************************
+	 */
 
 	public static class test
 	{
 		public static void main(String[] args)
 		{
 			String word = "pinahintay";
-			Stem stem  	= new Stem(word);
-			PrefixCommand pc = new PrefixCommand( stem );
+			final Stem stem  	= new Stem(word);
+			PrefixCommand pc = new PrefixCommand();
+			Stem newStem = pc.performStemmingModules(stem);
+			println(stem.getStemString() + " -> " + newStem.getStemString());
 			println( "Changes: " + pc.isChanged() );
-			println( "StemString: " + pc.stem.getStemString() );
+
 		}
 	}
 }

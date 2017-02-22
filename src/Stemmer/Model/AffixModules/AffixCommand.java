@@ -3,6 +3,7 @@ package Stemmer.Model.AffixModules;
 import Stemmer.Model.AffixModules.Infix.InfixCommand;
 import Stemmer.Model.AffixModules.Prefix.PrefixCommand;
 import Stemmer.Model.AffixModules.Suffix.SuffixCommand;
+import Stemmer.Model.Branch;
 import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
 
@@ -95,7 +96,7 @@ public class AffixCommand
 		tX.add(root);
 		tY.add(tX);
 		/* tree expander */
-		while( parent.stopper < 3 )
+		while( parent.getStopper() < 3 )
 		{
 			expectedTreeWidth 	= expectedTreeWidth * 3;
 
@@ -143,8 +144,9 @@ public class AffixCommand
 					}
 					tY.add(tX);
 				}
-				else {
-					parent.stopper++;
+				else
+				{
+					parent.setStopper( parent.getStopper() + 1 );
 				}
 			}
 		}
@@ -239,320 +241,25 @@ public class AffixCommand
 
 	public static class Test
 	{
+		AffixCommand ac = new AffixCommand();
+
 		public static void main(String[] args)
 		{
-			AffixCommand ac = new AffixCommand();
-			ac.generatePISTree2("pinahintayan");
-//			ac.generatePISTree("pinahintayan");
-		}
-	}
-
-	/**
-	 * Branch
-	 */
-	public final class Branch
-	{
-		/*
-		  * ********************************************************************
-		  *                               Variables
-		  * ********************************************************************
-		 */
-		/* Important properties */
-		private Stem stem;
-		/* Children Branches */
-		private Branch prefixBranch, infixBranch, suffixBranch;
-		/* directions */
-		private final static char _s = 's', _i = 'i', _p = 'p', _c = 'R';
-		private String directionHistory = "";
-		private char direction;
-		/* Tree properties */
-		private boolean isTop = false, isRootWord = false, isTreeRoot = false, isTreeLeaf = false;
-		private boolean isPrefixRoot = false, isInfixRoot = false, isSuffixRoot = false;
-		private int treeDepth, nullCount = 0;
-		private boolean canGenerate = true;
-		/* Stoppers */
-		int stopper = 0;
-
-		/*
-		  * ********************************************************************
-		  *                             Constructors
-		  * ********************************************************************
-		 */
-
-		/**
-		 * Use this for root of the tree only (unstemmed)
-		 * @param untouchedStem The original input word by the user
-		 */
-		public Branch(Stem untouchedStem) {
-			this.stem = untouchedStem;
-			this.direction = _c;
-			this.directionHistory = directionHistory + _c + "-";
+			/* don't change this line */
+			Test t = new Test();
+			/* write below */
+			t.testCreateBranch();
 		}
 
-		/**
-		 * AVOID USING THIS ONE
-		 * @param direction Must contain either 'p', 'i', 's'
-		 * @param stem      Must be passed every time.
-		 */
-		public Branch(char direction, Stem stem) {
-			this.direction = direction;
-			this.stem = stem;
-			this.directionHistory = directionHistory + direction + "-";
-		}
-
-		/**
-		 * Use only when creating a non-root branch
-		 * @param direction
-		 * Direction of this branch (prefix, infix, suffix)
-		 * @param stem
-		 * latest modified stem
-		 * @param directionHistory
-		 * The latest modified path that this branch has gone through to get here
-		 */
-		public Branch(char direction, Stem stem, String directionHistory) {
-			this.direction = direction;
-			this.stem = stem;
-			this.directionHistory = directionHistory + direction + "-";
-		}
-
-		public void generateBranchChildren() {
-			generateBranchChildren(this.stem);
-		}
-
-		public void generateBranchChildren(Stem currentStem)
+		public void original()
 		{
-			/* Stem p = currentStem is mutable. Any changes to p will reflect on currentStem also (pass-by-reference) */
-			Stem p = new Stem(currentStem.getStemString());
-			Stem i = new Stem(currentStem.getStemString());
-			Stem s = new Stem(currentStem.getStemString());
-
-			generatePrefixBranch(p);
-			generateInfixBranch(i);
-			generateSuffixBranch(s);
+//			ac.generatePISTree2("pinahintayan");
+			ac.generatePISTree("pinahintayan");
 		}
 
-		/*
-		  * ********************************************************************
-		  *                      Branch Children Generators
-		  * ********************************************************************
-		 */
-
-//			parentStem = pc.performStemmingModules();
-//			println("pb: " + parentStem.getStemString());
-		public Branch generatePrefixBranch(Stem parentStem)
+		public void testCreateBranch()
 		{
-			PrefixCommand pc = new PrefixCommand(parentStem);
-			/* check if stem is already root word */
 
-//			if( pc.checkDB() )
-//			{
-//				isPrefixRoot = true;
-//				parentStem.setRootWord( parentStem.getStemString() );
-//				parentStem.setPathTaken( directionHistory );
-//				stopper++;
-//			}
-			/* check if stem is too small for more stemming */
-			checkIfStemLengthAtSmallest( parentStem );
-			/* set this branch's p branch */
-			setPrefixBranch( new Branch(_p, parentStem, this.directionHistory) );
-			return prefixBranch;
-		}
-
-		public Branch generateInfixBranch(Stem parentStem)
-		{
-			InfixCommand ic = new InfixCommand(parentStem);
-			/* check if stem is already root word */
-//			if( ic.checkDB() )
-//			{
-//				isInfixRoot = true;
-//				parentStem.setRootWord( parentStem.getStemString() );
-//				parentStem.setPathTaken( directionHistory );
-//				stopper++;
-//			}
-			/* check if stem is too small for more stemming */
-			checkIfStemLengthAtSmallest( parentStem );
-			/* set this branch's i branch */
-			setInfixBranch( new Branch(_i, parentStem, this.directionHistory) );
-			return infixBranch;
-		}
-
-		public Branch generateSuffixBranch(Stem parentStem)
-		{
-			SuffixCommand sc = new SuffixCommand(parentStem);
-			/* check if stem is already root word */
-//			if( sc.checkDB() )
-//			{
-//				isSuffixRoot = true;
-//				parentStem.setRootWord( parentStem.getStemString() );
-//				parentStem.setPathTaken( directionHistory );
-//				stopper++;
-//			}
-			/* check if stem is too small for more stemming */
-			checkIfStemLengthAtSmallest( parentStem );
-			/* set this branch's s branch */
-			setSuffixBranch( new Branch(_s, parentStem, this.directionHistory) );
-			return suffixBranch;
-		}
-
-		/**
-		 * Gets children in a Branch[] format.
-		 * index 0 for prefix, 1 for infix, and 2 for suffix.
-		 * @return
-		 * children of the selected branch
-		 */
-		public Branch[] getChildren()
-		{
-			Branch[] children = new Branch[3];
-			children[0] = getPrefixBranch();
-			children[1] = getInfixBranch();
-			children[2] = getSuffixBranch();
-			return children;
-		}
-
-		/*
-		  * ********************************************************************
-		  *                             Other Utility
-		  * ********************************************************************
-		 */
-
-		/**
-		 * Checks DB if current stem is a root word
-		 * @param checkStem
-		 * stem to be checked if root word
-		 * @return
-		 * true if root word otherwise false
-		 */
-		public boolean checkIfRoot(Stem checkStem)
-		{
-			DBHandler db = new DBHandler();
-			String word  = checkStem.getStemString();
-			return db.lookup(word);
-		}
-
-		/**
-		 * Check if the length of the current stem is suitable for further stemming.
-		 * @param checkStem
-		 * stem to be checked
-		 * @return
-		 * true if stem is <= 4 and false otherwise.
-		 * @Note Stemming should end when this is true.
-		 */
-		public boolean checkIfStemLengthAtSmallest(Stem checkStem)
-		{
-			String word = checkStem.getStemString();
-			if ( word.length() <= 4 )
-			{
-				isTreeLeaf = true;
-				stopper++;
-				return true;
-			}
-			return false;
-		}
-
-		/*
-		  * ********************************************************************
-		  *                         Getters and Setters
-		  * ********************************************************************
-		 */
-		public String getDirectionHistory() {
-			return directionHistory;
-		}
-
-		public void setDirectionHistory(String directionHistory) {
-			this.directionHistory = directionHistory;
-		}
-
-		public void printBranchStem()
-		{
-			println( "B-Stem: " + this.stem.getStemString() );
-		}
-
-		public Branch getPrefixBranch() {
-			return prefixBranch;
-		}
-
-		public void setPrefixBranch(Branch prefixBranch) {
-			this.prefixBranch = prefixBranch;
-		}
-
-		public Branch getInfixBranch() {
-			return infixBranch;
-		}
-
-		public void setInfixBranch(Branch infixBranch) {
-			this.infixBranch = infixBranch;
-		}
-
-		public Branch getSuffixBranch() {
-			return suffixBranch;
-		}
-
-		public void setSuffixBranch(Branch suffixBranch) {
-			this.suffixBranch = suffixBranch;
-		}
-
-		public char getDirection() {
-			return direction;
-		}
-
-		public void setDirection(char direction) {
-			this.direction = direction;
-		}
-
-		public Stem getStem() {
-			return stem;
-		}
-
-		public void setStem(Stem stem) {
-			this.stem = stem;
-		}
-
-		public int getTreeDepth() {
-			return treeDepth;
-		}
-
-		public void setTreeDepth(int treeDepth) {
-			this.treeDepth = treeDepth;
-		}
-
-		public boolean isTop() {
-			return isTop;
-		}
-
-		public void setTop(boolean top) {
-			isTop = top;
-		}
-
-		public boolean isRoot() {
-			return this.isRootWord;
-		}
-
-		public void setRoot(boolean root) {
-			this.isRootWord = root;
-		}
-
-		public boolean isRootWord() {
-			return isRootWord;
-		}
-
-		public void setRootWord(boolean rootWord) {
-			isRootWord = rootWord;
-		}
-
-		public boolean isTreeRoot() {
-			return isTreeRoot;
-		}
-
-		public void setTreeRoot(boolean treeRoot) {
-			isTreeRoot = treeRoot;
-		}
-
-		public boolean isTreeLeaf() {
-			return isTreeLeaf;
-		}
-
-		public void setTreeLeaf(boolean treeLeaf) {
-			isTreeLeaf = treeLeaf;
 		}
 	}
 

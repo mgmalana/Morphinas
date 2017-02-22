@@ -11,19 +11,22 @@ import static Utility.print.println;
  */
 public class InfixCommand extends AbstractAffixCommand
 {
+	Stem newStem;
 
-	String word;
+	public InfixCommand(){}
 
-	public InfixCommand(Stem stem)
+	public Stem performStemmingModules(Stem stem)
 	{
-		super(stem);
-	}
-
-	public Stem performStemmingModules()
-	{
+		/* Initialize new Stem objects for immutability */
+		Stem oldStem = stem;
+		Stem newStem = stem;
+		/* Initialize submodules for stemming */
 		RemoveCommonInfix rci = new RemoveCommonInfix();
-		stem = rci.reduceStem( stem );
-		return stem;
+		/* Perform stemming */
+		newStem = rci.reduceStem( newStem );
+		/* Check for Changes and update boolean changed */
+		checkForChanges(oldStem, newStem);
+		return newStem;
 	}
 
 	public static class test

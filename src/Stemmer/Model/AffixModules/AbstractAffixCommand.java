@@ -8,18 +8,19 @@ import static Utility.print.println;
  */
 public abstract class AbstractAffixCommand {
 	/* stem and newStem will have the same value. */
-	protected Stem stem, oldStem;
 	protected boolean changed = false, isRoot = false;
 
-	public AbstractAffixCommand(Stem stem)
-	{
-		this.stem = stem;
-		oldStem = new Stem( stem.getStemString() );
-		performStemmingModules();
-		checkForChanges( oldStem, stem );
-	}
+	public AbstractAffixCommand(){}
 
-	public abstract Stem performStemmingModules();
+//	public AbstractAffixCommand(Stem stem)
+//	{
+//		this.stem = stem;
+//		oldStem = new Stem( stem.getStemString() );
+//		performStemmingModules();
+//		checkForChanges( oldStem, stem );
+//	}
+
+	public abstract Stem performStemmingModules(Stem stem);
 
  	public boolean checkForChanges(Stem oldStem, Stem newStem)
 	{
@@ -32,7 +33,7 @@ public abstract class AbstractAffixCommand {
 		}
 	}
 
-	public boolean checkDB()
+	public boolean checkDB(Stem stem)
 	{
 		DBHandler db = new DBHandler();
 		return db.lookup( stem.getStemString() );

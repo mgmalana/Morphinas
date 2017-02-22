@@ -12,16 +12,22 @@ import static Utility.print.println;
 public class SuffixCommand extends AbstractAffixCommand
 {
 
-	public SuffixCommand(Stem stem)
-	{
-		super(stem);
-	}
+	Stem newStem;
 
-	public Stem performStemmingModules()
+	public SuffixCommand(){}
+
+	public Stem performStemmingModules(Stem stem)
 	{
-		RemoveCommonSuffix rcs = new RemoveCommonSuffix();
-		stem = rcs.reduceStem(stem);
-		return stem;
+		/* Initialize new Stem objects for immutability */
+		Stem oldStem = stem;
+		Stem newStem = stem;
+		/* Initialize submodules for stemming */
+		RemoveCommonSuffix rcp = new RemoveCommonSuffix();
+		/* Perform stemming */
+		newStem = rcp.reduceStem( newStem );
+		/* Check for Changes and update boolean changed */
+		checkForChanges(oldStem, newStem);
+		return newStem;
 	}
 	public static class test
 	{
