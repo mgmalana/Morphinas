@@ -97,6 +97,22 @@ public class Branch
 	  * ********************************************************************
 	 */
 
+	public void createBranch( Stem parentStem, char direction )
+	{
+		PrefixCommand pc;
+		InfixCommand ic;
+		SuffixCommand sc;
+
+		switch( direction )
+		{
+			case _p:
+				pc = new PrefixCommand();
+				checkIfStemLengthAtSmallest( parentStem );
+
+		}
+	}
+
+
 //			parentStem = pc.performStemmingModules();
 //			println("pb: " + parentStem.getStemString());
 	public Branch generatePrefixBranch(Stem parentStem)
@@ -157,19 +173,7 @@ public class Branch
 		return suffixBranch;
 	}
 
-	public void createBranch( Stem parentStem, char direction )
-	{
-		PrefixCommand pc;
-		InfixCommand ic;
-		SuffixCommand sc;
 
-		switch( direction )
-		{
-			case _p:
-				pc = new PrefixCommand();
-				checkIfStemLengthAtSmallest( parentStem );
-		}
-	}
 
 	/**
 	 * Gets children in a Branch[] format.

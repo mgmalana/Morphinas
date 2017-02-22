@@ -792,9 +792,9 @@ public class MorphPI
 //		sentences = mpi.createSentences(splitMe);
 //		mpi.featuredResultString(sentences);
 //
-//		String test = ".s";
-//		boolean hasNonAlpha = test.matches("^.*[^a-zA-Z].*$");
-//		boolean isNumbers 	= test.matches("^.*[0-9].*$");
+//		String Test = ".s";
+//		boolean hasNonAlpha = Test.matches("^.*[^a-zA-Z].*$");
+//		boolean isNumbers 	= Test.matches("^.*[0-9].*$");
 
 //		println("hasNonAlpha: " + hasNonAlpha);
 //		println("isNumbers: " + isNumbers);

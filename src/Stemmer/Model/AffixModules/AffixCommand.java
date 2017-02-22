@@ -4,7 +4,6 @@ import Stemmer.Model.AffixModules.Infix.InfixCommand;
 import Stemmer.Model.AffixModules.Prefix.PrefixCommand;
 import Stemmer.Model.AffixModules.Suffix.SuffixCommand;
 import Stemmer.Model.Branch;
-import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
 
 import java.util.ArrayList;
@@ -74,6 +73,43 @@ public class AffixCommand
 		}
 
 		printTreeContent(tY);
+	}
+
+	public void generatePISTree3(String word)
+	{
+		/* Ecological Creation */
+		ArrayList<ArrayList<Branch>> ty 	= new ArrayList<>();
+		ArrayList<Branch> tx 				= new ArrayList<>();
+		/* Branches */
+		Branch rootBranch;
+		/* Temp Vars */
+		ArrayList<Branch> tempX;
+		/* Create the root node */
+		Stem rootStem 	= new Stem( word );
+		rootBranch		= new Branch( rootStem );
+		/* Add the root node in ArrayList */
+		tx.add( rootBranch );
+		ty.add( tx );
+		/* Go out and populate */
+		for( int y = 0; y < ty.size(); y++ )
+		{
+			tx 		= new ArrayList<>();
+			tempX	= ty.get( y );
+			for( int x = 0; x < tempX.size(); x++ )
+			{
+				tempX.get(x).generateBranchChildren();
+				tx.add( tempX.get(x).getPrefixBranch() );
+				tx.add( tempX.get(x).getInfixBranch() );
+				tx.add( tempX.get(x).getSuffixBranch() );
+			}
+			ty.add(tx);
+
+			if( ty.size()> 2)
+			{
+				break;
+			}
+			printTreeContent(ty);
+		}
 	}
 
 	public void generatePISTree(String word)
@@ -153,7 +189,7 @@ public class AffixCommand
 
 	}
 
-	public void printTreeContent(ArrayList<ArrayList<Branch>> tY)
+	public void printTreeContent( ArrayList<ArrayList<Branch>> tY )
 	{
 		/* try to print contents of tree */
 		for( int y = 0; y < tY.size(); y++ )
@@ -248,13 +284,14 @@ public class AffixCommand
 			/* don't change this line */
 			Test t = new Test();
 			/* write below */
-			t.testCreateBranch();
+//			t.testCreateBranch();
+			t.original();
 		}
 
 		public void original()
 		{
 //			ac.generatePISTree2("pinahintayan");
-			ac.generatePISTree("pinahintayan");
+			ac.generatePISTree3("pinahintayan");
 		}
 
 		public void testCreateBranch()

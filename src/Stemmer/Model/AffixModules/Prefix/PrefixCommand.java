@@ -50,12 +50,11 @@ public class PrefixCommand extends AbstractAffixCommand
 		public static void main(String[] args)
 		{
 			String word = "pinahintay";
-			final Stem stem  	= new Stem(word);
+			Stem stem  	= new Stem(word);
 			PrefixCommand pc = new PrefixCommand();
 			Stem newStem = pc.performStemmingModules(stem);
 			println(stem.getStemString() + " -> " + newStem.getStemString());
 			println( "Changes: " + pc.isChanged() );
-
 		}
 	}
 }

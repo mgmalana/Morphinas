@@ -337,7 +337,7 @@ public class Method1 implements Runnable
 		}
 
 		/**
-		 * Runs a test using directionless stemming (default left)
+		 * Runs a Test using directionless stemming (default left)
 		 * @param test
 		 * Word to be stemmed
 		 */
@@ -388,7 +388,7 @@ public class Method1 implements Runnable
 		}
 
 		/**
-		 * Runs a test wherein threading is implemented.
+		 * Runs a Test wherein threading is implemented.
 		 * With first thread running P-first and second thread running S-first
 		 * @param test
 		 */

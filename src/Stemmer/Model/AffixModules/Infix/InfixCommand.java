@@ -18,8 +18,8 @@ public class InfixCommand extends AbstractAffixCommand
 	public Stem performStemmingModules(Stem stem)
 	{
 		/* Initialize new Stem objects for immutability */
-		Stem oldStem = stem;
-		Stem newStem = stem;
+		Stem oldStem = stem.cloneThis();
+		Stem newStem = stem.cloneThis();
 		/* Initialize submodules for stemming */
 		RemoveCommonInfix rci = new RemoveCommonInfix();
 		/* Perform stemming */
@@ -29,18 +29,27 @@ public class InfixCommand extends AbstractAffixCommand
 		return newStem;
 	}
 
-	public static class test
+	public static class Test
 	{
 		public static void main(String[] args)
 		{
-			RemoveCommonInfix ci = new RemoveCommonInfix();
-			String word = "sinindi";
-			Stem stem = new Stem(word);
-			stem = ci.reduceStem(stem);
-//			word = ci.reduceStem(word);
-			println("word: " + stem.getStemString());
-			println("Affix: " + ci.getFoundAffix());
-			println("AffixFeatured: " + ci.getFoundAffixFeatured());
+			Test t = new Test();
+			t.runTest();
+		}
+
+		public void runTest()
+		{
+			String word = "pinahintay";
+			Stem stem = new Stem( word );
+			Stem newStem;
+			InfixCommand ic = new InfixCommand();
+
+			newStem = ic.performStemmingModules( stem );
+			println("NewStem: " + newStem.getStemString());
+			println("Changes: " + ic.isChanged());
+			newStem = ic.performStemmingModules( newStem );
+			println("NewStem: " + newStem.getStemString());
+			println("Changes: " + ic.isChanged());
 		}
 	}
 }
