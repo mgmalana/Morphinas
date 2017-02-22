@@ -3,6 +3,7 @@ package Stemmer.Model.AffixModules.Suffix.Submodules;
 import Stemmer.Model.AffixModules.AbstractMorphoChange;
 import Stemmer.Model.AffixModules.AffixList;
 import Stemmer.Model.Stem;
+import static Utility.print.*;
 
 /**
  * Created by laurenztolentino on 02/09/2017.
@@ -23,7 +24,9 @@ public class RemoveCommonSuffix extends AbstractMorphoChange
 			{
 				foundAffix 	= suffix;
 				leftStem  	= word.substring(0, word.length()-suffixLength);
-				/* Update or Set stem properties */
+				/*
+				 * Update or Set stem properties
+				 */
 				stem.setStemString(leftStem);
 				stem.setFeature( stem.getFeature() + "" + applyFeature( suffix ) );
 				return stem;
