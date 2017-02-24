@@ -39,7 +39,7 @@ public class InfixCommand extends AbstractAffixCommand
 
 		public void runTest()
 		{
-			String word = "pinahintay";
+			String word = "pinapinta";
 			Stem stem = new Stem( word );
 			Stem newStem;
 			InfixCommand ic = new InfixCommand();
@@ -47,8 +47,10 @@ public class InfixCommand extends AbstractAffixCommand
 			newStem = ic.performStemmingModules( stem );
 			println("NewStem: " + newStem.getStemString());
 			println("Changes: " + ic.isChanged());
-			newStem = ic.performStemmingModules( newStem );
-			println("NewStem: " + newStem.getStemString());
+			ic = new InfixCommand();
+			Stem newStem2 = newStem.cloneThis();
+			newStem2 = ic.performStemmingModules( newStem2 );
+			println("NewStem: " + newStem2.getStemString());
 			println("Changes: " + ic.isChanged());
 		}
 	}

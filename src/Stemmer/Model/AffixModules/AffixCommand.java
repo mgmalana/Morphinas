@@ -104,12 +104,13 @@ public class AffixCommand
 			}
 			ty.add(tx);
 
-			if( ty.size()> 2)
+			if( ty.size() > 2)
 			{
 				break;
 			}
-			printTreeContent(ty);
+
 		}
+		printTreeContent(ty);
 	}
 
 	public void generatePISTree(String word)
