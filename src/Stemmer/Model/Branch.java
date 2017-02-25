@@ -10,7 +10,7 @@ import static Utility.print.println;
 /**
  * Created by laurenz on 22/02/2017.
  */
-public class Branch
+public class Branch implements Cloneable
 {
 	/*
 	  * ********************************************************************
@@ -97,21 +97,68 @@ public class Branch
 	  * ********************************************************************
 	 */
 
-	public void createBranch( Stem parentStem, char direction )
+	public Branch[] generateBranchChildren2(Stem currentStem)
 	{
-		PrefixCommand pc;
-		InfixCommand ic;
-		SuffixCommand sc;
+		Branch[] children = new Branch[2];
+		Branch prefixBranch, infixBranch, suffixBranch;
+		Stem tempStem = currentStem.cloneThis();
+
+		prefixBranch = createBranch( tempStem, _p);
+		infixBranch  = createBranch( tempStem, _i);
+		suffixBranch = createBranch( tempStem, _s);
+
+		children[0]  = prefixBranch;
+		children[1]  = infixBranch;
+		children[2]  = suffixBranch;
+
+		return children;
+	}
+
+	public Branch createBranch( Stem parentStem, char direction )
+	{
+		/* Mandatory cloning :( */
+		Stem newStem = parentStem.cloneThis();
+		/* Call commands */
+		PrefixCommand pc; InfixCommand ic; SuffixCommand sc;
+		/* Branch to be returned */
+		Branch newBranch;
 
 		switch( direction )
 		{
 			case _p:
-				pc = new PrefixCommand();
+				pc 			= new PrefixCommand();
+				newStem 	= pc.performStemmingModules( newStem );
 				checkIfStemLengthAtSmallest( parentStem );
-
+				newBranch 	= new Branch( _p, newStem, this.directionHistory);
+				break;
+			case _i:
+				ic 			= new InfixCommand();
+				newStem 	= ic.performStemmingModules( newStem );
+				checkIfStemLengthAtSmallest( parentStem );
+				newBranch 	= new Branch( _i, newStem, this.directionHistory);
+				break;
+			case _s:
+				sc 			= new SuffixCommand();
+				newStem 	= sc.performStemmingModules( newStem );
+				newBranch 	= new Branch( _s, newStem, this.directionHistory);
+				break;
+			default:
+				return null;
 		}
+
+		return newBranch;
 	}
 
+	private Branch nullBranch(Branch oldBranch)
+	{
+		Branch newBranch;
+		Stem nullStem = new Stem("NULL");
+
+		newBranch = oldBranch.cloneThis();
+		newBranch.setStem( nullStem );
+
+		return newBranch;
+	}
 
 //			parentStem = pc.performStemmingModules();
 //			println("pb: " + parentStem.getStemString());
@@ -228,6 +275,28 @@ public class Branch
 			return true;
 		}
 		return false;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 *                       FOR CLONING ONLY                        *
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+	public Branch cloneThis()
+	{
+		try
+		{
+			return (Branch) Branch.super.clone();
+		} catch (CloneNotSupportedException e)
+		{
+			println(" ERROR: BRANCH CLONING FAILED HUHUBELLS ");
+			e.printStackTrace();
+		}
+		return this;
 	}
 
 	/*

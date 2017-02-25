@@ -75,6 +75,10 @@ public class AffixCommand
 		printTreeContent(tY);
 	}
 
+	/**
+	 * Main working method. Do not use anything else.
+	 * @param word
+	 */
 	public void generatePISTree3(String word)
 	{
 		/* Ecological Creation */
