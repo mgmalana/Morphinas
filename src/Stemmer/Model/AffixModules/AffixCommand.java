@@ -29,52 +29,6 @@ public class AffixCommand
 	public AffixCommand()
 	{}
 
-	public void generatePISTree2(String word)
-	{
-		/* saving the trees */
-		ArrayList<ArrayList<Branch>> tY = new ArrayList<>();
-		ArrayList<Branch> tX 			= new ArrayList<>();
-		ArrayList<Branch> newParents 	= new ArrayList<>();
-		/* Children of the Root */
-		Branch root, parent, prefixBranch, infixBranch, suffixBranch, tempParent;
-		int expectedTreeWidth = 1;
-		/* Initialize first stem */
-		Stem rootStem 	= new Stem( word );
-		root 			= new Branch( rootStem );
-
-		parent = root;
-		tX.add( parent );
-		tY.add( tX );
-
-		for ( int y = 0; y < tY.size(); y++ )
-		{
-
-			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
-
-			tX = null;
-			tX = new ArrayList<>();
-
-			ArrayList<Branch> tempX = tY.get( y );
-			println("tempX.size: " + tempX.size() );
-
-			for( int x = 0; x < tempX.size(); x++ )
-			{
-				tempX.get(x).generateBranchChildren();
-				tX.add( tempX.get(x).getPrefixBranch() );
-				tX.add( tempX.get(x).getInfixBranch() );
-				tX.add( tempX.get(x).getSuffixBranch() );
-			}
-			tY.add( tX );
-
-			if( tY.size() > 2 )
-			{
-				break;
-			}
-		}
-
-		printTreeContent(tY);
-	}
-
 	/**
 	 * Main working method. Do not use anything else.
 	 * @param word
@@ -117,82 +71,11 @@ public class AffixCommand
 		printTreeContent(ty);
 	}
 
-	public void generatePISTree(String word)
-	{
-		/* saving the trees */
-		ArrayList<ArrayList<Branch>> tY = new ArrayList<>();
-		ArrayList<Branch> tX 			= new ArrayList<>();
-		ArrayList<Branch> newParents 	= new ArrayList<>();
-		/* Children of the Root */
-		Branch root, parent, prefixBranch, infixBranch, suffixBranch, tempParent;
-		int expectedTreeWidth = 1;
-		/* Stopping properties */
-		/* Stem */
-		Stem stem, temp;
-		/* Begin */
-		stem = new Stem(word);
-		root = new Branch(stem);
-		parent = new Branch(stem);
-		/* initialize first depth of arraylist */
-		tX.add(root);
-		tY.add(tX);
-		/* tree expander */
-		while( parent.getStopper() < 3 )
-		{
-			expectedTreeWidth 	= expectedTreeWidth * 3;
-
-			tX 					= new ArrayList<>();
-
-			parent.generateBranchChildren();
-			prefixBranch = parent.getPrefixBranch();
-			infixBranch  = parent.getInfixBranch();
-			suffixBranch = parent.getSuffixBranch();
-
-			tX.add(prefixBranch);
-			tX.add(infixBranch);
-			tX.add(suffixBranch);
-			tY.add(tX);
-
-			boolean donePref = false, doneInf = false, doneSuff = false;
-			for( int i = 0; i < expectedTreeWidth; i++ )
-			{
-				newParents = tX;
-				tX = new ArrayList<>();
-//				println( "NewParent: " + newParents.get(i).getStem().getStemString() );
-				tempParent = newParents.get(i);
-				if ( parent.getStem().getStemString().length() > 4 )
-				{
-					parent.generateBranchChildren();
-					prefixBranch = tempParent.getPrefixBranch();
-					infixBranch  = tempParent.getInfixBranch();
-					suffixBranch = tempParent.getSuffixBranch();
-
-					tX.add(prefixBranch);
-					tX.add(infixBranch);
-					tX.add(suffixBranch);
-
-					if( !donePref && !doneInf && !doneSuff )
-					{
-						donePref = true;
-					}
-					else if ( donePref && !doneInf && !doneSuff )
-					{
-						doneInf = true;
-					}
-					else if ( donePref && doneInf && !doneSuff )
-					{
-						doneSuff = true;
-					}
-					tY.add(tX);
-				}
-				else
-				{
-					parent.setStopper( parent.getStopper() + 1 );
-				}
-			}
-		}
-
-	}
+	/*
+	 * ********************************************************************
+	 *                             Other Utility 						  *
+	 * ********************************************************************
+	 */
 
 	public void printTreeContent( ArrayList<ArrayList<Branch>> tY )
 	{

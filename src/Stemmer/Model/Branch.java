@@ -97,6 +97,12 @@ public class Branch implements Cloneable
 	  * ********************************************************************
 	 */
 
+
+	public Branch[] generateBranchChildren2()
+	{
+		return generateBranchChildren2( this.stem );
+	}
+
 	public Branch[] generateBranchChildren2(Stem currentStem)
 	{
 		Branch[] children = new Branch[2];
@@ -238,9 +244,9 @@ public class Branch implements Cloneable
 	}
 
 	/*
-	  * ********************************************************************
-	  *                             Other Utility
-	  * ********************************************************************
+	 * ********************************************************************
+	 *                             Other Utility 							*
+	 * ********************************************************************
 	 */
 
 	/**
