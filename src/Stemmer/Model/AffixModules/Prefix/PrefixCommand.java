@@ -2,6 +2,7 @@ package Stemmer.Model.AffixModules.Prefix;
 
 import Stemmer.Model.AffixModules.AbstractAffixCommand;
 import Stemmer.Model.AffixModules.Prefix.Submodules.RemoveCommonPrefix;
+import Stemmer.Model.AffixModules.Prefix.Submodules.RemoveReduplication;
 import Stemmer.Model.Stem;
 
 import static Utility.print.println;
@@ -17,15 +18,27 @@ public class PrefixCommand extends AbstractAffixCommand
 
 	public Stem performStemmingModules(Stem stem)
 	{
+		Boolean changes = false;
+		/* Initialize submodules for stemming */
+		RemoveCommonPrefix rcp 	= new RemoveCommonPrefix();
+		RemoveReduplication rdp	= new RemoveReduplication();
 		/* Initialize new Stem objects for immutability */
 		Stem oldStem = stem.cloneThis();
 		Stem newStem = stem.cloneThis();
-		/* Initialize submodules for stemming */
-		RemoveCommonPrefix rcp = new RemoveCommonPrefix();
-		/* Perform stemming */
+		/*
+		 *	Perform stemming
+		 */
+		// CommonPrefix
 		newStem = rcp.reduceStem( newStem );
-		/* Check for Changes and update boolean changed */
-		checkForChanges(oldStem, newStem);
+		if ( !checkForChanges(oldStem, newStem) ) {
+			newStem = rdp.reduceStem( newStem );
+			println("rdp: " + newStem.getStemString());
+		}
+		if ( !checkForChanges(oldStem, newStem) ) {
+			newStem = rdp.reduceStem( newStem );
+		}
+
+		/* Return the new stem */
 		return newStem;
 	}
 

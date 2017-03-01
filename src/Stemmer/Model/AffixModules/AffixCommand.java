@@ -67,7 +67,7 @@ public class AffixCommand
 			}
 			tY.add( tX );
 
-			if( tY.size() > 2 )
+			if( tY.size() > 3 )
 			{
 				break;
 			}
@@ -248,13 +248,14 @@ public class AffixCommand
 			/* don't change this line */
 			Test t = new Test();
 			/* write below */
-			t.testCreateBranch();
+//			t.testCreateBranch();
+			t.original();
 		}
 
 		public void original()
 		{
-//			ac.generatePISTree2("pinahintayan");
-			ac.generatePISTree("pinahintayan");
+			ac.generatePISTree2("pinaghati-hatian");
+//			ac.generatePISTree("pinaghatian");
 		}
 
 		public void testCreateBranch()

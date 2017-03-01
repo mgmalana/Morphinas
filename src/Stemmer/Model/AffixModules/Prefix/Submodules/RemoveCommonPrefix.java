@@ -28,7 +28,7 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 			if( prefix.equalsIgnoreCase(leftStem) )
 			{
 				this.foundAffix = leftStem;
-				rightStem 		= word.substring(prefixLength);
+				rightStem 		= word.substring(prefixLength+1);
 				/* Update or Set Stem properties */
 				stem.setStemString(rightStem);
 				stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
