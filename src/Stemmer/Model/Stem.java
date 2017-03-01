@@ -2,6 +2,8 @@ package Stemmer.Model;
 
 import java.util.ArrayList;
 
+import static Utility.print.println;
+
 /**
  * Created by laurenztolentino on 02/08/2017.
  */
@@ -28,6 +30,10 @@ public final class Stem implements Cloneable
 		this.suffixes	= new ArrayList<>();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 *                       FOR CLONING ONLY                        *
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -38,16 +44,18 @@ public final class Stem implements Cloneable
 		try
 		{
 			return (Stem) Stem.super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e)
+		{
+			println(" ERROR: STEM CLONING FAILED HUHUBELLS ");
 			e.printStackTrace();
 		}
 		return this;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-		 *              Used to update the current ArrayList             *
-		 *               of Prefixes, Infixes, and Suffixes              *
-		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	 *              Used to update the current ArrayList             *
+	 *               of Prefixes, Infixes, and Suffixes              *
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	public void addPrefix(String prefix)
 	{
 		if( this.prefixes == null || this.prefixes.size() == 0 ) {

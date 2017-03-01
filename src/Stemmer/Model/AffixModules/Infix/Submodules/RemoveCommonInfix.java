@@ -23,13 +23,13 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 		for( String infix: commonInfixes )
 		{
 			infixLength = infix.length();
-			for( int i = 1; i < (stemLength/2) + 1; i++ )
+			for( int i = 1; i < ( (stemLength/2) + 1) + 1; i++ )
 			{
 				inString = word.substring(i, i+infixLength);
 				/* if it matches */
 				if ( infix.equalsIgnoreCase(inString) )
 				{
-					if( ruleNotCCAfterStemming(word, i, infixLength) )
+					if( ruleNotCCAfterStemming(word, i, i) )
 					{
 						/* return original */
 						return stem;
@@ -69,14 +69,41 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 	{
 		int consonantCount = 0;
 		prevCharIndex--;
+		nextCharIndex += 2;
+//		for( int i = 0; i < vowels.length; i++ )
+//		{
+//			if( word.charAt( prevCharIndex) != vowels[i] )
+//		}
+
 		for( int i = 0; i < vowels.length; i++ )
 		{
-//			println(word.charAt(prevCharIndex)+"-"+word.charAt(nextCharIndex));
-			if( word.charAt(prevCharIndex) != vowels[i] || word.charAt(nextCharIndex) != vowels[i] )
+			if( word.charAt(prevCharIndex) != vowels[i])
+			{
+				consonantCount++;
+				break;
+			}
+		}
+
+		for( int i = 0; i < vowels.length; i++ )
+		{
+			if( word.charAt(nextCharIndex) == vowels[i])
+			{
+				consonantCount = 0;
+				break;
+			} else
 			{
 				consonantCount++;
 			}
 		}
+
+//		for( int i = 0; i < vowels.length; i++ )
+//		{
+//			println(word.charAt(prevCharIndex)+"-"+word.charAt(nextCharIndex));
+//			if( word.charAt(prevCharIndex) != vowels[i] && word.charAt(nextCharIndex) != vowels[i] )
+//			{
+//				println("consonantCount increased");
+//			}
+//		}
 
 		if( consonantCount >= 2)
 		{

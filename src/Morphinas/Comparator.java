@@ -136,7 +136,7 @@ public class Comparator
 		/* lengths and sizes */
 		int sentencesSize, goldWordsLength, testWordsLength;
 		/*
-		* Check if sentence sizes of both gold standard and test are equal.
+		* Check if sentence sizes of both gold standard and Test are equal.
 		* Program will exit if they are not of the same sizes.
 		* */
 		if( testeeSentences.size() == goldSentences.size() )
@@ -193,7 +193,7 @@ public class Comparator
 		/* lengths and sizes */
 		int sentencesSize, goldWordsLength, testWordsLength;
 		/*
-		* Check if sentence sizes of both gold standard and test are equal.
+		* Check if sentence sizes of both gold standard and Test are equal.
 		* Program will exit if they are not of the same sizes.
 		* */
 		if( testeeSentences.size() == goldStandardSentences.size() )

@@ -137,7 +137,7 @@ public class ComparatorTest
 		testSet.add("pak");
 		testSet.add("ganern");
 
-		println("HashSet test: " + testSet.contains("pak"));
+		println("HashSet Test: " + testSet.contains("pak"));
 	}
 
 	public void testLemmaComparator() throws Exception

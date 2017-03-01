@@ -4,7 +4,6 @@ import Stemmer.Model.AffixModules.Infix.InfixCommand;
 import Stemmer.Model.AffixModules.Prefix.PrefixCommand;
 import Stemmer.Model.AffixModules.Suffix.SuffixCommand;
 import Stemmer.Model.Branch;
-import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
 
 import java.util.ArrayList;
@@ -30,130 +29,55 @@ public class AffixCommand
 	public AffixCommand()
 	{}
 
-	public void generatePISTree2(String word)
+	/**
+	 * Main working method. Do not use anything else.
+	 * @param word
+	 */
+	public void generatePISTree3(String word)
 	{
-		/* saving the trees */
-		ArrayList<ArrayList<Branch>> tY = new ArrayList<>();
-		ArrayList<Branch> tX 			= new ArrayList<>();
-		ArrayList<Branch> newParents 	= new ArrayList<>();
-		/* Children of the Root */
-		Branch root, parent, prefixBranch, infixBranch, suffixBranch, tempParent;
-		int expectedTreeWidth = 1;
-		/* Initialize first stem */
+		/* Ecological Creation */
+		ArrayList<ArrayList<Branch>> ty 	= new ArrayList<>();
+		ArrayList<Branch> tx 				= new ArrayList<>();
+		/* Branches */
+		Branch rootBranch;
+		/* Temp Vars */
+		ArrayList<Branch> tempX;
+		/* Create the root node */
 		Stem rootStem 	= new Stem( word );
-		root 			= new Branch( rootStem );
-
-		parent = root;
-		tX.add( parent );
-		tY.add( tX );
-
-		for ( int y = 0; y < tY.size(); y++ )
+		rootBranch		= new Branch( rootStem );
+		/* Add the root node in ArrayList */
+		tx.add( rootBranch );
+		ty.add( tx );
+		/* Go out and populate */
+		for( int y = 0; y < ty.size(); y++ )
 		{
-
-			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
-
-			tX = null;
-			tX = new ArrayList<>();
-
-			ArrayList<Branch> tempX = tY.get( y );
-			println("tempX.size: " + tempX.size() );
-
+			tx 		= new ArrayList<>();
+			tempX	= ty.get( y );
 			for( int x = 0; x < tempX.size(); x++ )
 			{
 				tempX.get(x).generateBranchChildren();
-				tX.add( tempX.get(x).getPrefixBranch() );
-				tX.add( tempX.get(x).getInfixBranch() );
-				tX.add( tempX.get(x).getSuffixBranch() );
+				tx.add( tempX.get(x).getPrefixBranch() );
+				tx.add( tempX.get(x).getInfixBranch() );
+				tx.add( tempX.get(x).getSuffixBranch() );
 			}
-			tY.add( tX );
+			ty.add(tx);
 
-			if( tY.size() > 3 )
+			if( ty.size() > 2)
 			{
 				break;
 			}
-		}
 
-		printTreeContent(tY);
+		}
+		printTreeContent(ty);
 	}
 
-	public void generatePISTree(String word)
-	{
-		/* saving the trees */
-		ArrayList<ArrayList<Branch>> tY = new ArrayList<>();
-		ArrayList<Branch> tX 			= new ArrayList<>();
-		ArrayList<Branch> newParents 	= new ArrayList<>();
-		/* Children of the Root */
-		Branch root, parent, prefixBranch, infixBranch, suffixBranch, tempParent;
-		int expectedTreeWidth = 1;
-		/* Stopping properties */
-		/* Stem */
-		Stem stem, temp;
-		/* Begin */
-		stem = new Stem(word);
-		root = new Branch(stem);
-		parent = new Branch(stem);
-		/* initialize first depth of arraylist */
-		tX.add(root);
-		tY.add(tX);
-		/* tree expander */
-		while( parent.getStopper() < 3 )
-		{
-			expectedTreeWidth 	= expectedTreeWidth * 3;
+	/*
+	 * ********************************************************************
+	 *                             Other Utility 						  *
+	 * ********************************************************************
+	 */
 
-			tX 					= new ArrayList<>();
-
-			parent.generateBranchChildren();
-			prefixBranch = parent.getPrefixBranch();
-			infixBranch  = parent.getInfixBranch();
-			suffixBranch = parent.getSuffixBranch();
-
-			tX.add(prefixBranch);
-			tX.add(infixBranch);
-			tX.add(suffixBranch);
-			tY.add(tX);
-
-			boolean donePref = false, doneInf = false, doneSuff = false;
-			for( int i = 0; i < expectedTreeWidth; i++ )
-			{
-				newParents = tX;
-				tX = new ArrayList<>();
-//				println( "NewParent: " + newParents.get(i).getStem().getStemString() );
-				tempParent = newParents.get(i);
-				if ( parent.getStem().getStemString().length() > 4 )
-				{
-					parent.generateBranchChildren();
-					prefixBranch = tempParent.getPrefixBranch();
-					infixBranch  = tempParent.getInfixBranch();
-					suffixBranch = tempParent.getSuffixBranch();
-
-					tX.add(prefixBranch);
-					tX.add(infixBranch);
-					tX.add(suffixBranch);
-
-					if( !donePref && !doneInf && !doneSuff )
-					{
-						donePref = true;
-					}
-					else if ( donePref && !doneInf && !doneSuff )
-					{
-						doneInf = true;
-					}
-					else if ( donePref && doneInf && !doneSuff )
-					{
-						doneSuff = true;
-					}
-					tY.add(tX);
-				}
-				else
-				{
-					parent.setStopper( parent.getStopper() + 1 );
-				}
-			}
-		}
-
-	}
-
-	public void printTreeContent(ArrayList<ArrayList<Branch>> tY)
+	public void printTreeContent( ArrayList<ArrayList<Branch>> tY )
 	{
 		/* try to print contents of tree */
 		for( int y = 0; y < tY.size(); y++ )
@@ -254,8 +178,8 @@ public class AffixCommand
 
 		public void original()
 		{
-			ac.generatePISTree2("pinaghati-hatian");
-//			ac.generatePISTree("pinaghatian");
+//			ac.generatePISTree2("pinahintayan");
+			ac.generatePISTree3("pinahintayan");
 		}
 
 		public void testCreateBranch()
