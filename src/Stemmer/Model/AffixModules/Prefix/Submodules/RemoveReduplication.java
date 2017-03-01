@@ -2,6 +2,8 @@ package Stemmer.Model.AffixModules.Prefix.Submodules;
 
 import Stemmer.Model.Stem;
 
+import static Utility.print.println;
+
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
@@ -14,6 +16,8 @@ public class RemoveReduplication
 		if( word.contains("-") )
 		{
 			stem = wholeReduplication( newStem );
+		} else {
+			stem = partialReduplication( newStem );
 		}
 		return stem;
 	}
@@ -42,9 +46,20 @@ public class RemoveReduplication
 		String word = stem.getStemString();
 		String leftPart, rightPart, possibleRedup;
 
-		for( int i = 0; i < (word.length()/2); i++)
+		for( int i = 2; i < ( word.length()/2 ); i++)
 		{
-
+			possibleRedup 	= word.substring(0, i);
+			for( int j = i; j < word.length()/2; j++ )
+			{
+				leftPart 	= word.substring( j, j + possibleRedup.length() );
+				if( possibleRedup.equalsIgnoreCase(leftPart) )
+				{
+					rightPart = word.substring(j);
+					stem.setFeature( ""+ stem.getFeature() + "$" + possibleRedup);
+					stem.setStemString(rightPart);
+					return stem;
+				}
+			}
 		}
 		// do something
 		return stem;
@@ -55,13 +70,12 @@ public class RemoveReduplication
 		public static void main(String[] args)
 		{
 			/* Create stem first */
-			Stem stem = new Stem("hati-hatian");
+			Stem stem = new Stem("hahatiin");
 			RemoveReduplication redup = new RemoveReduplication();
 			redup.reduceStem(stem);
 		}
 	}
 }
-
 
 ///*
 //	 * Reduplicates the cluster of consonants including the succeeding vowel of
