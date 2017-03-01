@@ -105,17 +105,17 @@ public class Branch implements Cloneable
 
 	public Branch[] generateBranchChildren2(Stem currentStem)
 	{
-		Branch[] children = new Branch[2];
+		Branch[] children = new Branch[3];
 		Branch prefixBranch, infixBranch, suffixBranch;
 		Stem tempStem = currentStem.cloneThis();
 
-		prefixBranch = createBranch( tempStem, _p);
-		infixBranch  = createBranch( tempStem, _i);
-		suffixBranch = createBranch( tempStem, _s);
+		this.prefixBranch = createBranch( tempStem, _p);
+		this.infixBranch  = createBranch( tempStem, _i);
+		this.suffixBranch = createBranch( tempStem, _s);
 
-		children[0]  = prefixBranch;
-		children[1]  = infixBranch;
-		children[2]  = suffixBranch;
+		children[0]  = this.prefixBranch;
+		children[1]  = this.infixBranch;
+		children[2]  = this.suffixBranch;
 
 		return children;
 	}

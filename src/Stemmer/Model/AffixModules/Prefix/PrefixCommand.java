@@ -55,7 +55,7 @@ public class PrefixCommand extends AbstractAffixCommand
 	/*
 	  * ********************************************************************
 	  *                    Testing Only Beyond this Point
-	  * ********************************************************************
+	  * ***********************************this.*********************************
 	 */
 
 	public static class test

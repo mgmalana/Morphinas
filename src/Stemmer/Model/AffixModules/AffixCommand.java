@@ -53,22 +53,68 @@ public class AffixCommand
 		{
 			tx 		= new ArrayList<>();
 			tempX	= ty.get( y );
+			println("tempX.size: " + tempX.size());
 			for( int x = 0; x < tempX.size(); x++ )
 			{
-				tempX.get(x).generateBranchChildren();
+				Stem stemX = tempX.get(x).getStem();
+				tempX.get(x).generateBranchChildren2(stemX);
 				tx.add( tempX.get(x).getPrefixBranch() );
 				tx.add( tempX.get(x).getInfixBranch() );
 				tx.add( tempX.get(x).getSuffixBranch() );
 			}
 			ty.add(tx);
 
-			if( ty.size() > 2)
+			if( ty.size() > 3)
 			{
 				break;
 			}
 
 		}
 		printTreeContent(ty);
+	}
+
+	public void generatePISTree2(String word)
+	{
+		/* saving the trees */
+		ArrayList<ArrayList<Branch>> tY = new ArrayList<>();
+		ArrayList<Branch> tX 			= new ArrayList<>();
+		ArrayList<Branch> newParents 	= new ArrayList<>();
+		/* Children of the Root */
+		Branch root, parent, prefixBranch, infixBranch, suffixBranch, tempParent;
+		int expectedTreeWidth = 1;
+		/* Initialize first stem */
+		Stem rootStem 	= new Stem( word );
+		root 			= new Branch( rootStem );
+
+		parent = root;
+		tX.add( parent );
+		tY.add( tX );
+
+		for ( int y = 0; y < tY.size(); y++ )
+		{
+			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
+			tX = new ArrayList<>();
+
+			ArrayList<Branch> tempX = tY.get( y );
+			println("tempX.size: " + tempX.size() );
+
+			for( int x = 0; x < tempX.size(); x++ )
+			{
+				tempX.get(x).generateBranchChildren();
+				tX.add( tempX.get(x).getPrefixBranch() );
+				tX.add( tempX.get(x).getInfixBranch() );
+				tX.add( tempX.get(x).getSuffixBranch() );
+			}
+
+			tY.add( tX );
+
+			if( tY.size() > 3 )
+			{
+				break;
+			}
+		}
+
+		printTreeContent(tY);
 	}
 
 	/*
@@ -179,7 +225,7 @@ public class AffixCommand
 		public void original()
 		{
 //			ac.generatePISTree2("pinahintayan");
-			ac.generatePISTree3("pinahintayan");
+			ac.generatePISTree3("pinaghati-hatian");
 		}
 
 		public void testCreateBranch()
