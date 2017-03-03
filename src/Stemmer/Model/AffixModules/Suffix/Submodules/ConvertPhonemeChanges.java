@@ -10,7 +10,6 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 {
 	public ConvertPhonemeChanges(){}
 
-
 	@Override
 	public Stem reduceStem(Stem stem) {
 		return null;
