@@ -1,5 +1,7 @@
 package Stemmer.Model.AffixModules.Prefix.Submodules;
 
+import Stemmer.Model.AffixModules.AbstractAffixCommand;
+import Stemmer.Model.AffixModules.AbstractMorphoChange;
 import Stemmer.Model.Stem;
 
 import static Utility.print.println;
@@ -7,7 +9,7 @@ import static Utility.print.println;
 /**
  * Created by laurenztolentino on 02/09/2017.
  */
-public class RemoveReduplication
+public class RemoveReduplication extends AbstractMorphoChange
 {
 	public Stem reduceStem(Stem stem)
 	{
@@ -20,6 +22,11 @@ public class RemoveReduplication
 			stem = partialReduplication( newStem );
 		}
 		return stem;
+	}
+
+	@Override
+	public String applyFeature(String foundAffix) {
+		return null;
 	}
 
 	public Stem wholeReduplication(Stem stem)
@@ -36,6 +43,9 @@ public class RemoveReduplication
 			}
 		}
 //		println("LP: " + leftPart + " RP: " + rightPart);
+		/*
+		 * Please transfer to applyFeature()
+		 */
 		stem.setFeature( stem.getFeature() + "$" + leftPart);
 		stem.setStemString( rightPart );
 		return stem;
