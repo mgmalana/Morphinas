@@ -16,9 +16,7 @@ import static Utility.print.println;
  */
 public class DBHandler
 {
-
-	static final String DB_URL 				= "jdbc:sqlite:ngramchecker.db";
-
+	static final String DB_URL 				= "jdbc:sqlite:morphinas.db";
 	// SQL Returns
 	ResultSet rs;
 	PreparedStatement query 				= null;
