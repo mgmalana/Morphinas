@@ -16,12 +16,9 @@ import static Utility.print.println;
  */
 public class DBHandler
 {
-	// JDBC driver name and database URL
-	private final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL 				= "jdbc:mysql://localhost:3306/morphinas?autoReconnect=true&useSSL=false";
-	// Database credentials
-	static final String USER 				= "root";
-	static final String PASS 				= "dlsu1234";
+
+	static final String DB_URL 				= "jdbc:sqlite:ngramchecker.db";
+
 	// SQL Returns
 	ResultSet rs;
 	PreparedStatement query 				= null;
@@ -37,7 +34,7 @@ public class DBHandler
 	{
 		results = new ArrayList<>();
 		// instantiate the jdbcpool
-		JDBCConnectionPool pool = new JDBCConnectionPool(JDBC_DRIVER, DB_URL, USER, PASS);
+		JDBCConnectionPool pool = new JDBCConnectionPool(DB_URL);
 		// Get a connection:
 		Connection con = pool.checkOut();
 		/* Perform query */
