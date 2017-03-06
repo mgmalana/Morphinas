@@ -224,7 +224,7 @@ public class AffixCommand
 
 		public void original()
 		{
-//			ac.generatePISTree2("pinahintayan");
+		//	ac.generatePISTree2("pinahintayan");
 			ac.generatePISTree3("pinaghati-hatian");
 		}
 

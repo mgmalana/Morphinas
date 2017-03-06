@@ -9,11 +9,18 @@ import static Utility.print.println;
  */
 public final class Stem implements Cloneable
 {
+
 	private String stemString;
 	private String affix;
 	private String feature;
 	private String rootWord;
 	private String pathTaken;
+	/* features per affix */
+	private String prefixFeatures;
+	private String infixFeatures;
+	private String suffixFeatures;
+	private String redupFeatures;
+	private String combinedFeatures;
 
 	private ArrayList<String> prefixes, infixes, suffixes;
 

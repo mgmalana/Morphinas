@@ -8,7 +8,7 @@ import Stemmer.Model.Stem;
  */
 public class ConvertPhonemeChanges extends AbstractMorphoChange
 {
-	String[] phonemePrefixes = { "ma" };
+	String[] phonemeChangePrefixes = { "mar" };
 
 	public ConvertPhonemeChanges()
 	{
@@ -25,12 +25,12 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 		/* r -> d */
 		char origChar, newChar;
 
-		for( int k = 0; k < phonemePrefixes.length; k++ )
+		for(int k = 0; k < phonemeChangePrefixes.length; k++ )
 		{
-			if( word.contains( phonemePrefixes[k]) )
+			if( word.contains( phonemeChangePrefixes[k]) )
 			{
-				leftPart = word.substring( 0, phonemePrefixes[k].length() );
-				if( phonemePrefixes[k].equalsIgnoreCase( leftPart) )
+				leftPart = word.substring( 0, phonemeChangePrefixes[k].length() );
+				if( phonemeChangePrefixes[k].equalsIgnoreCase( leftPart) )
 				{
 					// do something
 				}
@@ -42,7 +42,9 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 	}
 
 	@Override
-	public String applyFeature(String foundAffix) {
+	public String applyFeature(String foundAffix)
+	{
+
 		return null;
 	}
 

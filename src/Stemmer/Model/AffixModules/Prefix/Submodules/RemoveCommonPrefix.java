@@ -25,14 +25,25 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 		{
 			prefixLength = prefix.length();
 			leftStem 	 = word.substring(0, prefixLength);
+			/* Will execute when a prefix is found */
 			if( prefix.equalsIgnoreCase(leftStem) )
 			{
-				this.foundAffix = leftStem;
-				rightStem 		= word.substring(prefixLength+1);
-				/* Update or Set Stem properties */
-				stem.setStemString(rightStem);
-				stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
-				return stem;
+				/* Must check if prefix found belongs to the prefixes with phoneme changing */
+				if ( prefix.equalsIgnoreCase("ma") )
+				{
+					ConvertPhonemeChanges cpc = new ConvertPhonemeChanges();
+
+				}
+				else
+				{
+					this.foundAffix = leftStem;
+					rightStem 		= word.substring(prefixLength+1);
+					/* Update or Set Stem properties */
+					stem.setStemString(rightStem);
+					stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
+					return stem;
+				}
+
 			}
 		}
 		return stem;
