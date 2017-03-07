@@ -152,5 +152,43 @@ public final class Stem implements Cloneable
 		this.suffixes = suffixes;
 	}
 
+	public String getPrefixFeatures() {
+		return prefixFeatures;
+	}
 
+	public void setPrefixFeatures(String prefixFeatures) {
+		this.prefixFeatures = prefixFeatures;
+	}
+
+	public String getInfixFeatures() {
+		return infixFeatures;
+	}
+
+	public void setInfixFeatures(String infixFeatures) {
+		this.infixFeatures = infixFeatures;
+	}
+
+	public String getSuffixFeatures() {
+		return suffixFeatures;
+	}
+
+	public void setSuffixFeatures(String suffixFeatures) {
+		this.suffixFeatures = suffixFeatures;
+	}
+
+	public String getRedupFeatures() {
+		return redupFeatures;
+	}
+
+	public void setRedupFeatures(String redupFeatures) {
+		this.redupFeatures = redupFeatures;
+	}
+
+	public String getCombinedFeatures() {
+		return combinedFeatures;
+	}
+
+	public void setCombinedFeatures(String combinedFeatures) {
+		this.combinedFeatures = combinedFeatures;
+	}
 }

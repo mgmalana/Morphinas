@@ -32,7 +32,8 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 				if ( prefix.equalsIgnoreCase("ma") )
 				{
 					ConvertPhonemeChanges cpc = new ConvertPhonemeChanges();
-
+					Stem cpcStem = cpc.reduceStem( stem.cloneThis() );
+					stem.setStemString( cpcStem.getStemString() );
 				}
 				else
 				{
