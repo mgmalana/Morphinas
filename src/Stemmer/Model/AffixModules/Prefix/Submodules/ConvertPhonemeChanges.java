@@ -57,7 +57,7 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 	}
 
 	/**
-	 * Will test ma + word
+	 * Will test ma + word.
 	 */
 	public static class Test
 	{
