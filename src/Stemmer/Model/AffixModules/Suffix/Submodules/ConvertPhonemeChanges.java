@@ -36,7 +36,7 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 		/* Word Parts */
 		String leftPart, rightPart, combinedPart;
 		char origChar, newChar;
-		char[] replaceWith;
+		char[] replaceWith = possibleConstReplacements;
 		/* start reducing stem */
 
 		for( int k = 0; k < phonemeChangeSuffixes.length; k++ )
@@ -49,11 +49,15 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 				if( phonemeChangeSuffixes[k].equalsIgnoreCase( rightPart ) )
 				{
 					leftPart  = word.substring( 0, ( word.length() - phonemeChangeSuffixes[k].length()) );
-
-					/* replace the suffix with a phoneme change */
-					for(int i = 0; i < possibleConstReplacements.length; i++ )
+					/* check if it's a vowel/consonant phoneme change */
+					if( isVowel(rightPart.charAt(0)) )
 					{
-						rightPart 	 = "" + possibleConstReplacements[i];
+						replaceWith = possibleVowelReplacements;
+					} // else, default is consonants.
+					/* replace the suffix with a phoneme change */
+					for(int i = 0; i < replaceWith.length; i++ )
+					{
+						rightPart 	 = "" + replaceWith[i];
 						combinedPart = leftPart + rightPart;
 						/* Check the modified word in the db. Will update the Stem() if the mod word exists. */
 						if( dbHandler.lookup( combinedPart ) )
@@ -89,12 +93,10 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 
 	public static class Test
 	{
-
-
 		public static void main(String[] args)
 		{
 			ConvertPhonemeChanges cpc 	= new ConvertPhonemeChanges();
-			String word 				= "tawaran";
+			String word 				= "pintuan";
 			Stem stem 				 	= new Stem( word );
 
 			 stem = cpc.reduceStem( stem );
