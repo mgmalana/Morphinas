@@ -17,7 +17,7 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 	{
 		String word = stem.getStemString();
 		if( word.length() <= 4)
-		{
+						{
 			return stem;
 		}
 		int prefixLength;

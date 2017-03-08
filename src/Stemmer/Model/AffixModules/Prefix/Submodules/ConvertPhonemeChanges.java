@@ -9,8 +9,12 @@ import static Utility.print.*;
  */
 public class ConvertPhonemeChanges extends AbstractMorphoChange
 {
-	String[] phonemeChangePrefixes = { "mar" };
+	/* Database for lookups */
 	DBHandler dbHandler;
+	/* list of possible phoneme change prefixes */
+	String[] phonemeChangePrefixes  = { "mar" };
+	char[] possibleCharReplacements = { 'd', 'b', 'p' };
+
 
 	public ConvertPhonemeChanges()
 	{
@@ -27,22 +31,31 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 		/* r -> d */
 		char origChar, newChar;
 
-		for(int k = 0; k < phonemeChangePrefixes.length; k++ )
+		/* iterate for every existing phoneme change prefixes */
+		for( int k = 0; k < phonemeChangePrefixes.length; k++ )
 		{
-			if( word.contains( phonemeChangePrefixes[k]) )
+			/* Checks if the first half of the word contains possible phoneme change prefixes */
+			if( word.substring(0,  word.length()/2).contains( phonemeChangePrefixes[k] ) )
 			{
+				/* if the prefix in the list matches the one in the word being stemmed */
 				leftPart = word.substring( 0, phonemeChangePrefixes[k].length() );
 				if( phonemeChangePrefixes[k].equalsIgnoreCase(leftPart) )
 				{
-					leftPart 		= "d";
 					rightPart 		= word.substring( phonemeChangePrefixes[k].length() );
-					combinedPart 	= leftPart + rightPart;
-					if ( dbHandler.lookup( combinedPart ) )
+					/* replace the prefix with a phoneme change */
+					for( int charsChoices = 0; charsChoices < possibleCharReplacements.length; charsChoices++ )
 					{
-						stem.setStemString( combinedPart );
-						stem.setPrefixFeatures( stem.getPrefixFeatures() + applyFeature(phonemeChangePrefixes[k]) );
+						leftPart 		= possibleCharReplacements[ charsChoices ] + "";
+						combinedPart 	= leftPart + rightPart;
+						/* Check the modified word in the db. If it exists, update the Stem() */
+						if ( dbHandler.lookup( combinedPart ) )
+						{
+							stem.setStemString( combinedPart );
+							stem.setPrefixFeatures( stem.getPrefixFeatures() + applyFeature(phonemeChangePrefixes[k]) );
+						}
+//						else break; // redundant? Maybe. Hotel? Trivago.
 					}
-					else break; // redundant? Maybe. Hotel? Trivago.
+
 				}
 			}
 		}
