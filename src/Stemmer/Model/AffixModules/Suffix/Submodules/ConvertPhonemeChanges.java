@@ -42,10 +42,10 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 		for( int k = 0; k < phonemeChangeSuffixes.length; k++ )
 		{
 			/* Checks if the latter half of the word contains possible phoneme change suffixes */
-			if( word.substring( word.length()/2 ).contains( phonemeChangeSuffixes[k] ) )
+			if( word.substring( (word.length() / 2) - 1 ).contains( phonemeChangeSuffixes[k] ) )
 			{
 				/* if the suffix in the list matches the one in the word being stemmed */
-				rightPart = word.substring( phonemeChangeSuffixes[k].length() + 1 );
+				rightPart = word.substring( word.length() - phonemeChangeSuffixes[k].length() );
 				if( phonemeChangeSuffixes[k].equalsIgnoreCase( rightPart ) )
 				{
 					leftPart  = word.substring( 0, ( word.length() - phonemeChangeSuffixes[k].length()) );
@@ -96,7 +96,7 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 		public static void main(String[] args)
 		{
 			ConvertPhonemeChanges cpc 	= new ConvertPhonemeChanges();
-			String word 				= "pintuan";
+			String word 				= "duguan";
 			Stem stem 				 	= new Stem( word );
 
 			 stem = cpc.reduceStem( stem );

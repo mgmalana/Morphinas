@@ -23,30 +23,33 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 		for( String infix: commonInfixes )
 		{
 			infixLength = infix.length();
-			for( int i = 1; i < ( (stemLength/2) + 1) + 1; i++ )
+			if ( word.contains(infix) )
 			{
-				inString = word.substring(i, i+infixLength);
-				/* if it matches */
-				if ( infix.equalsIgnoreCase(inString) )
+				for( int i = 1; i < ( (stemLength/2) + 1) + 1; i++ )
 				{
-					if( ruleNotCCAfterStemming(word, i, i) )
+					inString = word.substring(i, i+infixLength);
+					/* if it matches */
+					if ( infix.equalsIgnoreCase(inString) )
 					{
+						if( ruleNotCCAfterStemming(word, i, i) )
+						{
 						/* return original */
+							return stem;
+						}
+						else
+						{
+							if( word.charAt(i) != vowels[0])
+							{
+								leftStem 	= word.substring(0, i);
+							}
+							rightStem 	= word.substring( i+infixLength);
+							foundAffix 	= infix;
+						/* Set or Update stem properties */
+							stem.setFeature( applyFeature(infix) );
+							stem.setStemString(leftStem.concat(rightStem));
+						}
 						return stem;
 					}
-					else
-					{
-						if( word.charAt(i) != vowels[0])
-						{
-							leftStem 	= word.substring(0, i);
-						}
-						rightStem 	= word.substring( i+infixLength);
-						foundAffix 	= infix;
-						/* Set or Update stem properties */
-						stem.setFeature( applyFeature(infix) );
-						stem.setStemString(leftStem.concat(rightStem));
-					}
-					return stem;
 				}
 			}
 		}

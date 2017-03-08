@@ -4,6 +4,7 @@ import Stemmer.Model.AffixModules.Infix.InfixCommand;
 import Stemmer.Model.AffixModules.Prefix.PrefixCommand;
 import Stemmer.Model.AffixModules.Suffix.SuffixCommand;
 import Stemmer.Model.Branch;
+import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class AffixCommand
 	PrefixCommand pc;
 	InfixCommand ic;
 	SuffixCommand sc;
+	/* DBHandler */
+	DBHandler dbHandler = new DBHandler();
+
 
 	public AffixCommand()
 	{}
@@ -58,9 +62,44 @@ public class AffixCommand
 			{
 				Stem stemX = tempX.get(x).getStem();
 				tempX.get(x).generateBranchChildren2(stemX);
-				tx.add( tempX.get(x).getPrefixBranch() );
-				tx.add( tempX.get(x).getInfixBranch() );
-				tx.add( tempX.get(x).getSuffixBranch() );
+				/*
+				 *	Useful? Maybe. Hotel? Trivago.
+				 */
+				if( y == 2)
+				{
+					Stem nullStem = new Stem("NULL");
+					Branch nullBranch = new Branch( nullStem );
+					if ( !dbHandler.lookup(tempX.get(x).getPrefixBranch().getStem().getStemString() ) )
+					{
+						tx.add( nullBranch );
+					} else {
+						tx.add( tempX.get(x).getPrefixBranch() );
+					}
+					if ( !dbHandler.lookup(tempX.get(x).getInfixBranch().getStem().getStemString() ) )
+					{
+						tx.add( nullBranch );
+					} else {
+						tx.add( tempX.get(x).getInfixBranch() );
+					}
+					if ( !dbHandler.lookup(tempX.get(x).getSuffixBranch().getStem().getStemString() ) )
+					{
+						tx.add( nullBranch );
+					} else {
+						tx.add( tempX.get(x).getSuffixBranch() );
+					}
+				}
+				else
+				{
+					tx.add( tempX.get(x).getPrefixBranch() );
+					tx.add( tempX.get(x).getInfixBranch() );
+					tx.add( tempX.get(x).getSuffixBranch() );
+				}
+				/*
+				* Re-instate the 3 lines below once a working tree-stopper exists or maybe something comes up better
+				* */
+//				tx.add( tempX.get(x).getPrefixBranch() );
+//				tx.add( tempX.get(x).getInfixBranch() );
+//				tx.add( tempX.get(x).getSuffixBranch() );
 			}
 			ty.add(tx);
 
@@ -100,10 +139,14 @@ public class AffixCommand
 
 			for( int x = 0; x < tempX.size(); x++ )
 			{
+				Stem nullStem = new Stem("NULL");
+				Branch nullBranch = new Branch( nullStem );
 				tempX.get(x).generateBranchChildren();
+
 				tX.add( tempX.get(x).getPrefixBranch() );
 				tX.add( tempX.get(x).getInfixBranch() );
 				tX.add( tempX.get(x).getSuffixBranch() );
+
 			}
 
 			tY.add( tX );
@@ -224,8 +267,9 @@ public class AffixCommand
 
 		public void original()
 		{
-		//	ac.generatePISTree2("pinahintayan");
-			ac.generatePISTree3("pinaghati-hatian");
+//			ac.generatePISTree2("pinahintayan");
+//			ac.generatePISTree3("duguan");
+			ac.generatePISTree3("dugo-duguan");
 		}
 
 		public void testCreateBranch()

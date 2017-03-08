@@ -33,7 +33,10 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 				{
 					ConvertPhonemeChanges cpc = new ConvertPhonemeChanges();
 					Stem cpcStem = cpc.reduceStem( stem.cloneThis() );
+					// update the stem string
 					stem.setStemString( cpcStem.getStemString() );
+					// update the stem prefix features
+					stem.setPrefixFeatures( stem.getPrefixFeatures() + cpcStem.getPrefixFeatures() );
 				}
 				else
 				{

@@ -155,7 +155,7 @@ public class Branch implements Cloneable
 		return newBranch;
 	}
 
-	private Branch nullBranch(Branch oldBranch)
+	public Branch nullBranch(Branch oldBranch)
 	{
 		Branch newBranch;
 		Stem nullStem = new Stem("NULL");
