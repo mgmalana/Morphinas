@@ -18,7 +18,10 @@ public class AffixList
 	};
 
 	final static String prefixAssimiliation[] = {
-			"pang", "pam", "pan"
+			"pang", "pam", "pan",
+			"mang", "mam", "man",
+			"sang", "sam", "san",
+			"sing", "sim", "sin"
 	};
 
 	final static String commonInfixes[] = {
@@ -115,5 +118,9 @@ public class AffixList
 
 	public static char[] getVowels() {
 		return vowels;
+	}
+
+	public static String[] getPrefixAssimiliation() {
+		return prefixAssimiliation;
 	}
 }

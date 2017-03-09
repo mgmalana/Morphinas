@@ -69,7 +69,7 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 				}
 			}
 		}
-
+		/* Unreachable return? Maybe. Hotel? Trivago. */
 		return stem;
 	}
 
