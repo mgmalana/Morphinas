@@ -21,33 +21,50 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 			return stem;
 		}
 		int prefixLength;
+
 		for( String prefix: commonPrefixes )
 		{
 			prefixLength = prefix.length();
-			leftStem 	 = word.substring(0, prefixLength);
-			/* Will execute when a prefix is found */
-			if( prefix.equalsIgnoreCase(leftStem) )
+			if ( word.length() > prefixLength )
 			{
-				/* Must check if prefix found belongs to the prefixes with phoneme changing */
-				if ( prefix.equalsIgnoreCase("ma") )
+				leftStem 	 = word.substring(0, prefixLength);
+				/* Will execute when a prefix is found */
+				if( prefix.equalsIgnoreCase(leftStem) )
 				{
-					ConvertPhonemeChanges cpc = new ConvertPhonemeChanges();
-					Stem cpcStem = cpc.reduceStem( stem.cloneThis() );
-					// update the stem string
-					stem.setStemString( cpcStem.getStemString() );
-					// update the stem prefix features
-					stem.setPrefixFeatures( stem.getPrefixFeatures() + cpcStem.getPrefixFeatures() );
-				}
-				else
-				{
-					this.foundAffix = leftStem;
-					rightStem 		= word.substring(prefixLength+1);
-					/* Update or Set Stem properties */
-					stem.setStemString(rightStem);
-					stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
-					return stem;
-				}
+					/* Must check if prefix found belongs to the prefixes with phoneme changing */
+					if ( prefix.equalsIgnoreCase("ma") )
+					{
+						ConvertPhonemeChanges cpc = new ConvertPhonemeChanges();
+						Stem cpcStem = cpc.reduceStem( stem.cloneThis() );
+						if ( !cpcStem.getStemString().equalsIgnoreCase( stem.getStemString() ) )
+						{
+							// update the stem string
+							stem.setStemString( cpcStem.getStemString() );
+							// update the stem prefix features
+							stem.setPrefixFeatures( stem.getPrefixFeatures() + cpcStem.getPrefixFeatures() );
+						}
+						else
+						{
+							this.foundAffix = leftStem;
+							rightStem 		= word.substring(prefixLength);
+							/* Update or Set Stem properties */
+							stem.setStemString(rightStem);
+							stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
+							return stem;
+						}
 
+					}
+					else
+					{
+						this.foundAffix = leftStem;
+						rightStem 		= word.substring(prefixLength);
+						/* Update or Set Stem properties */
+						stem.setStemString(rightStem);
+						stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
+						return stem;
+					}
+
+				}
 			}
 		}
 		return stem;

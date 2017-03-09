@@ -58,6 +58,11 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 
 				}
 			}
+			/* if it's just a simple "ma" prefix */
+			else
+			{
+
+			}
 		}
 
 		return stem;

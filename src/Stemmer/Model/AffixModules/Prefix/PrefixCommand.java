@@ -34,7 +34,6 @@ public class PrefixCommand extends AbstractAffixCommand
 		/* Check for Changes and update boolean changed */
 		if ( !checkForChanges(oldStem, newStem) ) {
 			newStem = rdp.reduceStem( newStem );
-			println("rdp: " + newStem.getStemString());
 		}
 		if ( !checkForChanges(oldStem, newStem) ) {
 			newStem = rdp.reduceStem( newStem );
@@ -64,7 +63,7 @@ public class PrefixCommand extends AbstractAffixCommand
 	{
 		public static void main(String[] args)
 		{
-			String word = "pinahintay";
+			String word = "malakas";
 			Stem stem  	= new Stem(word);
 			PrefixCommand pc = new PrefixCommand();
 			Stem newStem = pc.performStemmingModules(stem);

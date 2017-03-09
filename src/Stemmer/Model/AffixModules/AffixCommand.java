@@ -268,8 +268,11 @@ public class AffixCommand
 		public void original()
 		{
 //			ac.generatePISTree2("pinahintayan");
+//			ac.generatePISTree3("marami");
 //			ac.generatePISTree3("duguan");
-			ac.generatePISTree3("dugo-duguan");
+//			ac.generatePISTree3("dugo-duguan");
+//			ac.generatePISTree3("pinakamarami");
+			ac.generatePISTree3("mabangung-mabango");
 		}
 
 		public void testCreateBranch()

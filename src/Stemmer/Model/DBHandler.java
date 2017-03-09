@@ -90,7 +90,7 @@ public class DBHandler
 		public static void main(String args[])
 		{
 			DBHandler m = new DBHandler();
-			println("Word: " + m.lookup("dugo"));
+			println("Word: " + m.lookup("marikit"));
 			println("Word: " + m.lookup("bangkay"));
 			println("Word: " + m.lookup("barangay"));
 			println("Word: " + m.lookup("vsdgfhdfg"));
