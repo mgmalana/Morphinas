@@ -28,10 +28,22 @@ public class RemoveCommonSuffix extends AbstractMorphoChange
 				{
 					ConvertPhonemeChanges cpc = new ConvertPhonemeChanges();
 					Stem cpcStem = cpc.reduceStem( stem );
-					// update the stem string
-					stem.setStemString(cpcStem.getStemString());
-					// update the stem suffix features
-					stem.setSuffixFeatures(stem.getSuffixFeatures() + cpcStem.getSuffixFeatures());
+					if ( !cpcStem.getStemString().equalsIgnoreCase( stem.getStemString() ) )
+					{
+						// update the stem string
+						stem.setStemString(cpcStem.getStemString());
+						// update the stem suffix features
+						stem.setSuffixFeatures(stem.getSuffixFeatures() + cpcStem.getSuffixFeatures());
+					}
+					else
+					{
+						this.foundAffix 	= suffix;
+						leftStem  	= word.substring(0, word.length()-suffixLength);
+						/* Update or Set stem properties */
+						stem.setStemString(leftStem);
+						stem.setFeature( stem.getFeature() + "" + applyFeature( suffix ) );
+						return stem;
+					}
 				}
 				else
 				{

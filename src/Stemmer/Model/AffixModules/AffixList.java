@@ -17,12 +17,16 @@ public class AffixList
 			"pina", "pinag"
 	};
 
+	final static String prefixAssimiliation[] = {
+			"pang", "pam", "pan"
+	};
+
 	final static String commonInfixes[] = {
 		"um", "in"
 	};
 
 	final static String commonSuffixes[] = {
-			"an", "in", "han", "hin", "ng"
+			"nan", "an", "in", "han", "hin", "ng"
 	};
 
 	final static String longPrefixes[] = {

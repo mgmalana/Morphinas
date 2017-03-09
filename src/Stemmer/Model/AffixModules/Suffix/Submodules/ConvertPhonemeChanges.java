@@ -26,7 +26,7 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 	/**
 	 * This extends RemoveCommonSuffix
 	 * @param stem
-	 * @return
+	 * @return a reduced stem
 	 */
 	@Override
 	public Stem reduceStem(Stem stem)

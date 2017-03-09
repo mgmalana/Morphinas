@@ -268,11 +268,13 @@ public class AffixCommand
 		public void original()
 		{
 //			ac.generatePISTree2("pinahintayan");
-//			ac.generatePISTree3("marami");
-//			ac.generatePISTree3("duguan");
-//			ac.generatePISTree3("dugo-duguan");
-//			ac.generatePISTree3("pinakamarami");
-			ac.generatePISTree3("mabangung-mabango");
+//			ac.generatePISTree3("marami"); // works
+//			ac.generatePISTree3("duguan"); // works
+//			ac.generatePISTree3("dugo-duguan"); // works well
+//			ac.generatePISTree3("pinakamarami"); // works
+//			ac.generatePISTree3("mabangung-mabango"); // works well
+//			ac.generatePISTree3("tawanan"); // works pero must reconsider suffix "nan"
+			ac.generatePISTree3("napapanood");
 		}
 
 		public void testCreateBranch()

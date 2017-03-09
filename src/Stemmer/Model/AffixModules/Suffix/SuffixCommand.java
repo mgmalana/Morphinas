@@ -42,7 +42,7 @@ public class SuffixCommand extends AbstractAffixCommand
 		public static void main(String[] args)
 		{
 			RemoveCommonSuffix cs = new RemoveCommonSuffix();
-			String word = "pintuan";
+			String word = "tawanan";
 			Stem stem = new Stem(word);
 
 			stem = cs.reduceStem(stem);
