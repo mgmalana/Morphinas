@@ -37,8 +37,10 @@ public class AffixCommand
 	 * Main working method. Do not use anything else.
 	 * @param word
 	 */
-	public void generatePISTree3(String word)
+	public ArrayList<String> generatePISTree3(String word)
 	{
+		/* Result set */
+		ArrayList<String> foundRootwords = new ArrayList<>();
 		/* Ecological Creation */
 		ArrayList<ArrayList<Branch>> ty 	= new ArrayList<>();
 		ArrayList<Branch> tx 				= new ArrayList<>();
@@ -110,8 +112,23 @@ public class AffixCommand
 
 		}
 		printTreeContent(ty);
+		return foundRootwords;
 	}
 
+	public String getHighestFreqRoot(String word)
+	{
+		/* Result */
+		String result = "";
+		/* Iterated variables */
+		ArrayList<String> roots = generatePISTree3(word);
+
+		return result;
+	}
+
+	/**
+	 * Wag mong gamitin. Please lang.
+	 * @param word
+	 */
 	public void generatePISTree2(String word)
 	{
 		/* saving the trees */
@@ -250,6 +267,30 @@ public class AffixCommand
 		println(i.getDirectionHistory());
 		/* Suffix */
 		println(s.getStem().getStemString());
+	}
+
+	public class RootCounts
+	{
+		String word;
+		int frequency = 0;
+
+		public RootCounts(String word)
+		{
+			this.word = word;
+		}
+
+		public void addFreq()
+		{
+			this.frequency++;
+		}
+
+		public String getWord() {
+			return word;
+		}
+
+		public int getFrequency() {
+			return frequency;
+		}
 	}
 
 	public static class Test
