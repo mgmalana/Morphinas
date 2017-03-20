@@ -113,6 +113,7 @@ public class AffixCommand
 
 		}
 		printTreeContent(ty);
+		getHighestFreqRoot(ty);
 		return result;
 	}
 
@@ -121,15 +122,26 @@ public class AffixCommand
 		/* Result */
 		String result = "";
 		/* Iterated variables */
-		ArrayList<Branch> leaves = finishedTree.get( finishedTree.size() );
+		ArrayList<Branch> leaves = finishedTree.get( finishedTree.size()-1 );
 		ArrayList<String> roots;
+		/* To be used in finding the possible root */
+		ArrayList<PossibleRoot> prList = new ArrayList<>();
+		PossibleRoot possibleRoot;
+		String foundRoot;
+		String foundFeatures;
 		/* iterate on the root */
 		println("leaves size: " + leaves.size());
 
 		for( int x = 0; x < leaves.size(); x++ )
 		{
-			// do nothing for now
-			break;
+			if( ! leaves.get(x).getStem().getStemString().equalsIgnoreCase("null")  )
+			{
+				foundRoot 	 = leaves.get(x).getStem().getStemString();
+				foundFeatures= leaves.get(x).getStem().getCombinedFeatures();
+				possibleRoot = new PossibleRoot(foundRoot);
+				println("Found Root: " + foundRoot + " / " + foundFeatures);
+
+			}
 		}
 		return result;
 	}
@@ -278,12 +290,12 @@ public class AffixCommand
 		println(s.getStem().getStemString());
 	}
 
-	public class possibleRoot
+	public class PossibleRoot
 	{
 		String word;
 		int frequency = 0;
 
-		public possibleRoot(String word)
+		public PossibleRoot(String word)
 		{
 			this.word = word;
 		}

@@ -81,7 +81,31 @@ public final class Stem implements Cloneable
 
 	public void addSuffix(String suffix)
 	{
+		if( this.suffixes == null || this.suffixes.size() == 0 ) {
+			this.infixes = new ArrayList<>();
+		}
 		this.suffixes.add( suffix );
+	}
+
+	public String combineAllFeatures()
+	{
+		String result = "";
+		/* Add all prefixes first */
+		for( String prefix: prefixes)
+		{
+			result += prefix;
+		}
+		/* Add all infixes next */
+		for( String infix: infixes )
+		{
+			result += infix;
+		}
+		/* And finally, all suffixes */
+		for( String suffix: suffixes )
+		{
+			result += suffix;
+		}
+		return result;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -185,7 +209,7 @@ public final class Stem implements Cloneable
 	}
 
 	public String getCombinedFeatures() {
-		return combinedFeatures;
+		return combineAllFeatures();
 	}
 
 	public void setCombinedFeatures(String combinedFeatures) {
