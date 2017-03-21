@@ -40,8 +40,8 @@ public class AffixCommand
 	public String generatePISTree3(String word)
 	{
 		/* Result set */
-		ArrayList<String> foundRootwords = new ArrayList<>();
 		String result = "";
+		RootSet rs;
 		/* Ecological Creation */
 		ArrayList<ArrayList<Branch>> ty 	= new ArrayList<>();
 		ArrayList<Branch> tx 				= new ArrayList<>();
@@ -55,6 +55,7 @@ public class AffixCommand
 		/* Add the root node in ArrayList */
 		tx.add( rootBranch );
 		ty.add( tx );
+
 		/* Go out and populate */
 		for( int y = 0; y < ty.size(); y++ )
 		{
@@ -113,41 +114,43 @@ public class AffixCommand
 
 		}
 		printTreeContent(ty);
-		getHighestFreqRoot(ty);
+		rs = getHighestFreqRoot( ty, word );
+		println( rs.getWord() + "->" + rs.getOriginalWord() + "-> " + rs.getFeatures() );
 		return result;
 	}
 
-	public String getHighestFreqRoot(ArrayList<ArrayList<Branch>> finishedTree)
+	public RootSet getHighestFreqRoot(ArrayList<ArrayList<Branch>> finishedTree, String originalWord)
 	{
 		/* Result */
 		String result = "";
+		RootSet rootSet;
 		/* Iterated variables */
 		ArrayList<Branch> leaves = finishedTree.get( finishedTree.size()-1 );
 		ArrayList<String> roots;
 		/* To be used in finding the possible root */
-		ArrayList<PossibleRoot> prList = new ArrayList<>();
-		PossibleRoot possibleRoot;
-		String foundRoot;
-		String foundFeatures;
-		/* iterate on the root */
-		println("leaves size: " + leaves.size());
+		ArrayList<RootSet> prList 	= new ArrayList<>();
+		String foundRoot 			= "";
+		String foundFeatures 		= "y";
 
-		for( int x = 0; x < leaves.size(); x++ )
+		for ( Branch leaf : leaves )
 		{
-			if( ! leaves.get(x).getStem().getStemString().equalsIgnoreCase("null")  )
+			if ( leaf.getStem().getStemString().equalsIgnoreCase("null") )
 			{
-				foundRoot 	 = leaves.get(x).getStem().getStemString();
-				foundFeatures= leaves.get(x).getStem().getCombinedFeatures();
-				possibleRoot = new PossibleRoot(foundRoot);
-				println("Found Root: " + foundRoot + " / " + foundFeatures);
+				break;
 			}
+
+			foundRoot 		= leaf.getStem().getStemString();
+			foundFeatures 	= leaf.getStem().getCombinedFeatures();
 		}
-		return result;
+
+		rootSet = new RootSet( foundRoot, foundFeatures, originalWord );
+		return rootSet;
 	}
 
 	/**
 	 * Wag mong gamitin. Please lang.
 	 * @param word
+	 * pucha wag nga eh
 	 */
 	public void generatePISTree2(String word)
 	{
@@ -289,23 +292,38 @@ public class AffixCommand
 		println(s.getStem().getStemString());
 	}
 
-	public class PossibleRoot
+	/**
+	 * An object that contains the root word and it's extracted features (features in Gramatika format).
+	 */
+	public class RootSet
 	{
 		String word;
+		String features;
+		String originalWord;
 		int frequency = 0;
 
-		public PossibleRoot(String word)
+		public RootSet(String word, String features, String originalWord)
 		{
-			this.word = word;
+			this.word 		 	= word;
+			this.features 	 	= features;
+			this.originalWord	= originalWord;
+		}
+
+		public String getWord() {
+			return word;
+		}
+
+		public String getFeatures() {
+			return features;
+		}
+
+		public String getOriginalWord() {
+			return originalWord;
 		}
 
 		public void addFreq()
 		{
 			this.frequency++;
-		}
-
-		public String getWord() {
-			return word;
 		}
 
 		public int getFrequency() {

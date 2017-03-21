@@ -1,6 +1,5 @@
 package Stemmer.Model.AffixModules.Prefix.Submodules;
 
-import Stemmer.Model.AffixModules.AbstractAffixCommand;
 import Stemmer.Model.AffixModules.AbstractMorphoChange;
 import Stemmer.Model.Stem;
 
