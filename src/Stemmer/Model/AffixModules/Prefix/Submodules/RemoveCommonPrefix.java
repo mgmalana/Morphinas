@@ -41,7 +41,9 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 							// update the stem string
 							stem.setStemString( cpcStem.getStemString() );
 							// update the stem prefix features
-							stem.setPrefixFeatures( stem.getPrefixFeatures() + cpcStem.getPrefixFeatures() );
+//							stem.setPrefixFeatures( stem.getPrefixFeatures() + cpcStem.getPrefixFeatures() );
+							stem.addPrefix( prefix );
+
 						}
 						else
 						{
@@ -50,7 +52,8 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 							/* Update or Set Stem properties */
 							stem.setStemString(rightStem);
 //							stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
-							stem.setPrefixFeatures( stem.getPrefixFeatures() + applyFeature( prefix ));
+//							stem.setPrefixFeatures( stem.getPrefixFeatures() + applyFeature( prefix ));
+							stem.addPrefix( prefix );
 							return stem;
 						}
 
@@ -61,7 +64,8 @@ public class RemoveCommonPrefix extends AbstractMorphoChange
 						rightStem 		= word.substring(prefixLength);
 						/* Update or Set Stem properties */
 						stem.setStemString(rightStem);
-						stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
+//						stem.setFeature( stem.getFeature() + "" + applyFeature( prefix ));
+						stem.addPrefix( prefix );
 						return stem;
 					}
 

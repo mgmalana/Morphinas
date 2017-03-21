@@ -90,22 +90,64 @@ public final class Stem implements Cloneable
 	public String combineAllFeatures()
 	{
 		String result = "";
+		prefixes = removeDuplicateAffixesFromList( prefixes );
+		infixes  = removeDuplicateAffixesFromList( infixes );
+		suffixes = removeDuplicateAffixesFromList( suffixes );
+
 		/* Add all prefixes first */
 		for( String prefix: prefixes)
 		{
-			result += prefix;
+			if( prefix.charAt(0) == '$' )
+			{
+				result += prefix;
+			}
+			else
+			{
+				result += "~" + prefix;
+			}
 		}
 		/* Add all infixes next */
 		for( String infix: infixes )
 		{
-			result += infix;
+			result += "@" + infix;
 		}
 		/* And finally, all suffixes */
 		for( String suffix: suffixes )
 		{
-			result += suffix;
+			result += "+" + suffix;
 		}
+
+		println("Features: " + result);
+
 		return result;
+	}
+
+	public ArrayList<String> removeDuplicateAffixesFromList(ArrayList<String> affixes)
+	{
+		ArrayList<String> reducedList 	= new ArrayList<>();
+		Boolean exists 					= false;
+
+		for( String affix : affixes )
+		{
+			if( reducedList.size() == 0 )
+			{
+				reducedList.add( affix );
+			} else {
+				for( String newAffix: reducedList )
+				{
+					if( affix.equalsIgnoreCase( newAffix ) )
+					{
+						exists = true;
+					}
+				}
+				if( !exists )
+				{
+					reducedList.add( affix );
+				}
+			}
+		}
+
+		return reducedList;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

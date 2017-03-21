@@ -46,7 +46,8 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 							foundAffix 	= infix;
 						/* Set or Update stem properties */
 							stem.setFeature( applyFeature(infix) );
-							stem.setStemString(leftStem.concat(rightStem));
+//							stem.setStemString(leftStem.concat(rightStem));
+							stem.addInfix( infix );
 						}
 						return stem;
 					}

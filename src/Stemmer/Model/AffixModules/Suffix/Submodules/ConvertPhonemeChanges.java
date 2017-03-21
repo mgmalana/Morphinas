@@ -63,7 +63,8 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 						if( dbHandler.lookup( combinedPart ) )
 						{
 							stem.setStemString( combinedPart );
-							stem.setSuffixFeatures( stem.getSuffixFeatures() + applyFeature(phonemeChangeSuffixes[k]) );
+//							stem.setSuffixFeatures( stem.getSuffixFeatures() + applyFeature(phonemeChangeSuffixes[k]) );
+							stem.addSuffix( phonemeChangeSuffixes[k] );
 						}
 					}
 				}

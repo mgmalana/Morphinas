@@ -46,7 +46,8 @@ public class RemoveReduplication extends AbstractMorphoChange
 		/*
 		 * Please transfer to applyFeature()
 		 */
-		stem.setFeature( stem.getFeature() + "$" + leftPart);
+//		stem.setFeature( stem.getFeature() + "$" + leftPart);
+		stem.addPrefix( "$" + leftPart );
 		stem.setStemString( rightPart );
 		return stem;
 	}
@@ -65,7 +66,8 @@ public class RemoveReduplication extends AbstractMorphoChange
 				if( possibleRedup.equalsIgnoreCase(leftPart) )
 				{
 					rightPart = word.substring(j);
-					stem.setFeature( ""+ stem.getFeature() + "$" + possibleRedup);
+//					stem.setFeature( ""+ stem.getFeature() + "$" + possibleRedup);
+					stem.addPrefix( "$" + possibleRedup);
 					stem.setStemString(rightPart);
 					return stem;
 				}

@@ -140,7 +140,6 @@ public class AffixCommand
 				foundFeatures= leaves.get(x).getStem().getCombinedFeatures();
 				possibleRoot = new PossibleRoot(foundRoot);
 				println("Found Root: " + foundRoot + " / " + foundFeatures);
-
 			}
 		}
 		return result;
@@ -329,12 +328,13 @@ public class AffixCommand
 
 		public void original()
 		{
-//			ac.generatePISTree2("pinahintayan");
+//			ac.generatePISTree3("pinapahintayan");
 //			ac.generatePISTree3("marami"); // works
 //			ac.generatePISTree3("duguan"); // works
 //			ac.generatePISTree3("dugo-duguan"); // works well
 //			ac.generatePISTree3("pinakamarami"); // works
 //			ac.generatePISTree3("mabangung-mabango"); // works well
+//			ac.generatePISTree3("mabango-bango");
 //			ac.generatePISTree3("tawanan"); // works pero must reconsider suffix "nan"
 			ac.generatePISTree3("napapanood");
 		}

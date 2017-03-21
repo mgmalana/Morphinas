@@ -33,15 +33,17 @@ public class RemoveCommonSuffix extends AbstractMorphoChange
 						// update the stem string
 						stem.setStemString(cpcStem.getStemString());
 						// update the stem suffix features
-						stem.setSuffixFeatures(stem.getSuffixFeatures() + cpcStem.getSuffixFeatures());
+//						stem.setSuffixFeatures(stem.getSuffixFeatures() + cpcStem.getSuffixFeatures());
+						stem.addSuffix( suffix );
 					}
 					else
 					{
 						this.foundAffix 	= suffix;
 						leftStem  	= word.substring(0, word.length()-suffixLength);
 						/* Update or Set stem properties */
-						stem.setStemString(leftStem);
-						stem.setFeature( stem.getFeature() + "" + applyFeature( suffix ) );
+						stem.setStemString( leftStem );
+//						stem.setFeature( stem.getFeature() + "" + applyFeature( suffix ) );
+						stem.addSuffix( suffix );
 						return stem;
 					}
 				}
@@ -51,7 +53,8 @@ public class RemoveCommonSuffix extends AbstractMorphoChange
 					leftStem  	= word.substring(0, word.length()-suffixLength);
 					/* Update or Set stem properties */
 					stem.setStemString(leftStem);
-					stem.setFeature( stem.getFeature() + "" + applyFeature( suffix ) );
+//					stem.setFeature( stem.getFeature() + "" + applyFeature( suffix ) );
+					stem.addSuffix( suffix );
 					return stem;
 				}
 
