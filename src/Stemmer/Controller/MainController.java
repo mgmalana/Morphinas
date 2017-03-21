@@ -7,6 +7,15 @@ import Stemmer.Model.AffixModules.AffixCommand;
  */
 public class MainController
 {
-	AffixCommand affixCommand;
+	AffixCommand affixCommand = new AffixCommand();
 
+	public static void main(String[] args)
+	{
+
+	}
+
+	public void sample()
+	{
+
+	}
 }
