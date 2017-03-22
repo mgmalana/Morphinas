@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Sentence
 {
 	ArrayList<RootSet> rootSets;
+	ArrayList<String> words;
 
 	public Sentence()
 	{
@@ -37,5 +38,13 @@ public class Sentence
 		{
 			rootSets.add( rootSet );
 		}
+	}
+
+	public ArrayList<String> getWords() {
+		return words;
+	}
+
+	public void setWords(ArrayList<String> words) {
+		this.words = words;
 	}
 }

@@ -1,6 +1,7 @@
 package Stemmer.Controller;
 
 import Stemmer.Model.AffixModules.AffixCommand;
+import Stemmer.Model.DBHandler;
 import Stemmer.Model.RootSet;
 
 import static Utility.print.*;
@@ -50,6 +51,7 @@ public class MainController
 	{
 		if( !processed )
 		{
+
 			createRootSet();
 		}
 		return this.lemma;
@@ -57,11 +59,41 @@ public class MainController
 
 	public String getFeatures()
 	{
-		if( !processed )
+		String changedWord = specialResultsFeatures( this.inflectedWord );
+		if( changedWord.equalsIgnoreCase( inflectedWord ) )
 		{
-			createRootSet();
+			if( !processed )
+			{
+				createRootSet();
+			}
+		}
+		else
+		{
+			return changedWord;
 		}
 		return this.features;
+	}
+
+	/**
+	 * Checks if word is already a root word or a punctuation mark
+	 * @param specialWord
+	 * @return
+	 */
+	public String specialResultsFeatures( String specialWord )
+	{
+		/* Return this */
+		String result = "";
+		/* Database lookup */
+		DBHandler dbHandler = new DBHandler();
+		if ( specialWord.length() < 4 )
+		{
+			return "#" + result;
+		}
+		else if ( dbHandler.lookup( specialWord) )
+		{
+			return "#" + result;
+		}
+		return result;
 	}
 
 

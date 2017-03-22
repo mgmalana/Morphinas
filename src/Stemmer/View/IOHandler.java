@@ -1,15 +1,22 @@
 package Stemmer.View;
 
+import Stemmer.Model.RootSet;
 import Stemmer.Model.Sentence;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static Utility.print.*;
 
 /**
  * Created by laurenz on 22/03/2017.
  */
 public class IOHandler
 {
-	String fileDirectory = "/Users/laurenztolentino/Developer/morphinas/Morphinas/ReadFiles/";
+	String fileDirectory = "/Users/laurenztolentino/Developer/Morphinas/morphinas/ReadFiles/";
 	String fileName		 = "words.txt";
 
 	public IOHandler()
@@ -26,10 +33,75 @@ public class IOHandler
 		this.fileName 		= fileName;
 	}
 
-	public ArrayList<Sentence> createSentencesFromFile() throws Exception
+	public ArrayList<Sentence> createSentences( String[] sentenceStringList ) throws Exception
 	{
-		ArrayList<Sentence> resultSentences = new ArrayList<>();
+		/* To be returned */
+		ArrayList<Sentence> sentences = new ArrayList<>();
+		/* Lists */
+		ArrayList<String> words = new ArrayList<>();
+		ArrayList<RootSet> rootSets;
+		String[] wordStringList;
+		/* Non list temp variables */
+		String replaceUnderscore;
+		Sentence sentence;
+		String word;
 
-		return resultSentences;
+		/* Iterate the entire sentence array */
+		for ( String sentenceString : sentenceStringList)
+		{
+			/* removes '_' in a sentence and splits them */
+			replaceUnderscore = sentenceString.replace("_", " ");
+			/* split it kapag may espasyo */
+			wordStringList = replaceUnderscore.split(" ");
+			/* Putting array of words into ArrayList of words */
+			for ( String wordString: wordStringList )
+			{
+				words.add( wordString );
+			}
+			sentence = new Sentence();
+			sentence.setWords( words );
+			sentences.add( sentence );
+			words = new ArrayList<>();
+		}
+		return sentences;
+	}
+
+	public String[] readFromFile () throws Exception
+	{
+		/* To be returned */
+		String[] sentences 			 = { "" };
+		/* Please label properly */
+		String finalContent 	 = "";
+		String content 			 = "";
+
+		int lineNumber 	 		 = 0;
+		BufferedReader br;
+
+		try
+		{
+			br = new BufferedReader( new FileReader(fileDirectory + fileName ) );
+			while ((content = br.readLine()) != null)
+			{
+				lineNumber++;
+				println(""+lineNumber);
+				println("\r " + lineNumber + " out of (lagpas sa sampung daliriri)");
+				if( content.toString().matches("^.*[.].*$")) {
+					if( content.toString().length() > 1 )
+					{
+						/* hmmmm what goes in here? */
+					}
+				}
+				finalContent = finalContent + content + "\n";
+			}
+			println("\n Done reading from file.");
+			/* loads not words but sentences so sad */
+			sentences = finalContent.split("\n");
+		}
+		catch ( FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		println("Sentence Size from IOHandler: " + sentences.length );
+		return sentences;
 	}
 }

@@ -55,6 +55,13 @@ public class DBHandler
 		pool.checkIn(con);
 	}
 
+	/**
+	 * Performs a lookup on a word.
+	 * @param word
+	 * @return
+	 * TRUE if the word in question is a root word and part of the database of root words.
+	 * FALSE if not a root word.
+	 */
 	public Boolean lookup(String word)
 	{
 		this.word = word;

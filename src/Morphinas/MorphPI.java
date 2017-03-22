@@ -156,7 +156,7 @@ public class MorphPI
 			replaceUnderscore = sSentence.replace("_", " ");
 			/* split it kapag may espasyo */
 			sWords = replaceUnderscore.split(" ");
-			/* iterate ang panibagong listahan ng mga salita*/
+			/* iterate ang panibagong listahan ng mga salita */
 			for( String sWord: sWords)
 			{
 				word = new Word(sWord);
