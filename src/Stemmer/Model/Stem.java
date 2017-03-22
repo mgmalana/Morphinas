@@ -117,8 +117,6 @@ public final class Stem implements Cloneable
 			result += "+" + suffix;
 		}
 
-		println("Features: " + result);
-
 		return result;
 	}
 
@@ -132,16 +130,23 @@ public final class Stem implements Cloneable
 			if( reducedList.size() == 0 )
 			{
 				reducedList.add( affix );
-			} else {
-				for( String newAffix: reducedList )
+			}
+			else
+			{
+				for ( String newAffix : reducedList )
 				{
-					if( affix.equalsIgnoreCase( newAffix ) )
+					if ( affix.equalsIgnoreCase( newAffix ) )
 					{
 						exists = true;
+						break;
+					} else
+					{
+						exists = false;
 					}
 				}
-				if( !exists )
+				if ( !exists )
 				{
+					exists = false;
 					reducedList.add( affix );
 				}
 			}

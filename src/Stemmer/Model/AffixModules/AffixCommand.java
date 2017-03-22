@@ -6,7 +6,7 @@ import Stemmer.Model.AffixModules.Suffix.SuffixCommand;
 import Stemmer.Model.Branch;
 import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
-
+import Stemmer.Model.RootSet;
 import java.util.ArrayList;
 
 import static Utility.print.*;
@@ -36,8 +36,11 @@ public class AffixCommand
 	/**
 	 * Main working method. Do not use anything else.
 	 * @param word
+	 * Word to be stemmed. Stemming generates a tree.
+	 * @return
+	 * A Rootset which contains root word and features in G format
 	 */
-	public String generatePISTree3(String word)
+	public RootSet generatePISTree3(String word)
 	{
 		/* Result set */
 		String result = "";
@@ -113,12 +116,18 @@ public class AffixCommand
 			}
 
 		}
-		printTreeContent(ty);
+//		printTreeContent(ty);
 		rs = getHighestFreqRoot( ty, word );
-		println( rs.getWord() + "->" + rs.getOriginalWord() + "-> " + rs.getFeatures() );
-		return result;
+//		println( rs.getWord() + "->" + rs.getOriginalWord() + "-> " + rs.getFeatures() );
+		return rs;
 	}
 
+	/**
+	 * Does not get highest frequency yet. Just gets the last (i think) found non-NULL stem
+	 * @param finishedTree
+	 * @param originalWord
+	 * @return
+	 */
 	public RootSet getHighestFreqRoot(ArrayList<ArrayList<Branch>> finishedTree, String originalWord)
 	{
 		/* Result */
@@ -130,17 +139,15 @@ public class AffixCommand
 		/* To be used in finding the possible root */
 		ArrayList<RootSet> prList 	= new ArrayList<>();
 		String foundRoot 			= "";
-		String foundFeatures 		= "y";
+		String foundFeatures 		= "";
 
 		for ( Branch leaf : leaves )
 		{
-			if ( leaf.getStem().getStemString().equalsIgnoreCase("null") )
+			if ( !leaf.getStem().getStemString().equalsIgnoreCase("null") )
 			{
-				break;
+				foundRoot 		= leaf.getStem().getStemString();
+				foundFeatures 	= leaf.getStem().getCombinedFeatures();
 			}
-
-			foundRoot 		= leaf.getStem().getStemString();
-			foundFeatures 	= leaf.getStem().getCombinedFeatures();
 		}
 
 		rootSet = new RootSet( foundRoot, foundFeatures, originalWord );
@@ -290,45 +297,6 @@ public class AffixCommand
 		println(i.getDirectionHistory());
 		/* Suffix */
 		println(s.getStem().getStemString());
-	}
-
-	/**
-	 * An object that contains the root word and it's extracted features (features in Gramatika format).
-	 */
-	public class RootSet
-	{
-		String word;
-		String features;
-		String originalWord;
-		int frequency = 0;
-
-		public RootSet(String word, String features, String originalWord)
-		{
-			this.word 		 	= word;
-			this.features 	 	= features;
-			this.originalWord	= originalWord;
-		}
-
-		public String getWord() {
-			return word;
-		}
-
-		public String getFeatures() {
-			return features;
-		}
-
-		public String getOriginalWord() {
-			return originalWord;
-		}
-
-		public void addFreq()
-		{
-			this.frequency++;
-		}
-
-		public int getFrequency() {
-			return frequency;
-		}
 	}
 
 	public static class Test

@@ -33,7 +33,7 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 					{
 						if( ruleNotCCAfterStemming(word, i, i) )
 						{
-						/* return original */
+							/* return original */
 							return stem;
 						}
 						else
@@ -44,9 +44,8 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 							}
 							rightStem 	= word.substring( i+infixLength);
 							foundAffix 	= infix;
-						/* Set or Update stem properties */
-							stem.setFeature( applyFeature(infix) );
-//							stem.setStemString(leftStem.concat(rightStem));
+							/* Set or Update stem properties */
+							stem.setStemString(leftStem.concat(rightStem));
 							stem.addInfix( infix );
 						}
 						return stem;

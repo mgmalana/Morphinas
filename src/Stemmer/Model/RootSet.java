@@ -2,20 +2,20 @@ package Stemmer.Model;
 
 public class RootSet
 	{
-		String word;
+		String lemma;
 		String features;
 		String originalWord;
 		int frequency = 0;
 
-		public RootSet(String word, String features, String originalWord)
+		public RootSet(String lemma, String features, String originalWord)
 		{
-			this.word 		 	= word;
+			this.lemma = lemma;
 			this.features 	 	= features;
 			this.originalWord	= originalWord;
 		}
 
-		public String getWord() {
-			return word;
+		public String getLemma() {
+			return lemma;
 		}
 
 		public String getFeatures() {

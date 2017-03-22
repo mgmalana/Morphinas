@@ -41,7 +41,7 @@ public class Branch implements Cloneable
 
 	/**
 	 * Use this for root of the tree only (unstemmed)
-	 * @param untouchedStem The original input word by the user
+	 * @param untouchedStem The original input lemma by the user
 	 */
 	public Branch(Stem untouchedStem) {
 		this.stem = untouchedStem;
@@ -172,7 +172,7 @@ public class Branch implements Cloneable
 	{
 		PrefixCommand pc = new PrefixCommand();
 		parentStem = pc.performStemmingModules(parentStem);
-			/* check if stem is already root word */
+			/* check if stem is already root lemma */
 
 //			if( pc.checkDB() )
 //			{
@@ -192,7 +192,7 @@ public class Branch implements Cloneable
 	{
 		InfixCommand ic = new InfixCommand();
 		parentStem = ic.performStemmingModules(parentStem);
-		/* check if stem is already root word */
+		/* check if stem is already root lemma */
 //			if( ic.checkDB() )
 //			{
 //				isInfixRoot = true;
@@ -211,7 +211,7 @@ public class Branch implements Cloneable
 	{
 		SuffixCommand sc = new SuffixCommand();
 		parentStem = sc.performStemmingModules(parentStem);
-			/* check if stem is already root word */
+			/* check if stem is already root lemma */
 //			if( sc.checkDB() )
 //			{
 //				isSuffixRoot = true;
@@ -250,11 +250,11 @@ public class Branch implements Cloneable
 	 */
 
 	/**
-	 * Checks DB if current stem is a root word
+	 * Checks DB if current stem is a root lemma
 	 * @param checkStem
-	 * stem to be checked if root word
+	 * stem to be checked if root lemma
 	 * @return
-	 * true if root word otherwise false
+	 * true if root lemma otherwise false
 	 */
 	public boolean checkIfRoot(Stem checkStem)
 	{
