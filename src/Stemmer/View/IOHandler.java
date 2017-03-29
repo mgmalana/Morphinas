@@ -3,10 +3,7 @@ package Stemmer.View;
 import Stemmer.Model.RootSet;
 import Stemmer.Model.Sentence;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import static Utility.print.*;
@@ -103,5 +100,15 @@ public class IOHandler
 		}
 		println("Sentence Size from IOHandler: " + sentences.length );
 		return sentences;
+	}
+
+	public void printToTxtFileRoot(String fileName, String toPrint) throws Exception
+	{
+		String completeFileName = fileName + ".txt";
+		PrintWriter writer = new PrintWriter(completeFileName, "UTF-8");
+		// Write the result to file
+		writer.println(toPrint);
+		// Close the printer
+		writer.close();
 	}
 }

@@ -51,6 +51,7 @@ public class RemoveReduplication extends AbstractMorphoChange
 		return stem;
 	}
 
+
 	public Stem partialReduplication(Stem stem)
 	{
 		String word = stem.getStemString();

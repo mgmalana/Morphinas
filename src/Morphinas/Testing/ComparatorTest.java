@@ -189,7 +189,7 @@ public class ComparatorTest
 	public void testComparatorWithHash() throws Exception
 	{
 		/* read from file and transfer to local variables */
-		test = ioh.readFromFileToSentence("morphTest.pinas");
+		test = ioh.readFromFileToSentence("stemmerResult.txt");
 		gold = ioh.readFromFileToSentence("morphGold.pinas");
 		orig = ioh.readFromFileToSentence("morphOriginal.pinas");
 		/* run */

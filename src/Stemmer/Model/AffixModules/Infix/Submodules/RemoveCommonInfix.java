@@ -20,14 +20,17 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 		String inString;
 		int infixLength;
 		int stemLength = word.length();
+		/* iterates on the set of existing canonical infixes */
 		for( String infix: commonInfixes )
 		{
 			infixLength = infix.length();
-			if ( word.contains(infix) )
+			String firstHalf = word.substring(1, (word.length()/2));
+			if ( firstHalf.contains(infix) )
 			{
 				for( int i = 1; i < ( (stemLength/2) + 1) + 1; i++ )
 				{
 					inString = word.substring(i, i+infixLength);
+//					println("inString: " + inString);
 					/* if it matches */
 					if ( infix.equalsIgnoreCase(inString) )
 					{
@@ -77,7 +80,6 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 //		{
 //			if( word.charAt( prevCharIndex) != vowels[i] )
 //		}
-
 		for( int i = 0; i < vowels.length; i++ )
 		{
 			if( word.charAt(prevCharIndex) != vowels[i])
@@ -89,6 +91,7 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 
 		for( int i = 0; i < vowels.length; i++ )
 		{
+//			println("word: " + word);
 			if( word.charAt(nextCharIndex) == vowels[i])
 			{
 				consonantCount = 0;

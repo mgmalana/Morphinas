@@ -53,6 +53,7 @@ public class DBHandler
 		}
 		// Return the connection:
 		pool.checkIn(con);
+		pool.expire(con);
 	}
 
 	/**

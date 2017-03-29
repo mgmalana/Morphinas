@@ -64,49 +64,61 @@ public class AffixCommand
 		{
 			tx 		= new ArrayList<>();
 			tempX	= ty.get( y );
-			println("tempX.size: " + tempX.size());
 			for( int x = 0; x < tempX.size(); x++ )
 			{
 				Stem stemX = tempX.get(x).getStem();
-				tempX.get(x).generateBranchChildren2(stemX);
-				/*
-				 *	Useful? Maybe. Hotel? Trivago.
-				 */
-				if( y == 2)
-				{
-					Stem nullStem = new Stem("NULL");
-					Branch nullBranch = new Branch( nullStem );
-					if ( !dbHandler.lookup(tempX.get(x).getPrefixBranch().getStem().getStemString() ) )
+//				println("stemX: " + stemX.getStemString());
+				if( stemX.getStemString().length() < 5 ) {
+					// check if the current short stem is a root word
+					if( dbHandler.lookup(stemX.getStemString()) )
 					{
-						tx.add( nullBranch );
-					} else {
-						tx.add( tempX.get(x).getPrefixBranch() );
-					}
-					if ( !dbHandler.lookup(tempX.get(x).getInfixBranch().getStem().getStemString() ) )
-					{
-						tx.add( nullBranch );
-					} else {
-						tx.add( tempX.get(x).getInfixBranch() );
-					}
-					if ( !dbHandler.lookup(tempX.get(x).getSuffixBranch().getStem().getStemString() ) )
-					{
-						tx.add( nullBranch );
-					} else {
-						tx.add( tempX.get(x).getSuffixBranch() );
+//						println("a root word was found: " + stemX.getStemString());
+//						println(stemX.getCombinedFeatures());
 					}
 				}
 				else
 				{
-					tx.add( tempX.get(x).getPrefixBranch() );
-					tx.add( tempX.get(x).getInfixBranch() );
-					tx.add( tempX.get(x).getSuffixBranch() );
-				}
+					tempX.get(x).generateBranchChildren2(stemX);
 				/*
-				* Re-instate the 3 lines below once a working tree-stopper exists or maybe something comes up better
-				* */
-//				tx.add( tempX.get(x).getPrefixBranch() );
-//				tx.add( tempX.get(x).getInfixBranch() );
-//				tx.add( tempX.get(x).getSuffixBranch() );
+				 *	Useful? Maybe. Hotel? Trivago.
+				 */
+					if( y == 2)
+					{
+						Stem nullStem = new Stem("NULL");
+						Branch nullBranch = new Branch( nullStem );
+						if ( !dbHandler.lookup(tempX.get(x).getPrefixBranch().getStem().getStemString() ) )
+						{
+							tx.add( nullBranch );
+						} else {
+							tx.add( tempX.get(x).getPrefixBranch() );
+						}
+						if ( !dbHandler.lookup(tempX.get(x).getInfixBranch().getStem().getStemString() ) )
+						{
+							tx.add( nullBranch );
+						} else {
+							tx.add( tempX.get(x).getInfixBranch() );
+						}
+						if ( !dbHandler.lookup(tempX.get(x).getSuffixBranch().getStem().getStemString() ) )
+						{
+							tx.add( nullBranch );
+						} else {
+							tx.add( tempX.get(x).getSuffixBranch() );
+						}
+					}
+					else
+					{
+						tx.add( tempX.get(x).getPrefixBranch() );
+						tx.add( tempX.get(x).getInfixBranch() );
+						tx.add( tempX.get(x).getSuffixBranch() );
+					}
+					/*
+					* Re-instate the 3 lines below once a working tree-stopper exists or maybe something comes up better
+					* */
+	//				tx.add( tempX.get(x).getPrefixBranch() );
+	//				tx.add( tempX.get(x).getInfixBranch() );
+	//				tx.add( tempX.get(x).getSuffixBranch() );
+				}
+
 			}
 			ty.add(tx);
 
@@ -118,8 +130,8 @@ public class AffixCommand
 		}
 //		printTreeContent(ty);
 		rs = getHighestFreqRoot( ty, word );
-//		println( rs.getWord() + "->" + rs.getOriginalWord() + "-> " + rs.getFeatures() );
-		return rs;
+//		println( rs.getLemma() + "->" + rs.getOriginalWord() + "-> " + rs.getFeatures() );
+		return new RootSet( rs.getLemma(), rs.getFeatures(), rs.getOriginalWord());
 	}
 
 	/**
@@ -147,6 +159,7 @@ public class AffixCommand
 			{
 				foundRoot 		= leaf.getStem().getStemString();
 				foundFeatures 	= leaf.getStem().getCombinedFeatures();
+//				println(foundRoot + "=" + foundFeatures);
 			}
 		}
 
@@ -178,11 +191,11 @@ public class AffixCommand
 
 		for ( int y = 0; y < tY.size(); y++ )
 		{
-			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
+//			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
 			tX = new ArrayList<>();
 
 			ArrayList<Branch> tempX = tY.get( y );
-			println("tempX.size: " + tempX.size() );
+//			println("tempX.size: " + tempX.size() );
 
 			for( int x = 0; x < tempX.size(); x++ )
 			{
@@ -204,14 +217,16 @@ public class AffixCommand
 			}
 		}
 
-		printTreeContent(tY);
+//		printTreeContent(tY);
 	}
+
 
 	/*
 	 * ********************************************************************
 	 *                             Other Utility 						  *
 	 * ********************************************************************
 	 */
+
 
 	public void printTreeContent( ArrayList<ArrayList<Branch>> tY )
 	{
@@ -222,7 +237,7 @@ public class AffixCommand
 			for( int x = 0; x < tempTree.size(); x++ )
 			{
 				print( tempTree.size() +"-");
-				print( tempTree.get(x).getStem().getStemString() +" ");
+				print( tempTree.get(x).getStem().getStemString() +"/"+ tempTree.get(x).getStem().getCombinedFeatures() + " ");
 				if( (x+1) % 3 == 0 )
 				{
 					print("|| ");
@@ -231,6 +246,7 @@ public class AffixCommand
 			println("");
 		}
 	}
+
 
 	public void testTree()
 	{
@@ -272,6 +288,7 @@ public class AffixCommand
 		}
 	}
 
+
 	public void testCommands()
 	{
 		/* mmhmm */
@@ -299,6 +316,7 @@ public class AffixCommand
 		println(s.getStem().getStemString());
 	}
 
+
 	public static class Test
 	{
 		AffixCommand ac = new AffixCommand();
@@ -322,7 +340,9 @@ public class AffixCommand
 //			ac.generatePISTree3("mabangung-mabango"); // works well
 //			ac.generatePISTree3("mabango-bango");
 //			ac.generatePISTree3("tawanan"); // works pero must reconsider suffix "nan"
-			ac.generatePISTree3("napapanood");
+//			ac.generatePISTree3("napapanood");
+//			ac.generatePISTree3("gagawin");
+			ac.generatePISTree3("karamihan");
 		}
 
 		public void testCreateBranch()

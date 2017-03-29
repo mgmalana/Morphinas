@@ -25,7 +25,7 @@ public class MainController
 	public MainController(String inflectedWord)
 	{
 		this.inflectedWord = inflectedWord;
-
+		createRootSet();
 	}
 
 	public void setInflectedWord(String inflectedWord) {
@@ -49,30 +49,36 @@ public class MainController
 
 	public String getLemma()
 	{
-		if( !processed )
-		{
-
-			createRootSet();
-		}
+//		if( !processed )
+//		{
+//
+//			createRootSet();
+//		}
 		return this.lemma;
 	}
 
 	public String getFeatures()
 	{
 		String changedWord = specialResultsFeatures( this.inflectedWord );
-		if( changedWord.equalsIgnoreCase( inflectedWord ) )
-		{
-			if( !processed )
-			{
-				createRootSet();
-			}
-		}
-		else
-		{
-			return changedWord;
-		}
+//		if( changedWord.equalsIgnoreCase( inflectedWord ) )
+//		{
+//			if( !processed )
+//			{
+//				createRootSet();
+//			}
+//		}
+//		else if ( this.features.length() < 1)
+//		{
+//			createRootSet();
+//		}
+//		else
+//		{
+//			return changedWord;
+//		}
+//		createRootSet();
 		return this.features;
 	}
+
 
 	/**
 	 * Checks if word is already a root word or a punctuation mark
@@ -104,7 +110,10 @@ public class MainController
 	{
 		public static void main(String[] args)
 		{
-			MainController mc = new MainController("silangan");
+			MainController mc = new MainController("karamihan");
+			RootSet rs = mc.createRootSet();
+			println("RS Lemma: " + rs.getLemma());
+			println("RS Features: " + rs.getFeatures());
 			println( "MC Lemma: " + mc.getLemma() );
 			println( "MC Features: " + mc.getFeatures() );
 		}

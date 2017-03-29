@@ -12,7 +12,7 @@ public class AffixList
 	};
 
 	final static String commonPrefixes[] = {
-			"na", "nag", "ma", "mag", "i", "i-", "ika-", "isa-", "ipa",
+			"nag", "na", "mag", "ma", "i", "i-", "ika-", "isa-", "ipa",
 			"ipag", "ipang", "pa", "pag", "um", "in", "ka", "ni", "pinaka",
 			"pina", "pinag"
 	};
@@ -29,7 +29,7 @@ public class AffixList
 	};
 
 	final static String commonSuffixes[] = {
-			"nan", "an", "in", "han", "hin", "ng"
+			"nan", "han", "hin", "an", "in", "ng"
 	};
 
 	final static String longPrefixes[] = {

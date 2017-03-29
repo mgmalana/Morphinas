@@ -19,6 +19,8 @@ public class Branch implements Cloneable
 	 */
 		/* Important properties */
 	private Stem stem;
+	/* Parent Branch String */
+	private String parentString;
 	/* Children Branches */
 	private Branch prefixBranch, infixBranch, suffixBranch;
 	/* directions */
@@ -103,20 +105,30 @@ public class Branch implements Cloneable
 		return generateBranchChildren2( this.stem );
 	}
 
+	/**
+	 * Generatest the PIS branches for the current stem and returns it in an array of branches (Branch[])
+	 * with a size of 3.
+	 * @param currentStem
+	 * @return
+	 */
 	public Branch[] generateBranchChildren2(Stem currentStem)
 	{
 		Branch[] children = new Branch[3];
 		Branch prefixBranch, infixBranch, suffixBranch;
 		Stem tempStem = currentStem.cloneThis();
-
 		this.prefixBranch = createBranch( tempStem, _p);
 		this.infixBranch  = createBranch( tempStem, _i);
 		this.suffixBranch = createBranch( tempStem, _s);
-
+		/* set parent stem (string) for every branch */
+		this.parentString = currentStem.getStemString();
+		this.prefixBranch.setParentString( this.parentString );
+		this.infixBranch.setParentString( this.parentString );
+		this.suffixBranch.setParentString( this.parentString );
+		/* place in children array */
 		children[0]  = this.prefixBranch;
 		children[1]  = this.infixBranch;
 		children[2]  = this.suffixBranch;
-
+		/* return children */
 		return children;
 	}
 
@@ -457,6 +469,14 @@ public class Branch implements Cloneable
 
 	public void setStopper(int stopper) {
 		this.stopper = stopper;
+	}
+
+	public String getParentString() {
+		return parentString;
+	}
+
+	public void setParentString(String parentString) {
+		this.parentString = parentString;
 	}
 
 	/*

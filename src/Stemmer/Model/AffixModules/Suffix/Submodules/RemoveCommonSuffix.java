@@ -11,11 +11,13 @@ import static Utility.print.*;
 public class RemoveCommonSuffix extends AbstractMorphoChange
 {
 	String[] commonSuffixes = AffixList.getCommonSuffixes();
+
 	@Override
 	public Stem reduceStem(Stem stem)
 	{
 		String word = stem.getStemString();
 		int suffixLength;
+
 		for( String suffix: commonSuffixes )
 		{
 			suffixLength = suffix.length();
