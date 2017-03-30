@@ -37,6 +37,10 @@ public class AffixList
 			"nakiki", "makiki", "naka", "nakaka",
 	};
 
+	final static String[] phonemeChangePrefixes  = { "mar" };
+
+	final static char[] possiblePhonemeCharReplacements = { 'd', 'b', 'p' };
+
 	/**
 	 * List down all the affixes with their equivalent breakdown
 	 * @return
@@ -122,5 +126,13 @@ public class AffixList
 
 	public static String[] getPrefixAssimiliation() {
 		return prefixAssimiliation;
+	}
+
+	public static String[] getPhonemeChangePrefixes() {
+		return phonemeChangePrefixes;
+	}
+
+	public static char[] getPossiblePhonemeCharReplacements() {
+		return possiblePhonemeCharReplacements;
 	}
 }

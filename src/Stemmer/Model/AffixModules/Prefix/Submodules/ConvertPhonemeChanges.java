@@ -1,6 +1,7 @@
 package Stemmer.Model.AffixModules.Prefix.Submodules;
 
 import Stemmer.Model.AffixModules.AbstractMorphoChange;
+import Stemmer.Model.AffixModules.AffixList;
 import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
 import static Utility.print.*;
@@ -12,8 +13,8 @@ public class ConvertPhonemeChanges extends AbstractMorphoChange
 	/* Database for lookups */
 	DBHandler dbHandler;
 	/* list of possible phoneme change prefixes */
-	String[] phonemeChangePrefixes  = { "mar" };
-	char[] possibleCharReplacements = { 'd', 'b', 'p' };
+	String[] phonemeChangePrefixes  = AffixList.getPhonemeChangePrefixes();
+	char[] possibleCharReplacements = AffixList.getPossiblePhonemeCharReplacements();
 
 
 	public ConvertPhonemeChanges()
