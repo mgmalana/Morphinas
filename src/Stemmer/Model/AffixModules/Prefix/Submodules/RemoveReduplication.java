@@ -77,6 +77,20 @@ public class RemoveReduplication extends AbstractMorphoChange
 		return stem;
 	}
 
+	/**
+	 * Removes adjacent similar characters such as "aa" from "aalis", "uu" from "uunlad", etc.
+	 * @param stem
+	 * @return
+	 */
+	public Stem characterReduplication(Stem stem)
+	{
+		String word = stem.getStemString();
+		String rightPart;
+		Stem newStem = stem.cloneThis();
+
+		return newStem;
+	}
+
 	public static class TestMe
 	{
 		public static void main(String[] args)
