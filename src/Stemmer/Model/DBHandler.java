@@ -18,7 +18,7 @@ public class DBHandler
 {
 
 	static final String DB_URL 				= "jdbc:sqlite:morphinas.db";
-
+	
 	// SQL Returns
 	ResultSet rs;
 	PreparedStatement query 				= null;
@@ -55,8 +55,16 @@ public class DBHandler
 		}
 		// Return the connection:
 		pool.checkIn(con);
+		pool.expire(con);
 	}
 
+	/**
+	 * Performs a lookup on a word.
+	 * @param word
+	 * @return
+	 * TRUE if the word in question is a root word and part of the database of root words.
+	 * FALSE if not a root word.
+	 */
 	public Boolean lookup(String word)
 	{
 		this.word = word;
@@ -92,7 +100,7 @@ public class DBHandler
 		public static void main(String args[])
 		{
 			DBHandler m = new DBHandler();
-			println("Word: " + m.lookup("tao"));
+			println("Word: " + m.lookup("marikit"));
 			println("Word: " + m.lookup("bangkay"));
 			println("Word: " + m.lookup("barangay"));
 			println("Word: " + m.lookup("vsdgfhdfg"));

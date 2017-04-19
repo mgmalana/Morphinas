@@ -1,6 +1,7 @@
 package Stemmer.Model.AffixModules.Prefix;
 
 import Stemmer.Model.AffixModules.AbstractAffixCommand;
+import Stemmer.Model.AffixModules.Prefix.Submodules.ConvertPhonemeChanges;
 import Stemmer.Model.AffixModules.Prefix.Submodules.RemoveCommonPrefix;
 import Stemmer.Model.AffixModules.Prefix.Submodules.RemoveReduplication;
 import Stemmer.Model.Stem;
@@ -20,8 +21,8 @@ public class PrefixCommand extends AbstractAffixCommand
 	{
 		Boolean changes = false;
 		/* Initialize submodules for stemming */
-		RemoveCommonPrefix rcp 	= new RemoveCommonPrefix();
-		RemoveReduplication rdp	= new RemoveReduplication();
+		RemoveCommonPrefix 		rcp	= new RemoveCommonPrefix();
+		RemoveReduplication 	rdp	= new RemoveReduplication();
 		/* Initialize new Stem objects for immutability */
 		Stem oldStem = stem.cloneThis();
 		Stem newStem = stem.cloneThis();
@@ -30,9 +31,9 @@ public class PrefixCommand extends AbstractAffixCommand
 		 */
 		// CommonPrefix
 		newStem = rcp.reduceStem( newStem );
+		/* Check for Changes and update boolean changed */
 		if ( !checkForChanges(oldStem, newStem) ) {
 			newStem = rdp.reduceStem( newStem );
-			println("rdp: " + newStem.getStemString());
 		}
 		if ( !checkForChanges(oldStem, newStem) ) {
 			newStem = rdp.reduceStem( newStem );
@@ -62,7 +63,7 @@ public class PrefixCommand extends AbstractAffixCommand
 	{
 		public static void main(String[] args)
 		{
-			String word = "pinahintay";
+			String word = "malakas";
 			Stem stem  	= new Stem(word);
 			PrefixCommand pc = new PrefixCommand();
 			Stem newStem = pc.performStemmingModules(stem);

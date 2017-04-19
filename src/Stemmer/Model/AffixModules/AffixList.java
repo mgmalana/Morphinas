@@ -12,9 +12,16 @@ public class AffixList
 	};
 
 	final static String commonPrefixes[] = {
-			"na", "nag", "ma", "mag", "i", "i-", "ika-", "isa-", "ipa",
-			"ipag", "ipang", "pa", "pag", "um", "in", "ka", "ni",
+			"nag", "na", "mag", "ma", "i", "i-", "ika-", "isa-", "ipa",
+			"ipag", "ipang", "pa", "pag", "um", "in", "ka", "ni", "pinaka",
 			"pina", "pinag"
+	};
+
+	final static String prefixAssimiliation[] = {
+			"pang", "pam", "pan",
+			"mang", "mam", "man",
+			"sang", "sam", "san",
+			"sing", "sim", "sin"
 	};
 
 	final static String commonInfixes[] = {
@@ -22,13 +29,19 @@ public class AffixList
 	};
 
 	final static String commonSuffixes[] = {
-			"an", "in", "han", "hin", "ng"
+			"nan", "han", "hin", "an", "in", "ng"
 	};
 
 	final static String longPrefixes[] = {
 			"napag", "mapag", "nakipag", "nakikipag", "makipag", "makikipag",
 			"nakiki", "makiki", "naka", "nakaka",
 	};
+
+	final static String[] phonemeChangePrefixes  = { "mar" };
+
+	final static char[] possiblePhonemeCharReplacements = { 'd', 'b', 'p' };
+
+	final static char[] possibleAssimilationCharReplacements = { 'b', 'p' };
 
 	/**
 	 * List down all the affixes with their equivalent breakdown
@@ -111,5 +124,21 @@ public class AffixList
 
 	public static char[] getVowels() {
 		return vowels;
+	}
+
+	public static String[] getPrefixAssimiliation() {
+		return prefixAssimiliation;
+	}
+
+	public static String[] getPhonemeChangePrefixes() {
+		return phonemeChangePrefixes;
+	}
+
+	public static char[] getPossiblePhonemeCharReplacements() {
+		return possiblePhonemeCharReplacements;
+	}
+
+	public static char[] getPossibleAssimilationCharReplacements() {
+		return possibleAssimilationCharReplacements;
 	}
 }

@@ -1,6 +1,5 @@
 package Stemmer.Model.AffixModules.Prefix.Submodules;
 
-import Stemmer.Model.AffixModules.AbstractAffixCommand;
 import Stemmer.Model.AffixModules.AbstractMorphoChange;
 import Stemmer.Model.Stem;
 
@@ -46,10 +45,12 @@ public class RemoveReduplication extends AbstractMorphoChange
 		/*
 		 * Please transfer to applyFeature()
 		 */
-		stem.setFeature( stem.getFeature() + "$" + leftPart);
+//		stem.setFeature( stem.getFeature() + "$" + leftPart);
+		stem.addPrefix( "$" + leftPart );
 		stem.setStemString( rightPart );
 		return stem;
 	}
+
 
 	public Stem partialReduplication(Stem stem)
 	{
@@ -65,7 +66,8 @@ public class RemoveReduplication extends AbstractMorphoChange
 				if( possibleRedup.equalsIgnoreCase(leftPart) )
 				{
 					rightPart = word.substring(j);
-					stem.setFeature( ""+ stem.getFeature() + "$" + possibleRedup);
+//					stem.setFeature( ""+ stem.getFeature() + "$" + possibleRedup);
+					stem.addPrefix( "$" + possibleRedup);
 					stem.setStemString(rightPart);
 					return stem;
 				}
@@ -73,6 +75,20 @@ public class RemoveReduplication extends AbstractMorphoChange
 		}
 		// do something
 		return stem;
+	}
+
+	/**
+	 * Removes adjacent similar characters such as "aa" from "aalis", "uu" from "uunlad", etc.
+	 * @param stem
+	 * @return
+	 */
+	public Stem characterReduplication(Stem stem)
+	{
+		String word = stem.getStemString();
+		String rightPart;
+		Stem newStem = stem.cloneThis();
+
+		return newStem;
 	}
 
 	public static class TestMe

@@ -20,33 +20,39 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 		String inString;
 		int infixLength;
 		int stemLength = word.length();
+		/* iterates on the set of existing canonical infixes */
 		for( String infix: commonInfixes )
 		{
 			infixLength = infix.length();
-			for( int i = 1; i < ( (stemLength/2) + 1) + 1; i++ )
+			String firstHalf = word.substring(1, (word.length()/2));
+			if ( firstHalf.contains(infix) )
 			{
-				inString = word.substring(i, i+infixLength);
-				/* if it matches */
-				if ( infix.equalsIgnoreCase(inString) )
+				for( int i = 1; i < ( (stemLength/2) + 1) + 1; i++ )
 				{
-					if( ruleNotCCAfterStemming(word, i, i) )
+					inString = word.substring(i, i+infixLength);
+//					println("inString: " + inString);
+					/* if it matches */
+					if ( infix.equalsIgnoreCase(inString) )
 					{
-						/* return original */
+						if( ruleNotCCAfterStemming(word, i, i) )
+						{
+							/* return original */
+							return stem;
+						}
+						else
+						{
+							if( word.charAt(i) != vowels[0])
+							{
+								leftStem 	= word.substring(0, i);
+							}
+							rightStem 	= word.substring( i+infixLength);
+							foundAffix 	= infix;
+							/* Set or Update stem properties */
+							stem.setStemString(leftStem.concat(rightStem));
+							stem.addInfix( infix );
+						}
 						return stem;
 					}
-					else
-					{
-						if( word.charAt(i) != vowels[0])
-						{
-							leftStem 	= word.substring(0, i);
-						}
-						rightStem 	= word.substring( i+infixLength);
-						foundAffix 	= infix;
-						/* Set or Update stem properties */
-						stem.setFeature( applyFeature(infix) );
-						stem.setStemString(leftStem.concat(rightStem));
-					}
-					return stem;
 				}
 			}
 		}
@@ -74,7 +80,6 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 //		{
 //			if( word.charAt( prevCharIndex) != vowels[i] )
 //		}
-
 		for( int i = 0; i < vowels.length; i++ )
 		{
 			if( word.charAt(prevCharIndex) != vowels[i])
@@ -86,6 +91,7 @@ public class RemoveCommonInfix extends AbstractMorphoChange
 
 		for( int i = 0; i < vowels.length; i++ )
 		{
+//			println("word: " + word);
 			if( word.charAt(nextCharIndex) == vowels[i])
 			{
 				consonantCount = 0;

@@ -9,11 +9,18 @@ import static Utility.print.println;
  */
 public final class Stem implements Cloneable
 {
+
 	private String stemString;
 	private String affix;
 	private String feature;
 	private String rootWord;
 	private String pathTaken;
+	/* features per affix */
+	private String prefixFeatures;
+	private String infixFeatures;
+	private String suffixFeatures;
+	private String redupFeatures;
+	private String combinedFeatures;
 
 	private ArrayList<String> prefixes, infixes, suffixes;
 
@@ -74,7 +81,78 @@ public final class Stem implements Cloneable
 
 	public void addSuffix(String suffix)
 	{
+		if( this.suffixes == null || this.suffixes.size() == 0 ) {
+			this.infixes = new ArrayList<>();
+		}
 		this.suffixes.add( suffix );
+	}
+
+	public String combineAllFeatures()
+	{
+		String result = "";
+		prefixes = removeDuplicateAffixesFromList( prefixes );
+		infixes  = removeDuplicateAffixesFromList( infixes );
+		suffixes = removeDuplicateAffixesFromList( suffixes );
+
+		/* Add all prefixes first */
+		for( String prefix: prefixes)
+		{
+			if( prefix.charAt(0) == '$' )
+			{
+				result += prefix;
+			}
+			else
+			{
+				result += "~" + prefix;
+			}
+		}
+		/* Add all infixes next */
+		for( String infix: infixes )
+		{
+			result += "@" + infix;
+		}
+		/* And finally, all suffixes */
+		for( String suffix: suffixes )
+		{
+			result += "+" + suffix;
+		}
+
+		return result;
+	}
+
+	public ArrayList<String> removeDuplicateAffixesFromList(ArrayList<String> affixes)
+	{
+		ArrayList<String> reducedList 	= new ArrayList<>();
+		Boolean exists 					= false;
+
+		for( String affix : affixes )
+		{
+			if( reducedList.size() == 0 )
+			{
+				reducedList.add( affix );
+			}
+			else
+			{
+				for ( String newAffix : reducedList )
+				{
+					if ( affix.equalsIgnoreCase( newAffix ) )
+					{
+						exists = true;
+						break;
+					} else
+					{
+						exists = false;
+					}
+				}
+				if ( !exists )
+				{
+					exists = false;
+					reducedList.add( affix );
+				}
+			}
+		}
+
+		return reducedList;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -145,5 +223,43 @@ public final class Stem implements Cloneable
 		this.suffixes = suffixes;
 	}
 
+	public String getPrefixFeatures() {
+		return prefixFeatures;
+	}
 
+	public void setPrefixFeatures(String prefixFeatures) {
+		this.prefixFeatures = prefixFeatures;
+	}
+
+	public String getInfixFeatures() {
+		return infixFeatures;
+	}
+
+	public void setInfixFeatures(String infixFeatures) {
+		this.infixFeatures = infixFeatures;
+	}
+
+	public String getSuffixFeatures() {
+		return suffixFeatures;
+	}
+
+	public void setSuffixFeatures(String suffixFeatures) {
+		this.suffixFeatures = suffixFeatures;
+	}
+
+	public String getRedupFeatures() {
+		return redupFeatures;
+	}
+
+	public void setRedupFeatures(String redupFeatures) {
+		this.redupFeatures = redupFeatures;
+	}
+
+	public String getCombinedFeatures() {
+		return combineAllFeatures();
+	}
+
+	public void setCombinedFeatures(String combinedFeatures) {
+		this.combinedFeatures = combinedFeatures;
+	}
 }

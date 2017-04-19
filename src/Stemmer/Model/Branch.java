@@ -19,6 +19,8 @@ public class Branch implements Cloneable
 	 */
 		/* Important properties */
 	private Stem stem;
+	/* Parent Branch String */
+	private String parentString;
 	/* Children Branches */
 	private Branch prefixBranch, infixBranch, suffixBranch;
 	/* directions */
@@ -41,7 +43,7 @@ public class Branch implements Cloneable
 
 	/**
 	 * Use this for root of the tree only (unstemmed)
-	 * @param untouchedStem The original input word by the user
+	 * @param untouchedStem The original input lemma by the user
 	 */
 	public Branch(Stem untouchedStem) {
 		this.stem = untouchedStem;
@@ -103,20 +105,30 @@ public class Branch implements Cloneable
 		return generateBranchChildren2( this.stem );
 	}
 
+	/**
+	 * Generatest the PIS branches for the current stem and returns it in an array of branches (Branch[])
+	 * with a size of 3.
+	 * @param currentStem
+	 * @return
+	 */
 	public Branch[] generateBranchChildren2(Stem currentStem)
 	{
 		Branch[] children = new Branch[3];
 		Branch prefixBranch, infixBranch, suffixBranch;
 		Stem tempStem = currentStem.cloneThis();
-
 		this.prefixBranch = createBranch( tempStem, _p);
 		this.infixBranch  = createBranch( tempStem, _i);
 		this.suffixBranch = createBranch( tempStem, _s);
-
+		/* set parent stem (string) for every branch */
+		this.parentString = currentStem.getStemString();
+		this.prefixBranch.setParentString( this.parentString );
+		this.infixBranch.setParentString( this.parentString );
+		this.suffixBranch.setParentString( this.parentString );
+		/* place in children array */
 		children[0]  = this.prefixBranch;
 		children[1]  = this.infixBranch;
 		children[2]  = this.suffixBranch;
-
+		/* return children */
 		return children;
 	}
 
@@ -155,7 +167,7 @@ public class Branch implements Cloneable
 		return newBranch;
 	}
 
-	private Branch nullBranch(Branch oldBranch)
+	public Branch nullBranch(Branch oldBranch)
 	{
 		Branch newBranch;
 		Stem nullStem = new Stem("NULL");
@@ -172,7 +184,7 @@ public class Branch implements Cloneable
 	{
 		PrefixCommand pc = new PrefixCommand();
 		parentStem = pc.performStemmingModules(parentStem);
-			/* check if stem is already root word */
+			/* check if stem is already root lemma */
 
 //			if( pc.checkDB() )
 //			{
@@ -192,7 +204,7 @@ public class Branch implements Cloneable
 	{
 		InfixCommand ic = new InfixCommand();
 		parentStem = ic.performStemmingModules(parentStem);
-		/* check if stem is already root word */
+		/* check if stem is already root lemma */
 //			if( ic.checkDB() )
 //			{
 //				isInfixRoot = true;
@@ -211,7 +223,7 @@ public class Branch implements Cloneable
 	{
 		SuffixCommand sc = new SuffixCommand();
 		parentStem = sc.performStemmingModules(parentStem);
-			/* check if stem is already root word */
+			/* check if stem is already root lemma */
 //			if( sc.checkDB() )
 //			{
 //				isSuffixRoot = true;
@@ -250,11 +262,11 @@ public class Branch implements Cloneable
 	 */
 
 	/**
-	 * Checks DB if current stem is a root word
+	 * Checks DB if current stem is a root lemma
 	 * @param checkStem
-	 * stem to be checked if root word
+	 * stem to be checked if root lemma
 	 * @return
-	 * true if root word otherwise false
+	 * true if root lemma otherwise false
 	 */
 	public boolean checkIfRoot(Stem checkStem)
 	{
@@ -457,6 +469,14 @@ public class Branch implements Cloneable
 
 	public void setStopper(int stopper) {
 		this.stopper = stopper;
+	}
+
+	public String getParentString() {
+		return parentString;
+	}
+
+	public void setParentString(String parentString) {
+		this.parentString = parentString;
 	}
 
 	/*

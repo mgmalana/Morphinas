@@ -967,7 +967,7 @@ unti
 
 
 tuka
-word
+lemma
 Bird
 many
 

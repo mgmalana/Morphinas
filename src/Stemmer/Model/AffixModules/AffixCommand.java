@@ -4,8 +4,9 @@ import Stemmer.Model.AffixModules.Infix.InfixCommand;
 import Stemmer.Model.AffixModules.Prefix.PrefixCommand;
 import Stemmer.Model.AffixModules.Suffix.SuffixCommand;
 import Stemmer.Model.Branch;
+import Stemmer.Model.DBHandler;
 import Stemmer.Model.Stem;
-
+import Stemmer.Model.RootSet;
 import java.util.ArrayList;
 
 import static Utility.print.*;
@@ -25,6 +26,9 @@ public class AffixCommand
 	PrefixCommand pc;
 	InfixCommand ic;
 	SuffixCommand sc;
+	/* DBHandler */
+	DBHandler dbHandler = new DBHandler();
+
 
 	public AffixCommand()
 	{}
@@ -32,9 +36,15 @@ public class AffixCommand
 	/**
 	 * Main working method. Do not use anything else.
 	 * @param word
+	 * Word to be stemmed. Stemming generates a tree.
+	 * @return
+	 * A Rootset which contains root word and features in G format
 	 */
-	public void generatePISTree3(String word)
+	public RootSet generatePISTree3(String word)
 	{
+		/* Result set */
+		String result = "";
+		RootSet rs;
 		/* Ecological Creation */
 		ArrayList<ArrayList<Branch>> ty 	= new ArrayList<>();
 		ArrayList<Branch> tx 				= new ArrayList<>();
@@ -48,19 +58,67 @@ public class AffixCommand
 		/* Add the root node in ArrayList */
 		tx.add( rootBranch );
 		ty.add( tx );
+
 		/* Go out and populate */
 		for( int y = 0; y < ty.size(); y++ )
 		{
 			tx 		= new ArrayList<>();
 			tempX	= ty.get( y );
-			println("tempX.size: " + tempX.size());
 			for( int x = 0; x < tempX.size(); x++ )
 			{
 				Stem stemX = tempX.get(x).getStem();
-				tempX.get(x).generateBranchChildren2(stemX);
-				tx.add( tempX.get(x).getPrefixBranch() );
-				tx.add( tempX.get(x).getInfixBranch() );
-				tx.add( tempX.get(x).getSuffixBranch() );
+//				println("stemX: " + stemX.getStemString());
+				if( stemX.getStemString().length() < 5 ) {
+					// check if the current short stem is a root word
+					if( dbHandler.lookup(stemX.getStemString()) )
+					{
+//						println("a root word was found: " + stemX.getStemString());
+//						println(stemX.getCombinedFeatures());
+					}
+				}
+				else
+				{
+					tempX.get(x).generateBranchChildren2(stemX);
+				/*
+				 *	Useful? Maybe. Hotel? Trivago.
+				 */
+					if( y == 2)
+					{
+						Stem nullStem = new Stem("NULL");
+						Branch nullBranch = new Branch( nullStem );
+						if ( !dbHandler.lookup(tempX.get(x).getPrefixBranch().getStem().getStemString() ) )
+						{
+							tx.add( nullBranch );
+						} else {
+							tx.add( tempX.get(x).getPrefixBranch() );
+						}
+						if ( !dbHandler.lookup(tempX.get(x).getInfixBranch().getStem().getStemString() ) )
+						{
+							tx.add( nullBranch );
+						} else {
+							tx.add( tempX.get(x).getInfixBranch() );
+						}
+						if ( !dbHandler.lookup(tempX.get(x).getSuffixBranch().getStem().getStemString() ) )
+						{
+							tx.add( nullBranch );
+						} else {
+							tx.add( tempX.get(x).getSuffixBranch() );
+						}
+					}
+					else
+					{
+						tx.add( tempX.get(x).getPrefixBranch() );
+						tx.add( tempX.get(x).getInfixBranch() );
+						tx.add( tempX.get(x).getSuffixBranch() );
+					}
+					/*
+					* Re-instate the 3 lines below once a working tree-stopper exists or maybe something comes up better
+					* */
+	//				tx.add( tempX.get(x).getPrefixBranch() );
+	//				tx.add( tempX.get(x).getInfixBranch() );
+	//				tx.add( tempX.get(x).getSuffixBranch() );
+				}
+
 			}
 			ty.add(tx);
 
@@ -70,9 +128,50 @@ public class AffixCommand
 			}
 
 		}
-		printTreeContent(ty);
+//		printTreeContent(ty);
+		rs = getHighestFreqRoot( ty, word );
+//		println( rs.getLemma() + "->" + rs.getOriginalWord() + "-> " + rs.getFeatures() );
+		return new RootSet( rs.getLemma(), rs.getFeatures(), rs.getOriginalWord());
 	}
 
+	/**
+	 * Does not get highest frequency yet. Just gets the last (i think) found non-NULL stem
+	 * @param finishedTree
+	 * @param originalWord
+	 * @return
+	 */
+	public RootSet getHighestFreqRoot(ArrayList<ArrayList<Branch>> finishedTree, String originalWord)
+	{
+		/* Result */
+		String result = "";
+		RootSet rootSet;
+		/* Iterated variables */
+		ArrayList<Branch> leaves = finishedTree.get( finishedTree.size()-1 );
+		ArrayList<String> roots;
+		/* To be used in finding the possible root */
+		ArrayList<RootSet> prList 	= new ArrayList<>();
+		String foundRoot 			= "";
+		String foundFeatures 		= "";
+
+		for ( Branch leaf : leaves )
+		{
+			if ( !leaf.getStem().getStemString().equalsIgnoreCase("null") )
+			{
+				foundRoot 		= leaf.getStem().getStemString();
+				foundFeatures 	= leaf.getStem().getCombinedFeatures();
+//				println(foundRoot + "=" + foundFeatures);
+			}
+		}
+
+		rootSet = new RootSet( foundRoot, foundFeatures, originalWord );
+		return rootSet;
+	}
+
+	/**
+	 * Wag mong gamitin. Please lang.
+	 * @param word
+	 * pucha wag nga eh
+	 */
 	public void generatePISTree2(String word)
 	{
 		/* saving the trees */
@@ -92,18 +191,22 @@ public class AffixCommand
 
 		for ( int y = 0; y < tY.size(); y++ )
 		{
-			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
+//			println(tX.get(0).getStem().getStemString() + " - " + tY.size());
 			tX = new ArrayList<>();
 
 			ArrayList<Branch> tempX = tY.get( y );
-			println("tempX.size: " + tempX.size() );
+//			println("tempX.size: " + tempX.size() );
 
 			for( int x = 0; x < tempX.size(); x++ )
 			{
+				Stem nullStem = new Stem("NULL");
+				Branch nullBranch = new Branch( nullStem );
 				tempX.get(x).generateBranchChildren();
+
 				tX.add( tempX.get(x).getPrefixBranch() );
 				tX.add( tempX.get(x).getInfixBranch() );
 				tX.add( tempX.get(x).getSuffixBranch() );
+
 			}
 
 			tY.add( tX );
@@ -114,14 +217,16 @@ public class AffixCommand
 			}
 		}
 
-		printTreeContent(tY);
+//		printTreeContent(tY);
 	}
+
 
 	/*
 	 * ********************************************************************
 	 *                             Other Utility 						  *
 	 * ********************************************************************
 	 */
+
 
 	public void printTreeContent( ArrayList<ArrayList<Branch>> tY )
 	{
@@ -132,7 +237,7 @@ public class AffixCommand
 			for( int x = 0; x < tempTree.size(); x++ )
 			{
 				print( tempTree.size() +"-");
-				print( tempTree.get(x).getStem().getStemString() +" ");
+				print( tempTree.get(x).getStem().getStemString() +"/"+ tempTree.get(x).getStem().getCombinedFeatures() + " ");
 				if( (x+1) % 3 == 0 )
 				{
 					print("|| ");
@@ -141,6 +246,7 @@ public class AffixCommand
 			println("");
 		}
 	}
+
 
 	public void testTree()
 	{
@@ -182,6 +288,7 @@ public class AffixCommand
 		}
 	}
 
+
 	public void testCommands()
 	{
 		/* mmhmm */
@@ -209,6 +316,7 @@ public class AffixCommand
 		println(s.getStem().getStemString());
 	}
 
+
 	public static class Test
 	{
 		AffixCommand ac = new AffixCommand();
@@ -224,8 +332,17 @@ public class AffixCommand
 
 		public void original()
 		{
-//			ac.generatePISTree2("pinahintayan");
-			ac.generatePISTree3("pinaghati-hatian");
+//			ac.generatePISTree3("pinapahintayan");
+//			ac.generatePISTree3("marami"); // works
+//			ac.generatePISTree3("duguan"); // works
+//			ac.generatePISTree3("dugo-duguan"); // works well
+//			ac.generatePISTree3("pinakamarami"); // works
+//			ac.generatePISTree3("mabangung-mabango"); // works well
+//			ac.generatePISTree3("mabango-bango");
+//			ac.generatePISTree3("tawanan"); // works pero must reconsider suffix "nan"
+//			ac.generatePISTree3("napapanood");
+//			ac.generatePISTree3("gagawin");
+			ac.generatePISTree3("karamihan");
 		}
 
 		public void testCreateBranch()

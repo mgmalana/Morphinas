@@ -21,6 +21,7 @@ public class Main {
 	final String morphRead 			= "morphRead.pinas";
 	final String minitext			= "minitext.txt";
 	final String readThisFile		= "correct_words.txt";
+
 	public Main() throws Exception
 	{
 		this.startTime  = System.currentTimeMillis();
@@ -104,10 +105,10 @@ public class Main {
 
 		Main m = new Main();
 //		m.sampleLongRun();
-		m.sampleSingleRun("pinalalaro");
+//		m.sampleSingleRun("pinalalaro");
 //		m.manoLongRun();
 //		m.sampleLongRunSentencesLemma();
-//		m.sampleLongRunSentences();
+		m.sampleLongRunSentences();
 	}
 
 	/*

@@ -967,7 +967,7 @@ unti
 
 
 tuka
-word
+lemma
 Bird
 many
 
@@ -98272,7 +98272,7 @@ tagakiskis
 happenings
 Salymbekov
 Sanktuaryo
-word-final
+lemma-final
 dinedideka
 halamanan
 pag-limbag
@@ -110202,7 +110202,7 @@ pagbabadget
 patrilinyal
 Nangatwiran
 pinatrabaho
-single-word
+single-lemma
 pagcontract
 pagtatangal
 MetroHealth
@@ -113456,7 +113456,7 @@ keyboardista
 kinontratang
 binabayarang
 pagreresolba
-word-initial
+lemma-initial
 white-collar
 Presbiteryan
 Sinuportahan
@@ -113666,7 +113666,7 @@ entreprenyur
 accelerators
 pangmedisina
 pagkagustong
-word-finally
+lemma-finally
 conservatory
 katanghalian
 disastrosong
@@ -124261,7 +124261,7 @@ ka-manggagawa
 Factification
 anti-Austrian
 Diprotodontia
-word-of-mouth
+lemma-of-mouth
 diskrimnasyon
 destructively
 pagkakatiwala
@@ -125441,7 +125441,7 @@ pangprebensyon
 timogkanlurang
 pangangalagaan
 Kinakailangang
-word-initially
+lemma-initially
 Massachussetts
 neo-Romanesque
 regularisasyon
@@ -128793,7 +128793,7 @@ nangangalunyang
 pagrekonstrukta
 multiprocessing
 iniimbistigahan
-word-processing
+lemma-processing
 nagpapalehitimo
 kakasama-samang
 dalawamput-anim

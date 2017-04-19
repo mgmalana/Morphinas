@@ -967,7 +967,7 @@ unti
  
  
 tuka 
-word 
+lemma
 bird 
 many 
  
@@ -1137,7 +1137,7 @@ tern
 ht 
 bass 
 loch 
-word 
+lemma
  
  
 bese 
@@ -98272,7 +98272,7 @@ tagakiskis
 happengs 
 salymbekov 
 sanktuaryo 
-word-fal 
+lemma-fal
 dedideka 
 halaman 
 -limbag 
@@ -110202,7 +110202,7 @@ babadget
 trilyal 
 ngatwir 
 trabaho 
-sgle-word 
+sgle-lemma
 contract 
 tatangal 
 metrohealth 
@@ -113456,7 +113456,7 @@ keyboardista
 kontrata 
 babayara 
 reresolba 
-word-itial 
+lemma-itial
 white-collar 
 presbitery 
 suporta 
@@ -113666,7 +113666,7 @@ entreprenyur
 accelerators 
 ngmedisa 
 kagusto 
-word-fally 
+lemma-fally
 conservatory 
 tanghali 
 disastroso 
@@ -124261,7 +124261,7 @@ woodlandhills
 factification 
 anti-austri 
 diprotodontia 
-word-of-mouth 
+lemma-of-mouth
 diskrimnasyon 
 destructively 
 kakatiwala 
@@ -125441,7 +125441,7 @@ ngprebensyon
 timogkanlura 
 ngangalaga 
 kailanga 
-word-itially 
+lemma-itially
 ssachussetts 
 neo-romanesque 
 regularisasyon 
@@ -128793,7 +128793,7 @@ ngangalunya
 rekonstrukta 
 multiprocessg 
 iimbistiga 
-word-processg 
+lemma-processg
 papalehitimo 
 kasama-sama 
 dalawamput-anim 
